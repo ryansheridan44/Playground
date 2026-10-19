@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import ButtonPage from './pages/ButtonPage'
-import ConsolidatedNavigationPage from './pages/ConsolidatedNavigationPage'
+import ConsolidatedNavigation from './components/ConsolidatedNavigation/ConsolidatedNavigation'
 import Home from './pages/Home'
 
 function App() {
@@ -11,7 +11,14 @@ function App() {
         <Route index element={<Home />} />
         <Route path="button" element={<ButtonPage />} />
       </Route>
-      <Route path="prototypes/consolidated-navigation" element={<ConsolidatedNavigationPage />} />
+      <Route
+        path="prototypes/consolidated-navigation-1"
+        element={<ConsolidatedNavigation version={1} />}
+      />
+      <Route
+        path="prototypes/consolidated-navigation-2"
+        element={<ConsolidatedNavigation version={2} />}
+      />
     </Routes>
   )
 }

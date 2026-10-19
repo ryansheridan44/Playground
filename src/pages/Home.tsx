@@ -17,11 +17,19 @@ function Home() {
         </div>
         <h1 className="page-title group-title">Prototypes</h1>
         <div className="list">
-          <Link to="/prototypes/consolidated-navigation" className="row">
-            <div className="row-icon">C</div>
+          <Link to="/prototypes/consolidated-navigation-1" className="row">
+            <div className="row-icon">1</div>
             <div className="row-body">
-              <div className="row-name">Consolidated Navigation</div>
-              <div className="row-desc">Commerce navigation prototype with parent strip.</div>
+              <div className="row-name">Consolidated Navigation 1</div>
+              <div className="row-desc">Logo switcher; header without the tertiary CTA.</div>
+            </div>
+            <span className="row-action">View ↗</span>
+          </Link>
+          <Link to="/prototypes/consolidated-navigation-2" className="row">
+            <div className="row-icon">2</div>
+            <div className="row-body">
+              <div className="row-name">Consolidated Navigation 2</div>
+              <div className="row-desc">Parent strip navigation prototype.</div>
             </div>
             <span className="row-action">View ↗</span>
           </Link>

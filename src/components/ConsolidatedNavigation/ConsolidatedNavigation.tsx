@@ -1,12 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import html from './navigation.html?raw'
+import nav1 from './navigation-1.html?raw'
+import nav2 from './navigation-2.html?raw'
 import './ConsolidatedNavigation.css'
 
 const ORIGIN = 'https://www.commerce.com'
+const VERSIONS = { 1: nav1, 2: nav2 }
 
-function ConsolidatedNavigation() {
+interface Props {
+  version: keyof typeof VERSIONS
+}
+
+function ConsolidatedNavigation({ version }: Props) {
   const frame = useRef<HTMLIFrameElement>(null)
   const [path, setPath] = useState('/')
   const [draft, setDraft] = useState('/')
@@ -50,8 +56,8 @@ function ConsolidatedNavigation() {
       <iframe
         ref={frame}
         className="consolidated-nav-frame"
-        title="Consolidated Navigation"
-        srcDoc={html}
+        title={`Consolidated Navigation ${version}`}
+        srcDoc={VERSIONS[version]}
       />
       <div className="consolidated-nav-badges">
         <Link to="/" className="consolidated-nav-badge">
