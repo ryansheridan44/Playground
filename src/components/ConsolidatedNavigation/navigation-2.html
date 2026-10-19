@@ -266,6 +266,8 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .hdr .bgrp{display:flex;align-items:center;width:var(--logo-w);flex:none}
 .hdr .bgrp a{display:block;width:var(--logo-w)}
 .hdr .bgrp svg{display:block;width:var(--logo-w)!important;height:auto!important}
+.hdr .bgrp:has(.bl),.hdr .bgrp .bl{width:28px}
+.hdr .bgrp .bl svg{width:28px!important;height:28px!important}
 /* parent strip (non-sticky): one shared item style for both sides, so type size, spacing and underline always match */
 .strip{height:36px;background:var(--surface2);border-bottom:1px solid var(--border)}
 .strip-in{height:35px;display:flex;align-items:center;justify-content:space-between;gap:24px}
@@ -747,7 +749,7 @@ function rightHTML(brand){
 }
 function switcherHTML(brand){
   var b = BRAND[brand], home = brand==='cm' ? '#/' : href(b.base);
-  return '<span class="bgrp"><a class="'+(brand==='cm'?'logo':'bl')+'" href="'+home+'" aria-label="'+b.name+' home" title="'+b.name+' home">'+b.logo+'</a></span>';
+  return '<span class="bgrp"><a class="'+(brand==='cm'?'logo':'bl')+'" href="'+home+'" aria-label="'+b.name+' home" title="'+b.name+' home">'+(brand==='cm'?b.logo:b.mark)+'</a></span>';
 }
 
 /* ---------- parent strip ---------- */
