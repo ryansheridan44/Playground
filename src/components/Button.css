@@ -1,0 +1,20 @@
+.btn {
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--bg);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
