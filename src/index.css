@@ -159,3 +159,7 @@ a {
   border: 1px solid var(--border);
   border-radius: 12px;
 }
+
+.group-title {
+  margin-top: 96px;
+}

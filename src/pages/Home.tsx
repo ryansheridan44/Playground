@@ -15,6 +15,17 @@ function Home() {
             <span className="row-action">View ↗</span>
           </Link>
         </div>
+        <h1 className="page-title group-title">Prototypes</h1>
+        <div className="list">
+          <Link to="/prototypes/consolidated-navigation" className="row">
+            <div className="row-icon">C</div>
+            <div className="row-body">
+              <div className="row-name">Consolidated Navigation</div>
+              <div className="row-desc">Commerce navigation prototype with parent strip.</div>
+            </div>
+            <span className="row-action">View ↗</span>
+          </Link>
+        </div>
       </div>
     </section>
   )
