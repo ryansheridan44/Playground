@@ -1,26 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import html from './navigation.html?raw'
 import './ConsolidatedNavigation.css'
 
 const ORIGIN = 'https://www.commerce.com'
-const URL_BAR_HEIGHT = 40
-const TOGGLE_HEIGHT = 32
 
 function ConsolidatedNavigation() {
   const frame = useRef<HTMLIFrameElement>(null)
   const [path, setPath] = useState('/')
   const [draft, setDraft] = useState('/')
   const [showUrl, setShowUrl] = useState(false)
-  const [ctaY, setCtaY] = useState<number | null>(null)
 
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
       if (e.source !== frame.current?.contentWindow) return
-      if (e.data?.type === 'consolidated-nav:cta') {
-        setCtaY(e.data.y)
-        return
-      }
       if (e.data?.type !== 'consolidated-nav:path') return
       setPath(e.data.path)
       setDraft(e.data.path)
@@ -37,12 +31,6 @@ function ConsolidatedNavigation() {
       '*',
     )
   }
-
-  // Keep the toggle vertically centered on the nav's main CTA button.
-  const toggleTop =
-    ctaY === null
-      ? undefined
-      : ctaY + (showUrl ? URL_BAR_HEIGHT : 0) - TOGGLE_HEIGHT / 2
 
   return (
     <div className="consolidated-nav">
@@ -65,15 +53,19 @@ function ConsolidatedNavigation() {
         title="Consolidated Navigation"
         srcDoc={html}
       />
-      <button
-        type="button"
-        className="consolidated-nav-toggle"
-        style={{ top: toggleTop }}
-        onClick={() => setShowUrl((v) => !v)}
-        aria-pressed={showUrl}
-      >
-        {showUrl ? 'Hide URL' : 'Show URL'}
-      </button>
+      <div className="consolidated-nav-badges">
+        <Link to="/" className="consolidated-nav-badge">
+          Home
+        </Link>
+        <button
+          type="button"
+          className="consolidated-nav-badge"
+          onClick={() => setShowUrl((v) => !v)}
+          aria-pressed={showUrl}
+        >
+          {showUrl ? 'Hide URL' : 'Show URL'}
+        </button>
+      </div>
     </div>
   )
 }

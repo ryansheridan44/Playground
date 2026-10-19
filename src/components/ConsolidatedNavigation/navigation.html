@@ -875,7 +875,6 @@ function route(path){
   document.title = (path==='/'?'Commerce':(page?page.label:'Not found'))+' · Commerce navigation prototype';
   window.scrollTo(0,0);
   try{ parent.postMessage({type:'consolidated-nav:path',path:path},'*'); }catch(e){}
-  reportCta();
 }
 function navigate(path){ path = norm(path); try{ history.pushState(null,'','#'+path); }catch(e){} route(path); }
 document.addEventListener('click',function(e){
@@ -883,14 +882,6 @@ document.addEventListener('click',function(e){
   if(!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
   e.preventDefault(); navigate(a.getAttribute('href').slice(1));
 });
-var ctaRaf=0;
-function reportCta(){ cancelAnimationFrame(ctaRaf); ctaRaf=requestAnimationFrame(function(){
-  var c=document.querySelector('.hdr-r .cta')||document.querySelector('.hdr .cta'), y=null;
-  if(c){ var r=c.getBoundingClientRect(); y=r.top+r.height/2; }
-  try{ parent.postMessage({type:'consolidated-nav:cta',y:y},'*'); }catch(e){}
-}); }
-window.addEventListener('scroll',reportCta,{passive:true});
-window.addEventListener('resize',reportCta);
 window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:go' && typeof d.path==='string') navigate(d.path); });
 window.addEventListener('popstate',function(){ route(readPath()); });
 window.addEventListener('hashchange',function(){ route(readPath()); });

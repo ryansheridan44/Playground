@@ -53,11 +53,20 @@
   display: block;
 }
 
-.consolidated-nav-toggle {
+.consolidated-nav-badges {
   position: fixed;
-  top: 14px; /* centers on the 60px header, in line with the main CTA */
-  right: 16px;
+  left: 16px;
+  bottom: 16px;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.consolidated-nav-badge {
+  display: inline-flex;
+  align-items: center;
   height: 32px;
   padding: 0 12px;
   font: 13px 'Geist Mono', ui-monospace, monospace;
@@ -68,6 +77,6 @@
   cursor: pointer;
 }
 
-.consolidated-nav-toggle:hover {
+.consolidated-nav-badge:hover {
   background: #000;
 }
