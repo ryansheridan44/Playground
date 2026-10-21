@@ -282,7 +282,7 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sl.on .slt,.sl.on:hover .slt{text-decoration-color:#000}
 .sl:focus-visible{outline:2px solid #5492f7;outline-offset:-2px}
 @media(max-width:820px){.strip-r{display:none}}
-.bid{display:flex;align-items:center;gap:12px}
+.bid{display:flex;align-items:center;gap:16px}
 .bmk{display:flex;align-items:center;border-radius:4px}
 .bmk:hover{opacity:.75}
 .bnm{font-size:18px;line-height:24px;font-weight:500;color:#000;white-space:nowrap}
@@ -759,7 +759,7 @@ function headerHTML(brand){
   } else {
     /* brand mode: Commerce shrinks to its mark (the way back), the brand name sits beside it, and only the brand's menus show */
     var b = BRAND[brand];
-    left = '<span class="bid"><a class="bmk" href="#/" aria-label="Back to Commerce" title="Back to Commerce">'+SVG.commerceMark+'</a><a class="bnm" href="'+href(b.base)+'">'+b.name+'</a></span><span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav>';
+    left = '<span class="bid"><a class="bmk" href="#/" aria-label="Back to Commerce" title="Back to Commerce">'+SVG.commerceMark+'</a><span class="vdiv"></span><a class="bnm" href="'+href(b.base)+'">'+b.name+'</a></span><span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav>';
     Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
     right = rightHTML(brand);
   }
