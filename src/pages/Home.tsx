@@ -53,7 +53,7 @@ function Home() {
             <div className="row-icon">5</div>
             <div className="row-body">
               <div className="row-name">Consolidated Navigation 5</div>
-              <div className="row-desc">Brand mode: Commerce mark and brand name, brand menus only.</div>
+              <div className="row-desc">Navigation 4 with floating, rounded dropdown menus.</div>
             </div>
             <span className="row-action">View ↗</span>
           </Link>

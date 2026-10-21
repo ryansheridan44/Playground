@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Commerce navigation prototype (brand mode)</title>
+<title>Commerce navigation prototype (floating menus)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&family=Host+Grotesk:wght@400;500&display=swap" rel="stylesheet">
@@ -19,9 +19,11 @@ a:focus-visible,button:focus-visible{outline:2px solid #5492f7;outline-offset:2p
 .wrap{width:min(1140px,calc(100% - 48px));margin:0 auto}
 
 .stack{position:sticky;top:0;z-index:50;background:#fff}
-.hdr{position:relative;height:60px;background:#fff;border-bottom:1px solid var(--border)}
+.stack.has-sub{top:-60px;transition:transform .2s ease}
+.stack.has-sub.up{transform:translateY(60px)}
+.hdr{position:relative;z-index:2;height:60px;background:#fff;border-bottom:1px solid var(--border)}
 .hdr-in{height:59px;display:flex;align-items:center;justify-content:space-between}
-.hdr-l{display:flex;align-items:center;gap:24px}
+.hdr-l{display:flex;align-items:center;gap:30px}
 .vdiv{width:1px;height:59px;background:var(--border);flex:none}
 .links{display:flex;align-items:center;gap:30px}
 .logo{display:flex;align-items:center}
@@ -47,8 +49,9 @@ a:focus-visible,button:focus-visible{outline:2px solid #5492f7;outline-offset:2p
 .crumbs a:active{color:#d0d5dd}
 .light .crumbs a:active{color:#667085}
 @media(max-width:1180px){.hdr-r .tl{display:none}}
-.panel{position:absolute;left:0;right:0;top:100%;background:#fff;max-height:calc(100vh - 120px);overflow:auto}
-.slot{padding:48px 0}
+/* floating menus: inset to the page width, 24px below the bar, 12px corners */
+.panel{position:absolute;left:max(24px,calc((100% - 1140px)/2));right:max(24px,calc((100% - 1140px)/2));top:calc(100% + 24px);background:#fff;max-height:calc(100vh - 168px);overflow:auto;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.16)}
+.slot{padding:32px 0}
 #scrim{position:fixed;left:0;right:0;top:109px;bottom:0;background:rgba(0,0,0,.7);z-index:40}
 
 
@@ -199,7 +202,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #5492f7;outline-offset:2p
 
 .sol-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
 .picker{grid-column:1;display:flex;flex-direction:column;gap:12px;min-width:0}
-.pk{display:flex;gap:12px;padding:8px;border-radius:4px;min-height:55px}
+.pk{display:flex;align-items:center;gap:12px;padding:8px;border-radius:4px;min-height:55px}
 .pk.on{background:var(--surface2)}
 .pk-ic{width:32px;height:32px;margin:3px 0;border-radius:2.844px;display:flex;align-items:center;justify-content:center;flex:none}
 .pk-n{font-size:14px;line-height:19.6px;color:#000}
@@ -282,13 +285,17 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sl.on .slt,.sl.on:hover .slt{text-decoration-color:#000}
 .sl:focus-visible{outline:2px solid #5492f7;outline-offset:-2px}
 @media(max-width:820px){.strip-r{display:none}}
-.bid{display:flex;align-items:center;gap:16px}
-.bmk{display:flex;align-items:center;border-radius:4px}
-.bmk:hover{opacity:.75}
-.bnm{font-size:18px;line-height:24px;font-weight:500;color:#000;white-space:nowrap}
-.bnm:hover{text-decoration:underline;text-underline-offset:4px}
-/* sub-brand secondary bar (unused in this version): sits under the Commerce global header on /bigcommerce and /feedonomics */
-.sub{position:relative;height:45px;background:#fff;border-bottom:1px solid var(--border)}
+.mod-ov{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(0,0,0,.7)}
+.mod.wide{width:min(760px,100%)}
+.mod.wide .gs-card{padding:20px}
+.mod{width:min(440px,100%);max-height:calc(100vh - 48px);overflow:auto;padding:24px;background:#fff;border-radius:8px;box-shadow:0 24px 48px rgba(0,0,0,.24)}
+.mod-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.mod-h h2{font-size:20px;line-height:24px;font-weight:500}
+.mod-x{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:4px;color:var(--t2)}
+.mod-x:hover{background:var(--surface2);color:#000}
+.mod .pk:hover{background:var(--surface2)}
+/* sub-brand secondary bar: sits under the Commerce global header on /bigcommerce and /feedonomics */
+.sub{position:relative;z-index:1;height:45px;background:#fff;border-bottom:1px solid var(--border)}
 .sub-in{height:44px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .sub-l{display:flex;align-items:center;gap:24px;min-width:0}
 .sub-id{display:inline-flex;align-items:center;gap:8px;font-size:14px;line-height:19.6px;font-weight:500;color:#000;white-space:nowrap}
@@ -297,9 +304,11 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sub-id:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
 .sub .links{gap:24px}
 .sub .ni{font-size:14px}
+.sub .vdiv{height:44px}
 .sub-r{display:flex;align-items:center;gap:16px}
 .sub-r .btn{height:32px}
-.sub-r .btn:hover{background:#161c26}
+.sub-r .btn.o:hover{background:var(--surface2)}
+.sub-r .btn.o:active{background:#e4e7ec;color:#000;border-color:#000}
 </style>
 </head>
 <body>
@@ -357,22 +366,20 @@ var IND = [
 var LRN = [
  {title:'Browse by type',w:2,sub:[['All Resources','Articles','Blog','Guides'].map(function(l){return GL('learning',l)}),['Podcasts','Reports','Webinars','Events'].map(function(l){return GL('learning',l)})]},
  {title:'Learning resources',w:2,sub:[['Commerce Growth','Agentic Commerce','Commerce Trends','Developer Blog'].map(function(l){return GL('learning',l)}),['B2B Ecommerce','Channels & Marketplaces','Holiday Commerce'].map(function(l){return GL('learning',l)})]},
- {title:'Press',w:1,items:['Press Releases','News'].map(function(l){return GL('press',l)})}
+ {card:true,w:1,kicker:'Press',headline:'Commerce in the news',body:'Announcements, releases and coverage.',links:['Press Releases','News'].map(function(l){return GL('press',l)})}
 ];
 ['Customers','Company','Partners'].forEach(function(l){reg('/'+slug(l),l,'cm')});
 reg('/get-started','Get started','cm');
 
-var LEARN = function(b){ return {title:'Learn',w:1,items:LB(b,[{l:'All Resources',d:'Everything in one place.'},{l:'Blog',d:'News, insights and how-tos.'},{l:'Case Studies',d:'Brands growing with us.'},{l:'Guides & Reports',d:'Playbooks and research.'},{l:'Webinars',d:'Live and on-demand sessions.'}])}; };
 var MENU = {
  'bc-products':{brand:'bc',cols:[
   {title:'Start & build',w:1,items:LB('bc',[{l:'Product Overview',d:'What you can do with BigCommerce.'},{l:'Agentic Commerce',d:'AI-powered solutions for growth.'},{l:'Design Your Store',d:'Build your store with or without code.'},{l:'Apps & Integrations',d:'Over 1,200 apps to help you grow.'},{l:'Migrate to BigCommerce',d:'Switch from Shopify, WooCommerce, Salesforce, Magento, and more.'}])},
   {title:'Sell your way',w:1,items:LB('bc',['B2B Commerce','Channels & Advertising','Product Feed Management','Multi-Storefront','Headless Commerce','International Commerce','Data & Analytics'])},
   {title:'Run your business',w:1,items:LB('bc',['Checkout','Payments','Inventory','Shipping','Promotions',{l:'Companion',d:'Your personal AI chat assistant to help you run your store more efficiently.',feature:true}])},
   {title:'Developers',w:1,items:LB('bc',[{l:'Developer Docs',ext:true},{l:'MCP Toolkit',ext:true},{l:'Security & Compliance',ext:true},'Hosting & Performance','Staging Pro'])}]},
- 'bc-resources':{brand:'bc',fixed:4,cols:[
-  LEARN('bc'),
+ 'bc-resources':{brand:'bc',fixed:3,cols:[
   {title:'Product info',w:1,items:LB('bc',[{l:'Basics of BigCommerce',d:'A quick video tour of the platform.'},{l:'Product Releases',d:'What’s new and what just shipped.'},{l:'Help Center',ext:true,d:'Docs, how-tos, and support.'},{l:'BigCommerce University',d:'Courses and certifications.'}])},
-  {title:'Community',w:1,items:LB('bc',['Customer Showcase',{l:'Community Q&A',ext:true,d:'Ask questions, share answers.'}])},
+  {title:'Community',w:1,items:LB('bc',[{l:'Community Q&A',ext:true,d:'Ask questions, share answers.'}])},
   {title:'Build',w:1,items:LB('bc',[{l:'Developer Docs',ext:true},{l:'API Reference',ext:true},{l:'MCP Toolkit',ext:true},{l:'Apps Marketplace',ext:true},{l:'Partner Directory',ext:true}])}]},
  'fdx-products':{brand:'fdx',cols:[
   {title:'Overview',w:276,items:LB('fdx',[{l:'Product Overview',d:'Explore our core product capabilities.'},{l:'How It Works',d:'See how we optimize and sync data.'}])},
@@ -383,10 +390,9 @@ var MENU = {
   {title:'Supported platforms',w:564,sub:[LB('fdx',['Shopify','Oracle NetSuite','Salesforce Commerce Cloud','WooCommerce']),LB('fdx',['BigCommerce','Oracle Commerce','Adobe Commerce / Magento','Custom'])]},
   {card:true,w:276,kicker:'Integrations',headline:'Your stack, upgraded.',body:'Connect the dots so your systems move like one engine.',link:L('fdx','Get my plan')}]},
  'fdx-resources':{brand:'fdx',fixed:4,cols:[
-  LEARN('fdx'),
   {title:'Get help',w:1,items:LB('fdx',[{l:'FeedSupport™',ext:true,d:'24/7 support from feed specialists.'},'Help Center','Contact'])},
   {title:'Build',w:1,items:LB('fdx',['Developer Docs','API Reference','Supported Integrations'])}]},
- 'company':{brand:'cm',single:true,cols:[{title:'Company',w:1,items:[{l:'Customers',p:'/customers',d:'Stories from brands growing with us.'},{l:'About us',p:'/company',d:'Who we are and what we stand for.'},{l:'Partners',p:'/partners',d:'Agency, technology and solution partners.'}]}]},
+ 'company':{brand:'cm',single:true,cols:[{title:'Company',w:1,items:[{l:'Customers',p:'/customers',d:'Customer stories and case studies.'},{l:'About us',p:'/company',d:'Who we are and what we stand for.'},{l:'Partners',p:'/partners',d:'Agency, technology and solution partners.'}]}]},
  'industries':{brand:'cm',cols:IND},
  'learning':{brand:'cm',cols:LRN}
 };
@@ -427,7 +433,7 @@ var SECTIONS = {
 Object.keys(SECTIONS).forEach(function(id){
   var sc = SECTIONS[id]; reg(sc[1],sc[0],sc[2]); PAGES[sc[1]].section = true;
   MENU[id].cols.forEach(function(c){
-    var its = c.card ? [c.link] : (c.sub ? [].concat.apply([],c.sub) : c.items);
+    var its = c.card ? (c.links||[c.link]) : (c.sub ? [].concat.apply([],c.sub) : c.items);
     its.forEach(function(it){ var pg = PAGES[it.p]; if(pg && !pg.section && !pg.parent) pg.parent = {label:sc[0],path:sc[1]}; });
   });
 });
@@ -525,7 +531,8 @@ var HB_TYPES={
  all:{title:'All resources',h2:'Latest resources',types:null,crumb:'All resources',desc:'Blogs, guides, reports and webinars from the Commerce family of brands.'}
 };
 var HB_KEY={Blog:'blog',Guide:'guides',Report:'guides',Webinar:'webinars'};
-var HB_HUBPATH=function(b,key){ if(b==='cm') return '/learning/'+key; return HB_PRE[b]+'/'+{blog:'blog',guides:'guides-and-reports',webinars:'webinars'}[key]; };
+/* one Commerce-level home for all learning content: no brand blogs, guides or webinars */
+var HB_HUBPATH=function(b,key){ return '/learning/'+key; };
 var hbCount={};
 var POSTS=HB_RAW.map(function(r){
   var b=r[0]; hbCount[b]=(hbCount[b]||0);
@@ -542,7 +549,6 @@ POSTS.forEach(function(p,i){
   if(!p.ch.length && i%4===1) p.ch=[HB_CH[5+(i%5)]];
 });
 var HB_MAP={'/learning/blog':'blog','/learning/guides':'guides','/learning/reports':'guides','/learning/webinars':'webinars','/learning/all-resources':'all'};
-['/bigcommerce','/feedonomics'].forEach(function(pre){ HB_MAP[pre+'/all-resources']='all'; HB_MAP[pre+'/blog']='blog'; HB_MAP[pre+'/guides-and-reports']='guides'; HB_MAP[pre+'/webinars']='webinars'; });
 Object.keys(HB_MAP).forEach(function(p){ PAGES[p].hub=HB_MAP[p]; });
 var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 var fmtDate=function(d){ var a=d.split('-'); return MONTHS[+a[1]-1]+' '+(+a[2])+', '+a[0]; };
@@ -667,11 +673,11 @@ function initHub(brand,key){
 /* ---------- markup builders ---------- */
 var href = function(p){ return '#'+(p||'/'); };
 function itemHTML(it){
-  return '<a class="mni'+(it.feature?' feature':'')+'" href="'+href(it.p)+'"><span class="mni-b"><span class="mni-h"><span class="mni-t">'+esc(it.l)+'</span>'+(it.ext?SVG.ext:'')+'</span>'+(it.d?'<span class="mni-d">'+esc(it.d)+'</span>':'')+'</span></a>';
+  return '<a class="mni'+(it.feature?' feature':'')+'" href="'+href(it.p)+'"><span class="mni-b"><span class="mni-h"><span class="mni-t">'+esc(it.l)+'</span>'+(it.ext?SVG.ext:'')+'</span></span></a>';
 }
 function itemsHTML(items){ return '<div class="items">'+items.map(itemHTML).join('')+'</div>'; }
 function cardHTML(c){
-  return '<div class="card"><span class="card-k">'+esc(c.kicker)+'</span><span class="card-h">'+esc(c.headline)+'</span><span class="card-b">'+esc(c.body)+'</span><a class="card-l" href="'+href(c.link.p)+'"><span>'+esc(c.link.l)+'</span>'+SVG.arrowRight+'</a></div>';
+  return '<div class="card"><span class="card-k">'+esc(c.kicker)+'</span><span class="card-h">'+esc(c.headline)+'</span><span class="card-b">'+esc(c.body)+'</span>'+(c.links||[c.link]).map(function(k){ return '<a class="card-l" href="'+href(k.p)+'"><span>'+esc(k.l)+'</span>'+SVG.arrowRight+'</a>'; }).join('')+'</div>';
 }
 function colHTML(c){
   if(c.card) return cardHTML(c);
@@ -688,7 +694,7 @@ function solutionsPanelHTML(){
   var PANEL_SOL = SOL.concat([AILABS]);
   var picker = PANEL_SOL.map(function(s,i){
     var ic = s.k==='bc'?SVG.bcMark:s.k==='fdx'?SVG.fdxMark:SVG.aiMark;
-    return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span><span class="pk-d" style="display:block">'+esc(s.desc)+'</span></span></a>';
+    return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span></span></a>';
   }).join('');
   var rights = PANEL_SOL.map(function(s,i){
     var half = s.items.length/2;
@@ -726,7 +732,7 @@ function ctasHTML(brand){
   return '<div class="btns"><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a><a class="tl" href="'+href(c.secondary.p)+'"><span>'+esc(c.secondary.l)+'</span>'+SVG.arrowRight+'</a></div>';
 }
 function rightHTML(brand){
-  if(brand==='cm') return '<div class="hdr-r"><a class="login" href="#/contact-sales">Contact sales</a><button class="login" type="button" data-trigger="login" aria-haspopup="true" aria-expanded="false"><span>Log in</span>'+SVG.chev+'</button><a class="cta" href="#/get-started">Get started</a></div>';
+  if(brand==='cm') return '<div class="hdr-r"><a class="login" href="#/contact-sales">Contact sales</a><button class="login" type="button" data-modal="login" aria-haspopup="dialog">Log in</button><button class="cta" type="button" data-modal="started" aria-haspopup="dialog">Get started</button></div>';
   var c = CTA[brand];
   return '<div class="hdr-r">'+'<a class="login" href="'+href(c.login)+'">Log in</a><a class="cta" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div>';
 }
@@ -746,24 +752,30 @@ function stripHTML(brand){
 function subBarHTML(brand){
   var b = BRAND[brand], c = CTA[brand], panels = '';
   Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
-  var s0 = SOL.filter(function(x){return x.k===brand;})[0];
-  var id = '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+b.name+' overview"><span class="pk-ic" style="background:'+s0.bg+'">'+b.mark+'</span><span>'+b.name+'</span></a>';
-  return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
+  var id = '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+b.name+' overview"><span>'+b.name+'</span></a>';
+  return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="btn o" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
+}
+var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
+function modalHTML(id,title,body,wide){
+  return '<div class="mod-ov" id="'+id+'-modal" hidden><div class="mod'+(wide?' wide':'')+'" role="dialog" aria-modal="true" aria-labelledby="'+id+'-t"><div class="mod-h"><h2 id="'+id+'-t">'+title+'</h2><button type="button" class="mod-x" data-close="1" aria-label="Close">'+XI+'</button></div>'+body+'</div></div>';
+}
+function loginModalHTML(){
+  var rows = SOL.map(function(x){
+    return '<a class="pk" href="'+href(CTA[x.k].login)+'">'+tile(x,markOf(x.k))+'<span><span class="pk-n" style="display:block">'+esc(x.name)+'</span><span class="pk-d" style="display:block">'+esc(LOGIN_DESC[x.k]||x.desc)+'</span></span></a>';
+  }).join('');
+  return modalHTML('login','Log in to','<div class="pop-list">'+rows+'</div>');
+}
+function startedModalHTML(){
+  var cards = GS.map(function(c){
+    return '<section class="gs-card"><div class="gs-logo" role="img" aria-label="'+c.name+'"><span aria-hidden="true">'+c.logo+'</span></div><p class="gs-desc">'+esc(c.desc)+'</p><div class="gs-acts">'+c.acts.map(function(a){ return gsAct(a); }).join('')+'</div></section>';
+  }).join('');
+  return modalHTML('started','How would you like to get started?','<div class="gs-grid">'+cards+'</div>'+gsAct({t:'Contact sales',d:'Not sure where to start? Talk to us about which solution fits.',p:'/contact-sales'},' gs-sales'),true);
 }
 function headerHTML(brand){
-  var left, panels='', right;
-  if(brand==='cm'){
-    left = switcherHTML('cm')+'<span class="vdiv"></span><nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
-    panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+panelHTML('company')+loginPanelHTML();
-    right = rightHTML('cm');
-  } else {
-    /* brand mode: Commerce shrinks to its mark (the way back), the brand name sits beside it, and only the brand's menus show */
-    var b = BRAND[brand];
-    left = '<span class="bid"><a class="bmk" href="#/" aria-label="Back to Commerce" title="Back to Commerce">'+SVG.commerceMark+'</a><span class="vdiv"></span><a class="bnm" href="'+href(b.base)+'">'+b.name+'</a></span><span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav>';
-    Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
-    right = rightHTML(brand);
-  }
-  return '<div class="stack"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+right+'</div>'+panels+'</header></div>';
+  /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
+  var left = switcherHTML('cm')+'<nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
+  var panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+panelHTML('company');
+  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+rightHTML('cm')+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+loginModalHTML()+startedModalHTML();
 }
 /* ---------- get started page ---------- */
 var GS=[
@@ -825,6 +837,15 @@ function setMenu(id,by){
 }
 function placeScrim(){ if(!current) return; var pn=document.querySelector('.stack .panel[data-menu="'+current+'"]'), h=pn&&pn.parentNode; if(h) scrim.style.top = Math.max(0,h.getBoundingClientRect().bottom)+'px'; }
 window.addEventListener('scroll',placeScrim,{passive:true});
+var lastY = 0;
+window.addEventListener('scroll',function(){
+  var st = document.querySelector('.stack.has-sub'); if(!st) return;
+  var y = window.pageYOffset||0;
+  if(y<=60) st.classList.remove('up');
+  else if(y<lastY-4) st.classList.add('up');
+  else if(y>lastY+4) st.classList.remove('up');
+  lastY = y; placeScrim();
+},{passive:true});
 function closeMenu(){ setMenu(null,''); }
 var ptr = 'mouse';
 document.addEventListener('pointerdown',function(e){ ptr = e.pointerType || 'mouse'; },true);
@@ -847,7 +868,14 @@ function bindMenus(){
   });
 }
 scrim.addEventListener('click',closeMenu);
-document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeMenu(); });
+var modalOpener = null;
+function closeModal(){ var m=document.querySelector('.mod-ov:not([hidden])'); if(m){ m.hidden=true; if(modalOpener) modalOpener.focus(); } }
+document.addEventListener('click',function(e){
+  var t = e.target.closest ? e.target.closest('[data-modal]') : null;
+  if(t){ var m=document.getElementById(t.dataset.modal+'-modal'); closeMenu(); modalOpener=t; m.hidden=false; var a=m.querySelector('a'); if(a) a.focus(); return; }
+  if((e.target.classList && e.target.classList.contains('mod-ov')) || (e.target.closest && e.target.closest('[data-close]'))) closeModal();
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ closeMenu(); closeModal(); } });
 
 /* ---------- router ---------- */
 var app = document.getElementById('app');
@@ -866,7 +894,7 @@ function route(path){
   bindMenus();
   if(page && page.hub) initHub(brand,page.hub);
   document.title = (path==='/'?'Commerce':(page?page.label:'Not found'))+' · Commerce navigation prototype';
-  window.scrollTo(0,0);
+  window.scrollTo(0,0); lastY = 0;
   try{ parent.postMessage({type:'consolidated-nav:path',path:path},'*'); }catch(e){}
 }
 function navigate(path){ path = norm(path); try{ history.pushState(null,'','#'+path); }catch(e){} route(path); }
