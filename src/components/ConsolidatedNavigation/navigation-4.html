@@ -19,9 +19,11 @@ a:focus-visible,button:focus-visible{outline:2px solid #5492f7;outline-offset:2p
 .wrap{width:min(1140px,calc(100% - 48px));margin:0 auto}
 
 .stack{position:sticky;top:0;z-index:50;background:#fff}
+.stack.has-sub{top:-60px;transition:transform .2s ease}
+.stack.has-sub.up{transform:translateY(60px)}
 .hdr{position:relative;height:60px;background:#fff;border-bottom:1px solid var(--border)}
 .hdr-in{height:59px;display:flex;align-items:center;justify-content:space-between}
-.hdr-l{display:flex;align-items:center;gap:24px}
+.hdr-l{display:flex;align-items:center;gap:30px}
 .vdiv{width:1px;height:59px;background:var(--border);flex:none}
 .links{display:flex;align-items:center;gap:30px}
 .logo{display:flex;align-items:center}
@@ -292,6 +294,7 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sub-id:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
 .sub .links{gap:24px}
 .sub .ni{font-size:14px}
+.sub .vdiv{height:44px}
 .sub-r{display:flex;align-items:center;gap:16px}
 .sub-r .btn{height:32px}
 .sub-r .btn:hover{background:#161c26}
@@ -721,7 +724,7 @@ function ctasHTML(brand){
   return '<div class="btns"><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a><a class="tl" href="'+href(c.secondary.p)+'"><span>'+esc(c.secondary.l)+'</span>'+SVG.arrowRight+'</a></div>';
 }
 function rightHTML(brand){
-  if(brand==='cm') return '<div class="hdr-r"><a class="login" href="#/contact-sales">Contact sales</a><button class="login" type="button" data-trigger="login" aria-haspopup="true" aria-expanded="false"><span>Log in</span>'+SVG.chev+'</button><a class="cta" href="#/get-started">Get started</a></div>';
+  if(brand==='cm') return '<div class="hdr-r"><a class="login" href="#/contact-sales">Contact sales</a><a class="cta" href="#/get-started">Get started</a></div>';
   var c = CTA[brand];
   return '<div class="hdr-r">'+'<a class="login" href="'+href(c.login)+'">Log in</a><a class="cta" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div>';
 }
@@ -743,13 +746,13 @@ function subBarHTML(brand){
   Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
   var s0 = SOL.filter(function(x){return x.k===brand;})[0];
   var id = '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+b.name+' overview"><span class="pk-ic" style="background:'+s0.bg+'">'+b.mark+'</span><span>'+b.name+'</span></a>';
-  return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
+  return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="login" href="'+href(c.login)+'">Log in</a><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
 }
 function headerHTML(brand){
   /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
-  var left = switcherHTML('cm')+'<span class="vdiv"></span><nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
-  var panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+panelHTML('company')+loginPanelHTML();
-  return '<div class="stack"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+rightHTML('cm')+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>';
+  var left = switcherHTML('cm')+'<nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
+  var panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+panelHTML('company');
+  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+rightHTML('cm')+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>';
 }
 /* ---------- get started page ---------- */
 var GS=[
@@ -811,6 +814,15 @@ function setMenu(id,by){
 }
 function placeScrim(){ if(!current) return; var pn=document.querySelector('.stack .panel[data-menu="'+current+'"]'), h=pn&&pn.parentNode; if(h) scrim.style.top = Math.max(0,h.getBoundingClientRect().bottom)+'px'; }
 window.addEventListener('scroll',placeScrim,{passive:true});
+var lastY = 0;
+window.addEventListener('scroll',function(){
+  var st = document.querySelector('.stack.has-sub'); if(!st) return;
+  var y = window.pageYOffset||0;
+  if(y<=60) st.classList.remove('up');
+  else if(y<lastY-4) st.classList.add('up');
+  else if(y>lastY+4) st.classList.remove('up');
+  lastY = y; placeScrim();
+},{passive:true});
 function closeMenu(){ setMenu(null,''); }
 var ptr = 'mouse';
 document.addEventListener('pointerdown',function(e){ ptr = e.pointerType || 'mouse'; },true);
@@ -852,7 +864,7 @@ function route(path){
   bindMenus();
   if(page && page.hub) initHub(brand,page.hub);
   document.title = (path==='/'?'Commerce':(page?page.label:'Not found'))+' · Commerce navigation prototype';
-  window.scrollTo(0,0);
+  window.scrollTo(0,0); lastY = 0;
   try{ parent.postMessage({type:'consolidated-nav:path',path:path},'*'); }catch(e){}
 }
 function navigate(path){ path = norm(path); try{ history.pushState(null,'','#'+path); }catch(e){} route(path); }
