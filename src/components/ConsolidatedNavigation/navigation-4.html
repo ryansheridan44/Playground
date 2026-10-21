@@ -73,6 +73,10 @@ a:focus-visible,button:focus-visible{outline:2px solid #5492f7;outline-offset:2p
 .pk .ck{margin-left:auto;align-self:center;flex:none}
 .pop .sol-div{margin:8px 0}
 .pk-ic.cm svg{width:20px;height:20px}
+/* Solutions picker: bare black brand marks, no tile */
+.picker .pk-ic{background:none}
+.picker .pk-ic svg{width:24px;height:24px}
+.picker .pk-ic svg path{fill:#000}
 
 /* hover for rows in the switcher and login popovers */
 .panel.pop .pk:hover{background:#eaecf0}
@@ -201,7 +205,7 @@ a:focus-visible,button:focus-visible{outline:2px solid #5492f7;outline-offset:2p
 
 .sol-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
 .picker{grid-column:1;display:flex;flex-direction:column;gap:12px;min-width:0}
-.pk{display:flex;gap:12px;padding:8px;border-radius:4px;min-height:55px}
+.pk{display:flex;align-items:center;gap:12px;padding:8px;border-radius:4px;min-height:55px}
 .pk.on{background:var(--surface2)}
 .pk-ic{width:32px;height:32px;margin:3px 0;border-radius:2.844px;display:flex;align-items:center;justify-content:center;flex:none}
 .pk-n{font-size:14px;line-height:19.6px;color:#000}
@@ -300,6 +304,9 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sub-id{display:inline-flex;align-items:center;gap:8px;font-size:14px;line-height:19.6px;font-weight:500;color:#000;white-space:nowrap}
 .sub-id .pk-ic{width:24px;height:24px;margin:0;border-radius:2px}
 .sub-id .pk-ic svg{width:14px;height:14px}
+.sub-mk{display:inline-flex}
+.sub-mk svg{width:20px;height:20px}
+.sub-mk svg path{fill:#000}
 .sub-id:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
 .sub .links{gap:24px}
 .sub .ni{font-size:14px}
@@ -672,7 +679,7 @@ function initHub(brand,key){
 /* ---------- markup builders ---------- */
 var href = function(p){ return '#'+(p||'/'); };
 function itemHTML(it){
-  return '<a class="mni'+(it.feature?' feature':'')+'" href="'+href(it.p)+'"><span class="mni-b"><span class="mni-h"><span class="mni-t">'+esc(it.l)+'</span>'+(it.ext?SVG.ext:'')+'</span>'+(it.d?'<span class="mni-d">'+esc(it.d)+'</span>':'')+'</span></a>';
+  return '<a class="mni'+(it.feature?' feature':'')+'" href="'+href(it.p)+'"><span class="mni-b"><span class="mni-h"><span class="mni-t">'+esc(it.l)+'</span>'+(it.ext?SVG.ext:'')+'</span></span></a>';
 }
 function itemsHTML(items){ return '<div class="items">'+items.map(itemHTML).join('')+'</div>'; }
 function cardHTML(c){
@@ -693,7 +700,7 @@ function solutionsPanelHTML(){
   var PANEL_SOL = SOL.concat([AILABS]);
   var picker = PANEL_SOL.map(function(s,i){
     var ic = s.k==='bc'?SVG.bcMark:s.k==='fdx'?SVG.fdxMark:SVG.aiMark;
-    return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span><span class="pk-d" style="display:block">'+esc(s.desc)+'</span></span></a>';
+    return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span></span></a>';
   }).join('');
   var rights = PANEL_SOL.map(function(s,i){
     var half = s.items.length/2;
@@ -751,7 +758,7 @@ function stripHTML(brand){
 function subBarHTML(brand){
   var b = BRAND[brand], c = CTA[brand], panels = '';
   Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
-  var id = '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+b.name+' overview"><span>'+b.name+'</span></a>';
+  var id = '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+b.name+' overview"><span class="sub-mk" aria-hidden="true">'+b.mark+'</span><span>'+b.name+'</span></a>';
   return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="btn o" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
