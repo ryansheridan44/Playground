@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Commerce navigation prototype (two-tier)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400&family=Host+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--t2:#344054;--t3:#667085;--inv2:#d0d5dd;--g500:#8a94a7;--border:#d0d5dd;--divider:#d1d7e0;--surface2:#f2f4f7}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Host Grotesk',system-ui,sans-serif;color:#000;background:#fff;-webkit-font-smoothing:antialiased}
+body.dark{background:#000}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+[hidden]{display:none!important}
+a:focus-visible,button:focus-visible{outline:2px solid #5492f7;outline-offset:2px}
+.wrap{width:min(1140px,calc(100% - 48px));margin:0 auto}
+
+.stack{position:sticky;top:0;z-index:50;background:#fff}
+.hdr{position:relative;height:60px;background:#fff;border-bottom:1px solid var(--border)}
+.hdr-in{height:59px;display:flex;align-items:center;justify-content:space-between}
+.hdr-l{display:flex;align-items:center;gap:24px}
+.vdiv{width:1px;height:59px;background:var(--border);flex:none}
+.links{display:flex;align-items:center;gap:30px}
+.logo{display:flex;align-items:center}
+.logo svg,.bl svg{display:block}
+.ni{display:inline-flex;align-items:center;gap:4px;font-size:14px;line-height:19.6px;color:#000;border-bottom:1px solid transparent;white-space:nowrap}
+.ni svg{width:7px;height:5px;flex:none}
+.ni:hover{border-bottom-color:#b1b8c5}
+.ni.active,.ni.active:hover{border-bottom-color:#000}
+.ni.active svg{transform:rotate(180deg)}
+.cta{display:inline-flex;align-items:center;height:47px;padding:0 20px;background:#000;color:#fff;font-size:16px;line-height:22.4px;border-radius:2px;white-space:nowrap}
+.hdr-r{display:flex;align-items:center;gap:24px}
+.hdr-r .cta{margin-left:-8px}
+.login,.tl{display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:19.6px;color:#000;white-space:nowrap}
+.tl svg{width:16px;height:16px;flex:none}
+.tl:hover,.login:hover{text-decoration:underline;text-underline-offset:3px}
+.dark .hero .tl{color:#fff}
+.ni:active,.login:active,.tl:active,.card-l:active,.explore:active{color:#667085}
+.dark .hero .tl:active{color:#d0d5dd}
+.mni:active,.pk:active{background:#e4e7ec}
+.cta:active{background:#161c26}
+.btn:active{background:#161c26;border-color:#161c26}
+.dark .btn:active{background:#e4e7ec;border-color:#e4e7ec;color:#000}
+.crumbs a:active{color:#d0d5dd}
+.light .crumbs a:active{color:#667085}
+@media(max-width:1180px){.hdr-r .tl{display:none}}
+.panel{position:absolute;left:0;right:0;top:100%;background:#fff;max-height:calc(100vh - 120px);overflow:auto}
+.slot{padding:48px 0}
+#scrim{position:fixed;left:0;right:0;top:109px;bottom:0;background:rgba(0,0,0,.7);z-index:40}
+
+
+/* brand switcher + login chooser */
+.bgrp{display:flex;align-items:center;gap:4px}
+.bsw{width:24px;height:24px;margin-left:-2px;display:inline-flex;align-items:center;justify-content:center;border-radius:4px;color:var(--t3)}
+.bsw svg{width:12px;height:12px}
+.bsw:hover{background:var(--surface2);color:#000}
+.bsw.active{color:#000}
+.bsw.active svg{transform:rotate(180deg)}
+.bsw:active{background:#e4e7ec}
+.login.active svg{transform:rotate(180deg)}
+.login svg{width:7px;height:5px;flex:none}
+.login.active{text-decoration:underline;text-underline-offset:3px}
+.panel.pop{left:max(24px,calc((100% - 1140px)/2));right:auto;width:360px;padding:12px;border:1px solid var(--border);border-top:0;border-radius:0 0 8px 8px;box-shadow:0 12px 24px rgba(0,0,0,.12)}
+.panel.pop.w{width:400px}
+.panel.pop.r{left:auto;right:max(24px,calc((100% - 1140px)/2))}
+.pop-list{display:flex;flex-direction:column;gap:4px}
+.pk.s{min-height:0;align-items:center}
+.pk .ck{margin-left:auto;align-self:center;flex:none}
+.pop .sol-div{margin:8px 0}
+.pk-ic.cm svg{width:20px;height:20px}
+
+/* hover for rows in the switcher and login popovers */
+.panel.pop .pk:hover{background:#eaecf0}
+
+/* blog hub */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hb-top{padding:48px 0;background:#000}
+.hb-top h1{font-size:40px;line-height:48px}
+.hb-body{padding-top:64px}
+.hb-top .wrap{display:flex;flex-direction:column;gap:16px}
+.hb-sec{padding-bottom:96px}
+.hb-box{position:relative;color:#000}
+.hb-head{display:grid;grid-template-columns:280px minmax(0,1fr);column-gap:80px;align-items:end;margin-bottom:64px}
+.hb-head h2{grid-column:1 / -1;grid-row:1;font-weight:500;font-size:32px;line-height:44px}
+.hb-ctl{grid-column:2;grid-row:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px;align-items:end}
+.hb-ctl .hb-per{grid-column:2}
+.hb-ctl .hb-per:last-child{grid-column:3}
+.hb-per{display:flex;flex-direction:column;gap:8px;min-width:0;font-size:14px;line-height:19.6px;color:var(--t2)}
+.hb-sel{appearance:none;-webkit-appearance:none;width:100%;height:44px;border:1px solid #98a2b3;border-radius:2px;padding:0 36px 0 12px;font:inherit;font-size:14px;color:#000;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='5' fill='none'%3E%3Cpath d='M.35.35l3 3 3-3' stroke='%23667085'/%3E%3C/svg%3E") no-repeat right 14px center;cursor:pointer}
+.hb-sel:focus-visible,.hb-in:focus-visible,.hb-opt input:focus-visible,.hb-grp summary:focus-visible{outline:2px solid #5492f7;outline-offset:2px}
+.hb-layout{display:grid;grid-template-columns:280px minmax(0,1fr);column-gap:80px;align-items:start}
+.hb-side{display:flex;flex-direction:column;gap:48px}
+.hb-f{display:flex;flex-direction:column;gap:12px}
+.hb-lbl,.hb-fh{font-size:14px;line-height:19.6px;font-weight:500;color:#000}
+.hb-fh{font-size:18px;line-height:21.6px}
+.hb-in{width:100%;height:44px;border:1px solid #98a2b3;border-radius:2px;padding:0 12px;font:inherit;font-size:14px;color:#000;background:#fff}
+.hb-grp{border-top:1px solid var(--divider)}
+.hb-grp:last-child{border-bottom:1px solid var(--divider)}
+.hb-grp summary{list-style:none;display:flex;align-items:center;gap:8px;padding:16px 0;font-size:14px;line-height:19.6px;font-weight:500;cursor:pointer}
+.hb-grp summary::-webkit-details-marker{display:none}
+.hb-grp summary svg{width:7px;height:5px;flex:none;margin-left:auto}
+.hb-grp[open] summary svg{transform:rotate(180deg)}
+.hb-opts{display:flex;flex-direction:column;gap:12px;padding-bottom:20px}
+.hb-opt{display:flex;align-items:center;gap:12px;font-size:14px;line-height:19.6px;color:var(--t2);cursor:pointer}
+.hb-opt:hover{color:#000}
+.hb-opt input{appearance:none;-webkit-appearance:none;display:grid;place-content:center;flex:none;width:18px;height:18px;margin:0;border:1px solid #667085;border-radius:2px;background:#fff;cursor:pointer}
+.hb-opt input:checked{background:#000;border-color:#000}
+.hb-opt input:checked::after{content:"";width:10px;height:10px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 5.2l2.4 2.4 4.6-5' stroke='%23fff' stroke-width='1.6' fill='none'/%3E%3C/svg%3E") center/contain no-repeat}
+.hb-ot{flex:1;min-width:0}
+.hb-oc{font-size:12px;line-height:18px;color:var(--t3)}
+.hb-more{align-self:flex-start;padding:2px 0;font-size:13px;line-height:18px;color:var(--t2);text-decoration:underline;text-underline-offset:3px}
+.hb-more:hover{color:#000}
+.hb-mod{padding-bottom:64px}
+.hb-mh{font-weight:500;font-size:32px;line-height:38.4px;margin-bottom:24px}
+.hb-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.hb-tile{display:flex;flex-direction:column;gap:16px;padding:16px;border:1px solid var(--border);border-radius:4px;background:#fff;color:#000}
+.hb-tile:hover{border-color:#667085}
+.hb-tile:hover h3{text-decoration:underline;text-underline-offset:3px}
+.hb-tile-b{display:flex;flex-direction:column;gap:8px;padding:0 4px 8px}
+.hb-tile h3{font-size:20px;line-height:24px;font-weight:500}
+.hb-tile p{font-size:14px;line-height:19.6px;color:var(--t2)}
+.hb-tile-c{font-size:13px;line-height:18px;color:var(--t3)}
+.hb-res{min-width:0;scroll-margin-top:84px;outline:none}
+.hb-fhr{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.hb-rh{display:flex;justify-content:flex-end;align-items:center;height:19.6px;margin-bottom:12px}
+.hb-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.hb-clear{font-size:13px;line-height:18px;color:var(--t2);text-decoration:underline;text-underline-offset:3px;padding:0 4px}
+.hb-clear:hover{color:#000}
+.hb-n{flex:none;font-size:14px;line-height:19.6px;font-weight:500;color:#000}
+.hb-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.hb-card{display:flex;flex-direction:column;gap:12px;padding:16px;border:1px solid var(--border);border-radius:4px;background:#fff;color:#000}
+.hb-card:hover{border-color:#667085}
+.hb-card:hover .hb-t{text-decoration:underline;text-underline-offset:3px}
+.hb-th{aspect-ratio:16/9;border-radius:2px;background:conic-gradient(#ebebeb 25%,#fafafa 0 50%,#ebebeb 0 75%,#fafafa 0) 0 0/48px 48px}
+.hb-tags{display:flex;align-items:center;gap:8px}
+/* one small-label style for card type tags and filter count badges */
+.hb-tag,.hb-bd{display:inline-flex;align-items:center;height:22px;padding:0 6px;border-radius:2px;background:#e4e7ec;color:#344054;font-size:12px;line-height:16px;font-weight:400;white-space:nowrap}
+.hb-t{font-size:16px;line-height:22.4px;font-weight:500;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hb-date{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:4px;font-size:13px;line-height:18px;color:var(--t2)}
+.hb-date svg{width:16px;height:16px;flex:none}
+.hb-pgn{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:32px;font-size:14px;line-height:19.6px}
+.hb-pl{margin-right:8px;color:var(--t2)}
+.hb-pgn button{min-width:32px;height:32px;padding:0 10px;border-radius:2px;background:var(--surface2);text-align:center;color:#000}
+.hb-pgn button:hover{background:#e4e7ec}
+.hb-pgn button.cur{background:#000;color:#fff}
+.hb-el{padding:0 4px;color:var(--t3)}
+.hb-empty{display:flex;flex-direction:column;align-items:center;gap:12px;padding:64px 24px;text-align:center;border:1px solid var(--border);border-radius:4px}
+.hb-empty h3{font-size:18px;line-height:21.6px;font-weight:500}
+.hb-empty p{font-size:14px;line-height:19.6px;color:var(--t2)}
+.hb-btn{display:inline-flex;align-items:center;height:36px;padding:0 12px;margin-top:4px;border:1px solid #000;border-radius:2px;background:#000;color:#fff;font-size:14px;line-height:19.6px}
+.hb-btn:active{background:#161c26}
+@media(max-width:1000px){.hb-tiles{grid-template-columns:1fr}.hb-layout{grid-template-columns:1fr}.hb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hb-head{grid-template-columns:1fr;row-gap:16px;margin-bottom:32px}.hb-head h2,.hb-ctl{grid-column:1;grid-row:auto}}
+@media(max-width:1200px){.hb-head,.hb-layout{column-gap:48px}}
+@media(max-width:640px){.hb-grid{grid-template-columns:1fr}}
+
+/* get started */
+.gs{padding:64px 0 96px}
+.gs h1{font-weight:500;font-size:40px;line-height:48px;margin-bottom:40px}
+.gs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:stretch}
+.gs-card{display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface2);border-radius:8px}
+.gs-logo{height:28px;display:flex;align-items:center}
+.gs-logo svg{display:block}
+.gs-desc{font-size:14px;line-height:19.6px;color:var(--t2);min-height:58.8px}
+.gs-acts{display:flex;flex-direction:column;gap:12px}
+.gs-act{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;background:#fff;border:1px solid var(--border);border-radius:4px;color:#000}
+.gs-act:hover{border-color:#667085}
+.gs-act:hover .gs-an{text-decoration:underline;text-underline-offset:3px}
+.gs-at{display:flex;flex-direction:column;gap:2px}
+.gs-an{font-size:16px;line-height:22.4px;font-weight:500}
+.gs-ad{font-size:14px;line-height:19.6px;color:var(--t2)}
+.gs-act svg{flex:none;width:16px;height:16px}
+.gs-sales{margin-top:24px}
+@media(max-width:1000px){.gs-grid{grid-template-columns:1fr}}
+
+.cols{display:grid;gap:12px;align-items:start}
+.col{display:flex;flex-direction:column;gap:8px;min-width:0}
+.sth{display:flex;flex-direction:column;gap:8px;padding:0 8px 4px}
+.sth-t,.card-k{font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;line-height:18.2px;letter-spacing:.39px;text-transform:uppercase;color:var(--t2)}
+.sth-d{height:1px;background:var(--divider)}
+.items{display:flex;flex-direction:column;gap:8px;min-width:0}
+.subcols{display:flex;gap:12px}
+.subcols .items{flex:1}
+.mni{display:flex;gap:12px;padding:8px;border-radius:4px;color:#000}
+.mni:hover,.mni.feature{background:var(--surface2);color:#000}
+.mni-b{display:flex;flex-direction:column;flex:1;min-width:0}
+.mni-h{display:flex;align-items:center;gap:4px;min-height:20px}
+.mni-t{font-size:14px;line-height:19.6px}
+.mni-d{font-size:12px;line-height:18px;color:var(--t3)}
+.mni-h svg{width:16px;height:16px;flex:none}
+.card{display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:8px;background:var(--surface2)}
+.card-h{font-size:18px;line-height:1.2;font-weight:500}
+.card-b{font-size:14px;line-height:19.6px;color:var(--t2)}
+.card-l{display:flex;align-items:center;gap:8px;font-size:13px;line-height:18.2px;color:var(--t2)}
+.card-l svg{width:16px;height:16px}
+.card-l:hover{color:#000}
+
+.sol-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+.picker{grid-column:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pk{display:flex;gap:12px;padding:8px;border-radius:4px;min-height:55px}
+.pk.on{background:var(--surface2)}
+.pk-ic{width:32px;height:32px;margin:3px 0;border-radius:2.844px;display:flex;align-items:center;justify-content:center;flex:none}
+.pk-n{font-size:14px;line-height:19.6px;color:#000}
+.pk.on .pk-n{color:#000}
+.pk-d{font-size:12px;line-height:18px;color:var(--t3)}
+.sol-right{grid-column:2 / span 2;min-width:0}
+.sol-r{display:flex;flex-direction:column;gap:12px}
+.sol-hd{display:flex;flex-direction:column;gap:8px;padding:0 8px}
+.sol-hd-r{display:flex;justify-content:space-between;align-items:center}
+.explore{display:flex;align-items:center;gap:8px;font-size:13px;line-height:18.2px;color:var(--t2)}
+.explore svg{width:16px;height:16px}
+.explore:hover{color:#000}
+.sol-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.sol-grid .items{flex:1}
+.sol-div{height:1px;background:var(--divider);margin:12px 0}
+
+.eyebrow{font-family:'Geist Mono',ui-monospace,monospace;font-size:14px;line-height:19.6px;letter-spacing:.42px;text-transform:uppercase;color:var(--t2)}
+h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
+.hero{padding:96px 0}
+.home .hero{display:flex;flex-direction:column;gap:64px}
+.top-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.left{width:592px;max-width:100%;display:flex;flex-direction:column;gap:16px}
+.cta-col{width:415px;max-width:100%;display:flex;flex-direction:column;gap:24px}
+.desc{font-size:16px;line-height:22.4px;color:var(--t2)}
+.btns{display:flex;align-items:center;gap:20px}
+.btn{display:inline-flex;align-items:center;height:36px;padding:0 12px;font-size:14px;line-height:19.6px;border-radius:2px;border:1px solid #000;background:#000;color:#fff}
+.btn.o{background:transparent;color:#000}
+.visual{height:560px;border-radius:4px;background:conic-gradient(#ebebeb 25%,#fafafa 0 50%,#ebebeb 0 75%,#fafafa 0) 0 0/142.5px 142.5px}
+.ov .visual{height:555px}
+.ov .hero{display:flex;flex-direction:column;align-items:center;gap:64px}
+.ov-left{display:flex;flex-direction:column;align-items:center;gap:32px;text-align:center;width:100%}
+.ov-left h1{max-width:592px}
+.ov .visual{width:100%}
+
+.crumbs{border-bottom:1px solid var(--t2);background:#000}
+.crumbs-in{display:flex;align-items:center;gap:8px;padding:12px 0;font-size:14px;line-height:19.6px}
+.crumbs a{color:#fff}
+.crumbs a:hover{text-decoration:underline}
+.crumbs .cur{color:var(--g500)}
+.crumbs svg{width:5px;height:7px}
+
+.dark .eyebrow{color:var(--inv2)}
+.dark h1{color:#fff}
+.dark .desc{color:var(--inv2)}
+.dark .btn{background:#fff;color:#000;border-color:#fff}
+.dark .btn.o{background:transparent;color:#fff}
+.light .crumbs{background:#fff;border-bottom-color:var(--border)}
+.light .crumbs a{color:#000}
+.light .crumbs .cur{color:var(--t3)}
+.h-center .wrap{display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+.h-center h1{max-width:760px}
+.h-center .desc{max-width:592px}
+.h-center .btns{justify-content:center}
+.h-center .visual{width:100%;margin-top:40px;height:480px}
+.h-split .wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:64px;align-items:center}
+.h-split .visual{height:520px}
+.h-text{display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.h-textonly .h-text{max-width:760px}
+.h-textonly{padding-bottom:160px}
+.h-below .visual{height:480px}
+@media(max-width:1000px){.top-row{flex-direction:column;align-items:flex-start}h1{font-size:40px;line-height:48px}.h-split .wrap{grid-template-columns:1fr}}
+
+/* all logos share one width (--logo-w), height follows each logo's aspect ratio; divider never moves */
+:root{--logo-w:128px}
+.hdr .bgrp{display:flex;align-items:center;width:var(--logo-w);flex:none}
+.hdr .bgrp a{display:block;width:var(--logo-w)}
+.hdr .bgrp svg{display:block;width:var(--logo-w)!important;height:auto!important}
+/* parent strip (non-sticky): one shared item style for both sides, so type size, spacing and underline always match */
+.strip{height:36px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.strip-in{height:35px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.strip-l,.strip-r{display:flex;align-items:center;gap:0;height:35px}
+.sl{display:inline-flex;align-items:center;height:35px;padding:0 10px;font-size:13px;line-height:18px;color:var(--t3);white-space:nowrap}
+.strip-l .sl:first-child{padding-left:0}
+.strip-r .sl:last-child{padding-right:0}
+.slt{text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:transparent;text-underline-offset:3px}
+.sl:hover{color:#000}
+.sl:hover .slt{text-decoration-color:#b1b8c5}
+.sl:active{color:var(--t3)}
+.sl.on,.sl.on:hover{color:#000}
+.sl.on .slt,.sl.on:hover .slt{text-decoration-color:#000}
+.sl:focus-visible{outline:2px solid #5492f7;outline-offset:-2px}
+@media(max-width:820px){.strip-r{display:none}}
+/* sub-brand secondary bar: sits under the Commerce global header on /bigcommerce and /feedonomics */
+.sub{position:relative;height:45px;background:#fff;border-bottom:1px solid var(--border)}
+.sub-in{height:44px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.sub-l{display:flex;align-items:center;gap:24px;min-width:0}
+.sub-id{display:inline-flex;align-items:center;gap:8px;font-size:14px;line-height:19.6px;font-weight:500;color:#000;white-space:nowrap}
+.sub-id .pk-ic{width:24px;height:24px;margin:0;border-radius:2px}
+.sub-id .pk-ic svg{width:14px;height:14px}
+.sub-id:hover span:last-child{text-decoration:underline;text-underline-offset:3px}
+.sub .links{gap:24px}
+.sub .ni{font-size:14px}
+.sub-r{display:flex;align-items:center;gap:16px}
+.sub-r .btn{height:32px}
+.sub-r .btn:hover{background:#161c26}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="scrim" hidden></div>
+
+<script>
+(function(){
+'use strict';
+var SVG = {
+commerceLogo: `<svg width="144" height="28" viewBox="0 0 144 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27.3895 17.4164H27.3923C25.854 23.3213 20.4637 27.6954 14.0984 27.765C12.4381 25.4292 11.2045 22.5141 10.5427 19.2607C11.5324 19.9148 12.7079 20.314 13.9472 20.314C16.7366 20.314 19.1402 18.4613 19.8745 15.7549L27.3895 17.4164Z" fill="#6058FF"/><path d="M6.21773 2.33297C7.90703 5.58065 8.91422 9.56386 8.91422 13.8825C8.91419 18.201 7.90694 22.1837 6.21773 25.4313C2.47338 22.9449 7.07144e-05 18.7077 0 13.8825C0 9.05726 2.47333 4.8194 6.21773 2.33297Z" fill="#6058FF"/><path d="M14.0948 0C20.4603 0.0694692 25.8511 4.44302 27.3895 10.3479L19.8745 12.0094H19.8717C19.1373 9.30306 16.7337 7.45039 13.9444 7.45031C12.7049 7.45031 11.5289 7.85302 10.5391 8.5043C11.2009 5.25087 12.4346 2.33589 14.0948 0Z" fill="#6058FF"/><path d="M45.9316 6.22617C50.1497 6.22632 52.2077 9.24505 52.2099 9.2482L50.3698 10.9765C50.3698 10.9765 48.8544 8.81734 45.9316 8.81719C43.0087 8.81719 40.628 11.1906 40.628 14.1054C40.628 17.0202 43.0087 19.3936 45.9316 19.3936C48.8388 19.3934 50.4594 17.1514 50.4766 17.1274L52.3174 18.9626C52.3174 18.9626 50.1519 21.9845 45.9316 21.9846C41.3861 21.9846 37.8155 18.4241 37.8155 14.1054C37.8155 9.7867 41.3861 6.22617 45.9316 6.22617Z" fill="#170245"/><path fill-rule="evenodd" clip-rule="evenodd" d="M58.1632 10.8689C61.1935 10.869 63.6841 13.3526 63.6841 16.3744C63.6841 19.3963 61.1935 21.8798 58.1632 21.8798C55.1329 21.8798 52.6423 19.3963 52.6423 16.3744C52.6424 13.3525 55.1329 10.8689 58.1632 10.8689ZM58.1632 13.2427C56.4304 13.2427 55.1328 14.5365 55.1327 16.3716C55.1327 18.2067 56.4303 19.5005 58.1632 19.5005C59.896 19.5004 61.1937 18.2067 61.1937 16.3716C61.1936 14.5365 59.896 13.2427 58.1632 13.2427Z" fill="#170245"/><path fill-rule="evenodd" clip-rule="evenodd" d="M105.891 10.8661C108.922 10.8661 111.087 13.2396 111.087 16.1543C111.087 16.7942 110.983 17.3273 110.98 17.3412H103.079C103.34 18.5279 104.376 19.608 106.109 19.608C107.944 19.6079 109.025 18.2993 109.032 18.2911L110.44 20.0391L110.437 20.0419C110.437 20.0419 109.029 21.8769 105.999 21.877C102.969 21.877 100.37 19.3935 100.37 16.3716C100.37 13.3497 102.861 10.8661 105.891 10.8661ZM105.781 13.2427C104.266 13.2427 103.401 14.1055 103.076 15.2923H108.379C108.054 14.1055 107.189 13.2427 105.781 13.2427Z" fill="#170245"/><path d="M124.395 10.8661C127.413 10.8662 128.822 13.0078 128.834 13.0254L127.211 14.644C127.211 14.644 126.128 13.2399 124.398 13.2398C122.668 13.2398 121.368 14.5336 121.368 16.3688C121.368 18.2039 122.665 19.4977 124.398 19.4977C126.119 19.4976 127.196 18.1132 127.211 18.0942L128.834 19.7121V19.7177C128.834 19.7177 127.449 21.877 124.395 21.877C121.342 21.877 118.875 19.3935 118.875 16.3716C118.875 13.3497 121.365 10.8661 124.395 10.8661Z" fill="#170245"/><path fill-rule="evenodd" clip-rule="evenodd" d="M134.677 10.8661C137.707 10.8661 139.872 13.2396 139.872 16.1543C139.872 16.7942 139.768 17.3273 139.765 17.3412H131.864C132.125 18.5279 133.162 19.608 134.895 19.608C136.729 19.6079 137.811 18.2994 137.817 18.2911L139.225 20.0391L139.222 20.0419C139.222 20.0419 137.814 21.8769 134.784 21.877C131.754 21.877 129.156 19.3935 129.156 16.3716C129.156 13.3497 131.646 10.8661 134.677 10.8661ZM134.569 13.2427C133.054 13.2427 132.189 14.1055 131.864 15.2923H137.167C136.842 14.1055 135.977 13.2427 134.569 13.2427Z" fill="#170245"/><path d="M118.66 13.564C118.66 13.564 118.334 13.4571 117.795 13.4571C116.279 13.4572 115.09 14.6441 115.09 16.4791V21.6598H112.599V11.0834H115.09V12.5944H115.197C115.206 12.5801 116.288 10.8663 118.227 10.8661H118.66V13.564Z" fill="#170245"/><path d="M77.4246 10.8661C79.5899 10.8661 81.1054 12.5277 81.1055 15.1819V21.657H78.615V15.506C78.6149 14.1024 77.8575 13.3468 76.7749 13.3467C75.3672 13.3467 74.395 14.3194 74.3949 15.8302V21.657H71.9044V15.3759C71.9044 14.1024 71.1463 13.3467 70.0636 13.3467C68.6561 13.3468 67.6836 14.3195 67.6835 15.8302V21.657H65.1931V11.0805L65.1959 11.0834H67.6863V12.5944H67.7939C67.7939 12.5944 68.5515 10.8662 70.7168 10.8661C72.9806 10.8661 73.848 12.6869 73.8549 12.7013H73.9624C73.9777 12.6756 75.0615 10.8663 77.4246 10.8661Z" fill="#170245"/><path d="M95.175 10.8661C97.3402 10.8662 98.8551 12.5278 98.8552 15.1819V21.657H96.3647V15.506C96.3646 14.1023 95.6072 13.3468 94.5246 13.3467C93.1169 13.3467 92.1447 14.3194 92.1445 15.8302V21.657H89.6541V15.3759C89.654 14.1024 88.896 13.3467 87.8133 13.3467C86.4058 13.3469 85.4333 14.3195 85.4332 15.8302V21.657H82.9427V11.0805L82.9463 11.0834H85.436V12.5944H85.5436C85.5436 12.5944 86.3013 10.8662 88.4665 10.8661C90.7286 10.8661 91.5965 12.6843 91.6045 12.7013H91.7121C91.7262 12.6775 92.8105 10.8661 95.175 10.8661Z" fill="#170245"/><path d="M141.64 11.5664H141.025V13.3207H140.682V11.5664H140.07V11.2458H141.64V11.5664Z" fill="#170245"/><path d="M142.961 12.3539L143.658 11.2458H144V13.3207H143.658V11.8385L142.981 12.9185H142.94L142.264 11.8385V13.3207H141.922V11.2458H142.264L142.961 12.3539Z" fill="#170245"/></svg>`,
+commerceMark: `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M27.3895 17.4164H27.3923C25.854 23.3213 20.4637 27.6954 14.0984 27.765C12.4381 25.4292 11.2045 22.5141 10.5427 19.2607C11.5324 19.9148 12.7079 20.314 13.9472 20.314C16.7366 20.314 19.1402 18.4613 19.8745 15.7549L27.3895 17.4164Z" fill="#6058FF"/><path d="M6.21773 2.33297C7.90703 5.58065 8.91422 9.56386 8.91422 13.8825C8.91419 18.201 7.90694 22.1837 6.21773 25.4313C2.47338 22.9449 7.07144e-05 18.7077 0 13.8825C0 9.05726 2.47333 4.8194 6.21773 2.33297Z" fill="#6058FF"/><path d="M14.0948 0C20.4603 0.0694692 25.8511 4.44302 27.3895 10.3479L19.8745 12.0094H19.8717C19.1373 9.30306 16.7337 7.45039 13.9444 7.45031C12.7049 7.45031 11.5289 7.85302 10.5391 8.5043C11.2009 5.25087 12.4346 2.33589 14.0948 0Z" fill="#6058FF"/></svg>`,
+bcLogo: `<svg width="111" height="25" viewBox="0 0 111 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M74.061 21.0788V14.2182L71.3185 21.137C71.307 21.166 71.279 21.1851 71.2478 21.1851H70.6744C70.6432 21.1851 70.6152 21.1662 70.6037 21.1372L67.8474 14.2182V21.0788C67.8474 21.1374 67.7999 21.1851 67.7413 21.1851H66.3699C66.3111 21.1851 66.2635 21.1374 66.2635 21.0788V12.2683C66.2635 12.2096 66.3111 12.162 66.3699 12.162H68.3519C68.4398 12.162 68.5186 12.2156 68.5512 12.2973L70.9612 18.4888L73.3577 12.2975C73.3899 12.2156 73.4691 12.162 73.5573 12.162H75.5388C75.5974 12.162 75.6449 12.2096 75.6449 12.2683V21.0788C75.6449 21.1374 75.5974 21.1851 75.5388 21.1851H74.1674C74.1086 21.1851 74.061 21.1374 74.061 21.0788ZM94.4918 16.6424C94.4918 13.856 96.4894 11.9755 99.062 11.9755C100.737 11.9755 101.814 12.8306 102.464 13.853C102.512 13.9285 102.484 14.026 102.406 14.0685L101.378 14.6278C101.311 14.6644 101.226 14.6395 101.185 14.5745C100.747 13.879 99.9392 13.3825 99.062 13.3825C97.3383 13.3825 96.0587 14.7352 96.0587 16.6424C96.0587 18.5231 97.3383 19.903 99.062 19.903C99.9398 19.903 100.748 19.3933 101.186 18.7073C101.226 18.6443 101.31 18.6188 101.377 18.6535L102.412 19.19C102.494 19.2326 102.522 19.3315 102.472 19.4087C101.8 20.4319 100.735 21.3099 99.062 21.3099C96.4894 21.3099 94.4918 19.4161 94.4918 16.6424ZM104.029 21.0259V12.3212C104.029 12.2333 104.1 12.162 104.188 12.162H110.056C110.144 12.162 110.215 12.2333 110.215 12.3212V13.3961C110.215 13.4839 110.144 13.5552 110.056 13.5552H105.772C105.684 13.5552 105.613 13.6265 105.613 13.7144V15.7227C105.613 15.8108 105.684 15.8821 105.772 15.8821H109.962C110.049 15.8821 110.121 15.9534 110.121 16.0412V17.1161C110.121 17.204 110.049 17.2753 109.962 17.2753H105.772C105.684 17.2753 105.613 17.3466 105.613 17.4344V19.6327C105.613 19.7206 105.684 19.7919 105.772 19.7919H110.056C110.144 19.7919 110.215 19.8632 110.215 19.951V21.0259C110.215 21.1138 110.144 21.1851 110.056 21.1851H104.188C104.1 21.1851 104.029 21.1138 104.029 21.0259ZM91.7074 14.9758C91.7074 14.1101 91.0574 13.5552 90.1644 13.5552H88.1466C88.0573 13.5552 87.9849 13.6277 87.9849 13.7169V16.2616C87.9849 16.3508 88.0573 16.4232 88.1466 16.4232H90.1644C91.0574 16.4232 91.7074 15.855 91.7074 14.9758ZM91.5118 21.1057L89.6156 17.896C89.5867 17.8465 89.5337 17.8164 89.4765 17.8164H88.1466C88.0573 17.8164 87.9849 17.8888 87.9849 17.9781V21.0234C87.9849 21.1126 87.9124 21.1851 87.823 21.1851H86.5625C86.4734 21.1851 86.4008 21.1126 86.4008 21.0234V12.3237C86.4008 12.2345 86.4734 12.162 86.5625 12.162H90.3674C92.1543 12.162 93.332 13.3117 93.332 14.9893C93.332 16.4745 92.4179 17.3392 91.4073 17.5938C91.298 17.6214 91.242 17.7403 91.3019 17.8357C91.6794 18.4389 92.8273 20.2711 93.2454 20.9385C93.3129 21.0462 93.2348 21.1851 93.1076 21.1851H91.651C91.5938 21.1851 91.5407 21.1549 91.5118 21.1057ZM77.9631 21.0218V12.3253C77.9631 12.2349 78.0361 12.162 78.1264 12.162H83.9866C84.0766 12.162 84.1499 12.2349 84.1499 12.3253V13.3919C84.1499 13.4821 84.0766 13.5552 83.9866 13.5552H79.7105C79.6203 13.5552 79.5472 13.6284 79.5472 13.7185V15.7188C79.5472 15.809 79.6203 15.8821 79.7105 15.8821H83.8918C83.9823 15.8821 84.0553 15.9552 84.0553 16.0451V17.112C84.0553 17.2024 83.9823 17.2753 83.8918 17.2753H79.7105C79.6203 17.2753 79.5472 17.3484 79.5472 17.4386V19.6286C79.5472 19.7187 79.6203 19.7919 79.7105 19.7919H83.9866C84.0766 19.7919 84.1499 19.865 84.1499 19.9549V21.0218C84.1499 21.1122 84.0766 21.1851 83.9866 21.1851H78.1264C78.0361 21.1851 77.9631 21.1122 77.9631 21.0218ZM62.3663 21.0788V14.2182L59.6238 21.137C59.6123 21.166 59.5843 21.1851 59.553 21.1851H58.9797C58.9487 21.1851 58.9207 21.1662 58.9092 21.1372L56.1529 14.2182V21.0788C56.1529 21.1374 56.1054 21.1851 56.0466 21.1851H54.6751C54.6165 21.1851 54.5688 21.1374 54.5688 21.0788V12.2683C54.5688 12.2096 54.6165 12.162 54.6751 12.162H56.6571C56.7451 12.162 56.8241 12.2156 56.8564 12.2973L59.2665 18.4888L61.663 12.2975C61.6953 12.2156 61.7743 12.162 61.8625 12.162H63.8441C63.9029 12.162 63.9504 12.2096 63.9504 12.2683V21.0788C63.9504 21.1374 63.9029 21.1851 63.8441 21.1851H62.4726C62.414 21.1851 62.3663 21.1374 62.3663 21.0788ZM51.4322 16.6801C51.4322 14.8134 50.2949 13.42 48.5437 13.42C46.7791 13.42 45.6549 14.8134 45.6549 16.6801C45.6549 18.5337 46.7791 19.9404 48.5437 19.9404C50.2949 19.9404 51.4322 18.5337 51.4322 16.6801ZM44.0864 16.6801C44.0864 14.4353 45.3681 12.6891 47.3095 12.1708C50.5907 11.295 53.6019 14.3673 52.8884 17.7957C52.4501 19.9007 50.7698 21.3474 48.5437 21.3474C45.9295 21.3474 44.0864 19.3724 44.0864 16.6801ZM35.2257 16.6801C35.2257 13.8935 37.2234 12.013 39.796 12.013C41.471 12.013 42.5477 12.8683 43.198 13.8908C43.2457 13.966 43.2184 14.0635 43.1399 14.106L42.1124 14.6653C42.0451 14.7019 41.9599 14.677 41.919 14.612C41.4807 13.9165 40.6734 13.42 39.796 13.42C38.0725 13.42 36.7926 14.7727 36.7926 16.6801C36.7926 18.5606 38.0725 19.9404 39.796 19.9404C40.674 19.9404 41.4818 19.431 41.9197 18.745C41.9601 18.6818 42.0444 18.6563 42.111 18.691L43.1465 19.2275C43.2285 19.2701 43.2565 19.369 43.2058 19.4462C42.5337 20.4694 41.4692 21.3474 39.796 21.3474C37.2234 21.3474 35.2257 19.4536 35.2257 16.6801ZM32.6086 14.8205L33.8196 14.1584V16.2004H30.0378C29.9324 16.2004 29.847 16.2857 29.847 16.3908V17.6872C29.847 17.7925 29.9324 17.8778 30.0378 17.8778H32.0867C32.1657 17.8778 32.2297 17.9417 32.2297 18.0208V18.8897C32.2297 18.9343 32.2123 18.9768 32.1783 19.0056C31.7976 19.3294 31.0842 19.6502 30.3212 19.6502C28.6695 19.6502 27.4783 18.3923 27.4783 16.6872C27.4783 14.9831 28.6695 13.7247 30.3212 13.7247C31.1994 13.7247 31.9266 14.1895 32.3622 14.7637C32.4187 14.8378 32.5268 14.8649 32.6086 14.8205ZM14.3613 19.3227V17.6235C14.3613 17.5248 14.4412 17.445 14.5399 17.445H16.8521C17.5968 17.445 18.0027 17.9052 18.0027 18.473C18.0027 19.1224 17.5695 19.5012 16.8521 19.5012H14.5399C14.4375 19.5012 14.3613 19.4212 14.3613 19.3227ZM14.3613 15.5755V13.9515C14.3613 13.9011 14.4024 13.8602 14.4527 13.8602H16.7709C17.4207 13.8602 17.8269 14.2523 17.8269 14.8072C17.8269 15.3886 17.4207 15.754 16.7709 15.754H14.5399C14.4412 15.754 14.3613 15.6742 14.3613 15.5755ZM23.7266 21.0287C23.7266 21.1191 23.6531 21.1924 23.5627 21.1924H21.968C21.8775 21.1924 21.8043 21.1191 21.8043 21.0287V12.3329C21.8043 12.2425 21.8775 12.1692 21.968 12.1692H23.5627C23.6531 12.1692 23.7266 12.2425 23.7266 12.3329V21.0287ZM30.3212 12.0204C31.9983 12.0204 33.1181 12.7839 33.8196 13.7132V0.320477C33.8196 0.0587668 33.5222 -0.0923258 33.3107 0.0622164L16.7513 12.1692H17.1904C18.91 12.1692 19.7896 13.2648 19.7896 14.4687C19.7896 15.4038 19.3017 16.0948 18.6461 16.4014C18.5357 16.4531 18.54 16.6093 18.6526 16.6557C19.4169 16.9699 19.9657 17.7883 19.9657 18.7437C19.9657 20.1102 19.0723 21.1924 17.3396 21.1924H12.6176C12.5191 21.1924 12.4389 21.1124 12.4389 21.014V15.321L0.113643 24.3293C-0.101048 24.5043 0.00756058 24.8373 0.279655 24.8373H33.5385C33.6937 24.8373 33.8196 24.7115 33.8196 24.556V19.9984C32.9307 20.8316 31.7599 21.3548 30.3212 21.3548C27.6677 21.3548 25.5018 19.5286 25.5018 16.6872C25.5018 13.833 27.6677 12.0204 30.3212 12.0204Z" fill="#121118"/></svg>`,
+fdxLogo: `<svg width="119" height="20" viewBox="0 0 119 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_44_4561)"><path d="M8.85254 0.473634C9.4834 -0.157227 10.5068 -0.157227 11.1377 0.473634L18.8477 8.18359C19.4783 8.8144 19.4783 9.83694 18.8477 10.4678L9.99512 19.3203L6.95117 16.2764L12.4072 10.8203C12.9188 10.3088 13.1745 10.0527 13.2705 9.75781C13.3548 9.49831 13.3548 9.21849 13.2705 8.95899C13.1746 8.66397 12.9188 8.40808 12.4072 7.89649L6.91895 2.40723L8.85254 0.473634ZM30.9707 6.63574C31.7678 6.63585 32.4302 6.80102 32.9561 7.13184C33.4818 7.46323 33.9038 7.88495 34.2217 8.39649C34.5394 8.90802 34.7589 9.46606 34.8799 10.0703C35.0015 10.6746 35.0508 11.25 35.0273 11.7959H28.3164C28.3047 12.1911 28.352 12.5664 28.4561 12.9209C28.5601 13.2752 28.7277 13.5895 28.959 13.8623C29.1899 14.1349 29.4847 14.3533 29.8428 14.5156C30.2006 14.6786 30.6233 14.7597 31.1084 14.7598C31.7324 14.7597 32.2447 14.6148 32.6436 14.3242C33.0425 14.0335 33.3051 13.5911 33.4326 12.998H34.8896C34.6928 14.0089 34.2593 14.7711 33.5889 15.2822H33.5898C32.9194 15.7939 32.0748 16.0497 31.0576 16.0498C30.3408 16.0498 29.7192 15.9334 29.1934 15.7012C28.6673 15.469 28.2246 15.1428 27.8662 14.7246C27.508 14.3065 27.2397 13.8066 27.0605 13.2256C26.8813 12.6448 26.7799 12.0111 26.7568 11.3252C26.7568 10.6399 26.8604 10.0119 27.0684 9.44238C27.2764 8.87286 27.5683 8.37832 27.9443 7.95996C28.3197 7.54185 28.7648 7.21661 29.2793 6.98438C29.7934 6.75226 30.3584 6.63574 30.9707 6.63574ZM40.0215 6.63574C40.8187 6.63579 41.4809 6.80106 42.0068 7.13184C42.5327 7.46324 42.9547 7.88494 43.2725 8.39649C43.5904 8.90807 43.8106 9.46599 43.9316 10.0703C44.0532 10.6746 44.1026 11.25 44.0791 11.7959H37.3682C37.3565 12.1911 37.4028 12.5664 37.5068 12.9209C37.6109 13.2753 37.7783 13.5894 38.0098 13.8623C38.2408 14.1351 38.5362 14.3532 38.8945 14.5156C39.2523 14.6786 39.675 14.7598 40.1602 14.7598C40.7841 14.7597 41.2964 14.6149 41.6953 14.3242C42.0943 14.0335 42.3559 13.5911 42.4834 12.998H43.9404C43.7436 14.0088 43.3109 14.7711 42.6406 15.2822L42.3809 15.4629C41.7564 15.8543 40.999 16.0497 40.1094 16.0498C39.3928 16.0498 38.771 15.9332 38.2451 15.7012C37.7192 15.469 37.2764 15.1428 36.918 14.7246C36.5596 14.3064 36.2905 13.8068 36.1113 13.2256C35.9321 12.6448 35.8307 12.0111 35.8076 11.3252C35.8076 10.6399 35.9121 10.0119 36.1201 9.44238C36.3282 8.87286 36.62 8.37832 36.9961 7.95996C37.3715 7.54185 37.8165 7.21658 38.3311 6.98438C38.8452 6.75227 39.4092 6.63576 40.0215 6.63574ZM53.3564 15.8574H51.8828V14.6377H51.8486C51.6059 15.1375 51.2241 15.4983 50.7041 15.7188C50.1841 15.939 49.6113 16.0498 48.9873 16.0498C48.2943 16.0498 47.6899 15.922 47.1758 15.667C46.6612 15.4117 46.2323 15.0678 45.8916 14.6377C45.5508 14.2077 45.294 13.7079 45.1201 13.1387C44.9468 12.5691 44.8594 11.9645 44.8594 11.3252C44.8594 10.6859 44.9438 10.0813 45.1113 9.51172C45.2789 8.94221 45.5332 8.44565 45.874 8.02149C46.2148 7.59733 46.6426 7.26066 47.1572 7.01074C47.6713 6.76091 48.27 6.63576 48.9521 6.63574C49.183 6.63577 49.4322 6.65898 49.6982 6.70508C49.9637 6.75175 50.23 6.83004 50.4961 6.94043C50.7614 7.05092 51.0133 7.1969 51.25 7.37695C51.4865 7.55702 51.6862 7.78054 51.8477 8.04785H51.8828V3.40918H53.3564V15.8574ZM59.2354 6.63477C59.9401 6.63482 60.5787 6.75712 61.1162 7.00098C61.6539 7.24502 62.1075 7.57978 62.4775 8.00391C62.8473 8.4281 63.1256 8.92757 63.3105 9.50293C63.4947 10.0783 63.5879 10.698 63.5879 11.3604C63.5878 12.0225 63.4947 12.6387 63.3105 13.208C63.1255 13.7776 62.8474 14.274 62.4775 14.6982C62.1074 15.1223 61.6539 15.4542 61.1162 15.6924C60.5787 15.9304 59.9514 16.0498 59.2354 16.0498C58.5191 16.0498 57.9058 15.9305 57.3623 15.6924C56.8188 15.4543 56.3618 15.1223 55.9922 14.6982C55.6221 14.2741 55.3447 13.7775 55.1602 13.208C54.9751 12.6387 54.8829 12.0225 54.8828 11.3604C54.8828 10.698 54.975 10.0784 55.1602 9.50293C55.3447 8.92766 55.6227 8.42861 55.9922 8.00391C56.3619 7.57976 56.8188 7.24501 57.3623 7.00098C57.9052 6.75706 58.5303 6.63477 59.2354 6.63477ZM78.3105 6.63477C79.0149 6.6348 79.6543 6.75707 80.1914 7.00098C80.7292 7.24502 81.183 7.57978 81.5527 8.00391C81.9223 8.42803 82.1999 8.9277 82.3848 9.50293C82.5696 10.0783 82.6631 10.698 82.6631 11.3604C82.663 12.0225 82.5696 12.6387 82.3848 13.208C82.1999 13.7775 81.9224 14.274 81.5527 14.6982C81.183 15.1224 80.7292 15.4542 80.1914 15.6924C79.6543 15.9305 79.0262 16.0498 78.3105 16.0498C77.5941 16.0498 76.981 15.9305 76.4375 15.6924C75.8936 15.4543 75.4371 15.1223 75.0674 14.6982C74.6972 14.2741 74.4195 13.7774 74.2354 13.208C74.0498 12.6387 73.9581 12.0225 73.958 11.3604C73.958 10.698 74.0497 10.0784 74.2354 9.50293C74.4195 8.92766 74.6978 8.42861 75.0674 8.00391C75.4371 7.57978 75.8935 7.24501 76.4375 7.00098C76.9803 6.75704 77.6053 6.63478 78.3105 6.63477ZM106.003 6.63477C106.511 6.63479 106.988 6.69571 107.434 6.81738C107.878 6.93966 108.272 7.12862 108.613 7.38379C108.954 7.63958 109.235 7.96231 109.454 8.35156C109.673 8.74079 109.812 9.20327 109.87 9.73731H108.344C108.228 9.16795 107.986 8.72636 107.616 8.41211L107.615 8.41309C107.245 8.09958 106.748 7.94247 106.124 7.94238C105.593 7.94238 105.147 8.04144 104.789 8.23926C104.431 8.43708 104.145 8.69808 103.931 9.02344C103.717 9.34898 103.564 9.72423 103.472 10.1484C103.379 10.5726 103.333 11.0117 103.333 11.4648C103.333 11.883 103.382 12.2901 103.479 12.6846C103.578 13.0799 103.731 13.4315 103.939 13.7393C104.147 14.0475 104.42 14.2944 104.755 14.4805C105.09 14.6664 105.489 14.7598 105.951 14.7598C106.679 14.7596 107.249 14.5678 107.659 14.1846C108.069 13.8011 108.32 13.2596 108.413 12.5625H109.922C109.76 13.6779 109.346 14.5396 108.682 15.1436C108.017 15.7476 107.113 16.0497 105.969 16.0498C105.287 16.0498 104.682 15.9385 104.156 15.7178C103.631 15.4974 103.191 15.1828 102.838 14.7764C102.486 14.3699 102.22 13.8847 102.041 13.3213C101.862 12.7578 101.772 12.1388 101.772 11.4648C101.772 10.7908 101.859 10.1604 102.032 9.57324C102.206 8.98652 102.469 8.47413 102.821 8.03809C103.174 7.60241 103.616 7.25962 104.147 7.00977C104.679 6.75997 105.298 6.63481 106.003 6.63477ZM114.274 6.63477C114.783 6.63479 115.252 6.67828 115.679 6.76563C116.106 6.85303 116.486 7.00384 116.814 7.21875C117.144 7.43382 117.407 7.72511 117.604 8.09082C117.8 8.45703 117.916 8.91271 117.95 9.45899H116.477C116.453 9.16901 116.378 8.92672 116.251 8.73535C116.124 8.54364 115.962 8.38919 115.766 8.27344C115.569 8.15781 115.352 8.07346 115.115 8.02149C114.879 7.96899 114.638 7.94338 114.396 7.94336C114.176 7.94338 113.953 7.9603 113.729 7.99512C113.503 8.02996 113.298 8.09197 113.113 8.17871C112.928 8.26612 112.777 8.38206 112.662 8.52734C112.546 8.67263 112.488 8.86164 112.488 9.09375C112.488 9.34935 112.579 9.56215 112.758 9.73047C112.937 9.89863 113.165 10.0381 113.442 10.1484C113.72 10.2588 114.032 10.3512 114.379 10.4268C114.726 10.5024 115.072 10.5821 115.419 10.6631C115.788 10.7446 116.15 10.8426 116.503 10.959C116.855 11.0753 117.167 11.2296 117.438 11.4209C117.71 11.6128 117.93 11.8545 118.098 12.1445C118.265 12.4352 118.35 12.7961 118.35 13.2256C118.35 13.7719 118.236 14.2247 118.011 14.585C117.785 14.9452 117.491 15.2366 117.127 15.457C116.763 15.678 116.352 15.8321 115.896 15.9189C115.439 16.0059 114.985 16.0498 114.534 16.0498C114.037 16.0498 113.563 15.9972 113.112 15.8926C112.661 15.788 112.262 15.616 111.915 15.3779C111.568 15.1399 111.291 14.8258 111.083 14.4365C110.875 14.0472 110.759 13.5732 110.736 13.0156H112.211C112.222 13.3411 112.297 13.6169 112.437 13.8438L112.549 14.0059C112.669 14.1582 112.814 14.2848 112.982 14.3848C113.208 14.5182 113.463 14.6141 113.745 14.6719C114.028 14.7303 114.321 14.7597 114.621 14.7598C114.852 14.7597 115.095 14.7419 115.35 14.707C115.603 14.6721 115.838 14.6079 116.052 14.5146C116.266 14.4218 116.442 14.2856 116.581 14.1055C116.72 13.9253 116.789 13.6956 116.789 13.417C116.789 13.0336 116.645 12.7422 116.355 12.5449C116.066 12.3476 115.705 12.1877 115.271 12.0654C114.838 11.9432 114.367 11.8336 113.858 11.7344C113.349 11.6357 112.878 11.4956 112.445 11.3154C112.012 11.1353 111.65 10.883 111.361 10.5576C111.072 10.2327 110.928 9.77854 110.928 9.19727C110.928 8.7442 111.029 8.35477 111.231 8.0293C111.433 7.70447 111.694 7.43951 112.012 7.23633C112.33 7.0331 112.689 6.88186 113.087 6.7832C113.486 6.68465 113.882 6.63479 114.274 6.63477ZM25.4561 3.27051C25.5946 3.27053 25.7545 3.28262 25.9336 3.30567C26.1125 3.32926 26.2717 3.3641 26.4102 3.41016V4.7002C26.2828 4.65412 26.1439 4.6222 25.9941 4.60449C25.8439 4.58682 25.705 4.57815 25.5781 4.57813C25.22 4.57813 24.9424 4.6479 24.7461 4.78711C24.5493 4.92652 24.4512 5.19429 24.4512 5.58887V6.84473H26.1855V8.15234H24.4512V15.8584H22.9766V8.15234H21.4688L21.4678 6.84375H22.9766V5.50195C22.9766 4.76992 23.187 4.21447 23.6094 3.83692C24.0313 3.45947 24.647 3.27055 25.4561 3.27051ZM69.3965 6.63477C69.9852 6.6348 70.4773 6.71653 70.8701 6.87891C71.2635 7.04188 71.5813 7.26812 71.8242 7.55859C72.0665 7.84921 72.2378 8.19615 72.3359 8.59668C72.4339 8.99763 72.4834 9.44198 72.4834 9.92969V15.8584H71.0088V9.75586C71.0088 9.19823 70.8469 8.75618 70.5234 8.43067C70.1999 8.10582 69.7543 7.94245 69.1885 7.94238C68.7379 7.94242 68.3475 8.01216 68.0186 8.15137C67.6893 8.29078 67.4136 8.48891 67.1943 8.74414C66.9746 8.99989 66.8095 9.29907 66.7002 9.6416C66.5903 9.98486 66.5352 10.3596 66.5352 10.7666V15.8574H65.0615V6.84375H66.4492V8.27344H66.4834C67.0956 7.18123 68.0674 6.63487 69.3965 6.63477ZM100.229 15.8574H98.7549V6.84375H100.229V15.8574ZM93.7256 6.63477C94.1765 6.63479 94.5842 6.68357 94.9482 6.78223C95.3129 6.8809 95.6249 7.03509 95.8848 7.24414C96.1445 7.45325 96.3474 7.72346 96.4922 8.05469C96.6365 8.38597 96.708 8.78428 96.708 9.24902V15.8564H95.2344V9.94629C95.2344 9.66763 95.2113 9.40594 95.165 9.16211C95.1189 8.91814 95.0316 8.70605 94.9043 8.52539C94.777 8.34534 94.6004 8.20321 94.375 8.09863C94.1497 7.99422 93.8581 7.94148 93.5 7.94141C92.7723 7.94141 92.1993 8.15111 91.7832 8.56934C91.3672 8.98764 91.1592 9.54547 91.1592 10.2432V15.8564H89.6855V9.94629C89.6855 9.65628 89.6592 9.38843 89.6074 9.14453C89.5556 8.90057 89.4646 8.68847 89.3379 8.50781C89.2107 8.32792 89.041 8.18853 88.8271 8.08984C88.6135 7.99121 88.3376 7.94144 88.0029 7.94141C87.5754 7.94146 87.2083 8.02906 86.9023 8.20313C86.5964 8.37735 86.3468 8.58704 86.1562 8.83106C85.9653 9.07484 85.827 9.32737 85.7402 9.58887C85.654 9.85055 85.6104 10.0689 85.6104 10.2432V15.8564H84.1367V6.84375H85.5234V8.16895H85.5586C86.2295 7.14659 87.1938 6.63483 88.4541 6.63477C89.0087 6.63481 89.512 6.75127 89.9629 6.9834C90.4132 7.21619 90.7314 7.61132 90.917 8.16895C91.2168 7.68093 91.6129 7.30278 92.1045 7.03516C92.596 6.7682 93.1366 6.63479 93.7256 6.63477ZM10.2822 8.62695C10.5379 8.88263 10.6658 9.01082 10.7139 9.1582C10.756 9.28796 10.756 9.42786 10.7139 9.55762C10.6659 9.70515 10.5381 9.833 10.2822 10.0889L5.52344 14.8486L3.84082 13.167L7.28418 9.72363C7.41205 9.59577 7.476 9.53173 7.5 9.45801C7.52104 9.39324 7.52096 9.32357 7.5 9.25879C7.47603 9.18502 7.41213 9.12013 7.28418 8.99219L3.80859 5.5166L5.49023 3.83496L10.2822 8.62695ZM49.1084 7.94238C48.6001 7.94238 48.1885 8.04139 47.8418 8.23926C47.4954 8.43709 47.2177 8.69811 47.0098 9.02344C46.8017 9.34898 46.6518 9.72135 46.5596 10.1396C46.4667 10.5579 46.4209 10.9879 46.4209 11.4297C46.4209 11.848 46.476 12.2581 46.5859 12.6592C46.6957 13.0602 46.8633 13.4179 47.0889 13.7314C47.3144 14.0448 47.6029 14.2945 47.9551 14.4805C48.3076 14.6665 48.7211 14.7598 49.1953 14.7598C49.6693 14.7597 50.1143 14.6608 50.4609 14.4629C50.8073 14.2657 51.0908 14.0074 51.3105 13.6875C51.5297 13.3681 51.689 13.0045 51.7871 12.5977C51.8852 12.1912 51.9346 11.7777 51.9346 11.3594C51.9346 10.9181 51.8823 10.4905 51.7783 10.0781C51.6743 9.66578 51.5091 9.30196 51.2842 8.98828C51.0585 8.67474 50.7664 8.42239 50.4082 8.23047C50.0499 8.03861 49.6165 7.94247 49.1084 7.94238ZM59.2354 7.94336C58.854 7.94336 58.4921 8.01873 58.1514 8.16992C57.8105 8.32112 57.5118 8.54193 57.2578 8.83203C57.0034 9.12266 56.8043 9.4801 56.6602 9.9043C56.5156 10.3285 56.4434 10.8144 56.4434 11.3604C56.4434 11.9061 56.5157 12.3919 56.6602 12.8154C56.8047 13.2394 57.0041 13.5943 57.2578 13.8789C57.5117 14.1636 57.8106 14.3825 58.1514 14.5332C58.4921 14.6843 58.8541 14.7598 59.2354 14.7598C59.6166 14.7597 59.9781 14.6844 60.3193 14.5332C60.6601 14.3825 60.9576 14.1636 61.2119 13.8789C61.4658 13.5942 61.6659 13.2395 61.8105 12.8154C61.955 12.3914 62.0263 11.906 62.0264 11.3604C62.0264 10.8145 61.9545 10.3284 61.8105 9.9043C61.6659 9.48013 61.4658 9.12265 61.2119 8.83203C60.9576 8.54211 60.6599 8.3211 60.3193 8.16992C59.9786 8.01925 59.6166 7.94342 59.2354 7.94336ZM78.3105 7.94336C77.9291 7.94337 77.5674 8.01881 77.2266 8.16992C76.8861 8.32112 76.5872 8.54193 76.333 8.83203C76.0787 9.12267 75.879 9.48009 75.7354 9.9043C75.5905 10.3285 75.5186 10.8144 75.5186 11.3604C75.5186 11.906 75.5905 12.3919 75.7354 12.8154C75.8797 13.2394 76.0795 13.5943 76.333 13.8789C76.5872 14.1636 76.8861 14.3825 77.2266 14.5332C77.5673 14.6842 77.9291 14.7598 78.3105 14.7598C78.6914 14.7597 79.0529 14.6843 79.3945 14.5332C79.7348 14.3825 80.0329 14.1636 80.2871 13.8789C80.5413 13.5942 80.7405 13.2395 80.8848 12.8154C81.0297 12.3913 81.1015 11.9061 81.1016 11.3604C81.1016 10.8145 81.029 10.3285 80.8848 9.9043C80.7405 9.48019 80.5412 9.12262 80.2871 8.83203C80.0329 8.54205 79.7347 8.32111 79.3945 8.16992C79.0528 8.01924 78.6914 7.9434 78.3105 7.94336ZM4.42871 8.99219C4.55666 9.12013 4.62056 9.18502 4.64453 9.25879C4.66548 9.32356 4.66557 9.39326 4.64453 9.45801C4.62055 9.53175 4.55661 9.59573 4.42871 9.72363L2.41309 11.7393L0 9.32617L2.38086 6.94531L4.42871 8.99219ZM14.4443 9.11817C14.3182 9.24434 14.3182 9.44903 14.4443 9.5752L16.2549 11.3857L17.8369 9.80371C18.0892 9.55141 18.0891 9.142 17.8369 8.88965L16.2549 7.30762L14.4443 9.11817ZM30.8848 7.94238C30.5147 7.94238 30.1586 8.00911 29.8525 8.14258C29.5464 8.27608 29.2825 8.45932 29.0635 8.69141C28.8436 8.92416 28.6709 9.19509 28.5439 9.50293C28.4164 9.81077 28.3419 10.1397 28.3184 10.4883H33.4688C33.4453 10.1398 33.3671 9.80782 33.2344 9.49414C33.1016 9.18053 32.9218 8.91041 32.6963 8.68359C32.4707 8.4568 32.2045 8.27667 31.8984 8.14258C31.592 8.00925 31.2546 7.94248 30.8848 7.94238ZM39.9355 7.94238C39.5657 7.9424 39.2104 8.00922 38.9043 8.14258C38.5983 8.27603 38.3344 8.45942 38.1152 8.69141C37.8955 8.92416 37.7216 9.19509 37.5947 9.50293C37.4673 9.81071 37.3926 10.1397 37.3691 10.4883H42.5195C42.496 10.1397 42.4179 9.80783 42.2852 9.49414C42.1524 9.18069 41.9734 8.91034 41.748 8.68359C41.5225 8.4568 41.2562 8.27667 40.9502 8.14258C40.6435 8.00909 40.3057 7.94242 39.9355 7.94238ZM100.229 5.22266H98.7549V3.40918H100.229V5.22266Z" fill="#274CFF"/></g><defs><clipPath id="clip0_44_4561"><rect width="118.608" height="19.3207" fill="white"/></clipPath></defs></svg>`,
+bcMark: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.7453 0.0439388L12.2879 7.48774H13.5041C15.4105 7.48774 16.5323 8.68174 16.5323 9.99373C16.5323 11.0205 15.8365 11.7773 15.1013 12.1075C14.9829 12.1605 14.9871 12.3223 15.1079 12.3699C15.9643 12.7071 16.5813 13.6043 16.5813 14.6525C16.5813 16.1417 15.5907 17.3213 13.6695 17.3213H8.38656C8.30356 17.3213 8.23636 17.2551 8.23636 17.1737V11.5319L0.0515739 19.7017C-0.0584258 19.8115 0.019174 19.9999 0.174574 19.9999H19.8659C19.9401 19.9999 19.9999 19.9397 19.9999 19.8655V0.149939C19.9999 0.0167388 19.8395 -0.0500612 19.7453 0.0439388ZM10.5178 15.4781H13.1291C13.9245 15.4781 14.4047 15.0653 14.4047 14.3577C14.4047 13.7389 13.9549 13.2371 13.1291 13.2371H10.5178C10.4348 13.2371 10.3676 13.3031 10.3676 13.3847V15.3305C10.3676 15.4121 10.4348 15.4781 10.5178 15.4781ZM10.3676 11.2469V9.47793C10.3676 9.39653 10.4348 9.33033 10.5178 9.33033H13.0391C13.7595 9.33033 14.2097 9.75773 14.2097 10.3623C14.2097 10.9961 13.7595 11.3943 13.0391 11.3943H10.5178C10.4348 11.3943 10.3676 11.3283 10.3676 11.2469Z" fill="#121118"/></svg>`,
+fdxMark: `<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_44_4447)"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.40487 0.502661C10.0751 -0.167554 11.1618 -0.167554 11.832 0.502661L20.0233 8.69396C20.6935 9.36417 20.6935 10.4508 20.0233 11.121L10.6184 20.5259L7.3844 17.2918L13.1812 11.4953C13.7249 10.9515 13.9967 10.6796 14.0986 10.3662C14.1882 10.0904 14.1882 9.79335 14.0986 9.51762C13.9967 9.20414 13.7248 8.93229 13.1812 8.3886L7.35005 2.55748L9.40487 0.502661ZM15.3452 9.6868C15.2111 9.82085 15.2111 10.0382 15.3452 10.1722L17.2687 12.0957L18.9494 10.4149C19.2175 10.1468 19.2175 9.71221 18.9494 9.44412L17.2687 7.76338L15.3452 9.6868Z" fill="black"/><path d="M10.924 9.16524C11.1958 9.4371 11.3317 9.57305 11.3827 9.72979C11.4275 9.86767 11.4275 10.0162 11.3827 10.1541C11.3317 10.3108 11.1958 10.4468 10.924 10.7186L5.86748 15.7749L4.08073 13.9882L7.73879 10.3302C7.8747 10.1943 7.94268 10.1263 7.96814 10.048C7.99053 9.97905 7.99053 9.90481 7.96814 9.83588C7.94268 9.75751 7.87471 9.68949 7.73879 9.55357L4.04638 5.86115L5.83313 4.0744L10.924 9.16524Z" fill="black"/><path d="M4.70495 9.55357C4.84088 9.68949 4.90884 9.75751 4.9343 9.83588C4.95669 9.90481 4.9567 9.97905 4.9343 10.048C4.90884 10.1263 4.84086 10.1943 4.70495 10.3302L2.56381 12.4713L0 9.90753L2.52946 7.37807L4.70495 9.55357Z" fill="black"/></g><defs><clipPath id="clip0_44_4447"><rect width="20.6453" height="20.6453" fill="white"/></clipPath></defs></svg>`,
+aiMark: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.5l1.9 5.6 5.6 1.9-5.6 1.9L10 16.5l-1.9-5.6L2.5 9l5.6-1.9L10 1.5z" fill="#000"/><path d="M16 13.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z" fill="#000"/></svg>`,
+arrowRight: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.6604 7.65023C13.8556 7.84547 13.8556 8.16199 13.6604 8.35726L8.52661 13.492L7.81958 12.785L12.1018 8.50179H2.18384V7.50179L12.0979 7.50179L7.81958 3.22347L8.52661 2.51644L13.6604 7.65023Z" fill="currentColor"/></svg>`,
+ext: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.7512 3.74811C12.0273 3.74811 12.251 3.97195 12.2511 4.24805L12.2518 11.509H11.2519L11.2512 5.45234L4.23814 12.4654L3.53104 11.7583L10.5413 4.748H4.49088V3.74811H11.7512Z" fill="black"/></svg>`,
+chev: `<svg width="7" height="5" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.353546 0.353554L3.35355 3.35355L6.35355 0.353554" stroke="#667085"/></svg>`,
+chevR: `<svg width="5" height="7" viewBox="0 0 5 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.5L3.5 3.5L0.5 6.5" stroke="#667085"/></svg>`
+};
+
+SVG.updown='<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 4.5L6 1.5l3 3M3 7.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+SVG.caret='<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+/* ---------- helpers ---------- */
+var esc = function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')};
+var slug = function(s){return s.toLowerCase().replace(/&/g,'and').replace(/™/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')};
+var BRAND = {
+  bc:{name:'BigCommerce',base:'/bigcommerce',logo:SVG.bcLogo,mark:SVG.bcMark,cls:'dark'},
+  fdx:{name:'Feedonomics',base:'/feedonomics',logo:SVG.fdxLogo,mark:SVG.fdxMark,cls:'dark'},
+  cm:{name:'Commerce',base:'',logo:SVG.commerceLogo,cls:'light'}
+};
+var PAGES = {};
+var reg = function(path,label,brand){ if(!PAGES[path]) PAGES[path]={label:label,brand:brand}; return path; };
+var L = function(brand,l,o){ o=o||{}; var path = o.p || (BRAND[brand].base + '/' + slug(l)); reg(path,l,brand); var it={l:l,p:path}; for(var k in o) it[k]=o[k]; return it; };
+var LB = function(brand,arr){ return arr.map(function(x){ return typeof x==='string' ? L(brand,x) : L(brand,x.l,x); }); };
+['bc','fdx'].forEach(function(b){ reg(BRAND[b].base+'/product-overview','Product Overview',b); reg(BRAND[b].base,BRAND[b].name,b); });
+reg('/','Commerce','cm');
+
+/* ---------- content data (from the Figma file) ---------- */
+var LOREM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+var SOL = [
+ {k:'bc',name:'BigCommerce',desc:'Open SaaS ecommerce platform for B2C & B2B brands.',bg:'#e4e7ec',home:'/bigcommerce',items:LB('bc',['Product overview','B2B Commerce','Headless Commerce','Payments','Agentic Commerce','Multi-Storefront','Checkout','Apps & Integrations'])},
+ {k:'fdx',name:'Feedonomics',desc:'Feed management for ads & agentic commerce',bg:'#cfdcff',home:'/feedonomics',items:LB('fdx',['Product overview','AI Data Enrichment','Agentic Commerce','Ecommerce Platform Sync','Advertising','Marketplaces','Order Orchestration','Integrations'])},
+];
+reg('/ai-labs','AI Labs','cm'); reg('/lorem-ipsum','Lorem Ipsum','cm');
+var AILABS = {k:'ai',name:'AI Labs',desc:'Experiments & early access in agentic commerce',bg:'#e3d9fb',home:'/ai-labs',items:[1,2,3,4,5,6,7,8].map(function(){ return {l:'Lorem Ipsum',p:'/lorem-ipsum'}; })};
+
+var GL = function(pre,l){ var p='/'+pre+'/'+slug(l); reg(p,l,'cm'); return {l:l,p:p}; };
+var IND = [
+ {title:'Industries',w:2,sub:[['Automotive','B2B & Wholesale','Health & Beauty','Home & Garden'].map(function(l){return GL('industries',l)}),['Sports & Outdoors','Fashion & Apparel','Food & Beverage','Manufacturing'].map(function(l){return GL('industries',l)})]},
+ {title:'Teams',w:1,items:['Marketing','Developers','Ecommerce','IT & Security'].map(function(l){return GL('teams',l)})}
+];
+var LRN = [
+ {title:'Browse by type',w:2,sub:[['All Resources','Articles','Blog','Guides'].map(function(l){return GL('learning',l)}),['Podcasts','Reports','Webinars','Events'].map(function(l){return GL('learning',l)})]},
+ {title:'Learning resources',w:2,sub:[['Commerce Growth','Agentic Commerce','Commerce Trends','Developer Blog'].map(function(l){return GL('learning',l)}),['B2B Ecommerce','Channels & Marketplaces','Holiday Commerce'].map(function(l){return GL('learning',l)})]},
+ {title:'Press',w:1,items:['Press Releases','News'].map(function(l){return GL('press',l)})}
+];
+['Customers','Company','Partners'].forEach(function(l){reg('/'+slug(l),l,'cm')});
+reg('/get-started','Get started','cm');
+
+var LEARN = function(b){ return {title:'Learn',w:1,items:LB(b,[{l:'All Resources',d:'Everything in one place.'},{l:'Blog',d:'News, insights and how-tos.'},{l:'Case Studies',d:'Brands growing with us.'},{l:'Guides & Reports',d:'Playbooks and research.'},{l:'Webinars',d:'Live and on-demand sessions.'}])}; };
+var MENU = {
+ 'bc-products':{brand:'bc',cols:[
+  {title:'Start & build',w:1,items:LB('bc',[{l:'Product Overview',d:'What you can do with BigCommerce.'},{l:'Agentic Commerce',d:'AI-powered solutions for growth.'},{l:'Design Your Store',d:'Build your store with or without code.'},{l:'Apps & Integrations',d:'Over 1,200 apps to help you grow.'},{l:'Migrate to BigCommerce',d:'Switch from Shopify, WooCommerce, Salesforce, Magento, and more.'}])},
+  {title:'Sell your way',w:1,items:LB('bc',['B2B Commerce','Channels & Advertising','Product Feed Management','Multi-Storefront','Headless Commerce','International Commerce','Data & Analytics'])},
+  {title:'Run your business',w:1,items:LB('bc',['Checkout','Payments','Inventory','Shipping','Promotions',{l:'Companion',d:'Your personal AI chat assistant to help you run your store more efficiently.',feature:true}])},
+  {title:'Developers',w:1,items:LB('bc',[{l:'Developer Docs',ext:true},{l:'MCP Toolkit',ext:true},{l:'Security & Compliance',ext:true},'Hosting & Performance','Staging Pro'])}]},
+ 'bc-resources':{brand:'bc',fixed:4,cols:[
+  LEARN('bc'),
+  {title:'Product info',w:1,items:LB('bc',[{l:'Basics of BigCommerce',d:'A quick video tour of the platform.'},{l:'Product Releases',d:'What’s new and what just shipped.'},{l:'Help Center',ext:true,d:'Docs, how-tos, and support.'},{l:'BigCommerce University',d:'Courses and certifications.'}])},
+  {title:'Community',w:1,items:LB('bc',['Customer Showcase',{l:'Community Q&A',ext:true,d:'Ask questions, share answers.'}])},
+  {title:'Build',w:1,items:LB('bc',[{l:'Developer Docs',ext:true},{l:'API Reference',ext:true},{l:'MCP Toolkit',ext:true},{l:'Apps Marketplace',ext:true},{l:'Partner Directory',ext:true}])}]},
+ 'fdx-products':{brand:'fdx',cols:[
+  {title:'Overview',w:276,items:LB('fdx',[{l:'Product Overview',d:'Explore our core product capabilities.'},{l:'How It Works',d:'See how we optimize and sync data.'}])},
+  {title:'Products',w:564,sub:[LB('fdx',['Advertising','Marketplaces','Order Orchestration']),LB('fdx',['AI Data Enrichment','Agentic Commerce','Ecommerce Platform Sync'])]},
+  {card:true,w:276,kicker:'Feedonomics Surface',headline:'Install on BigCommerce — free and ready in minutes.',body:'Cross-brand link: Surface lives under BigCommerce products.',link:L('fdx','Explore Surface')}]},
+ 'fdx-integrations':{brand:'fdx',cols:[
+  {title:'Overview',w:276,items:LB('fdx',['View All Integrations','Supported Channels','Supported Platforms'])},
+  {title:'Supported platforms',w:564,sub:[LB('fdx',['Shopify','Oracle NetSuite','Salesforce Commerce Cloud','WooCommerce']),LB('fdx',['BigCommerce','Oracle Commerce','Adobe Commerce / Magento','Custom'])]},
+  {card:true,w:276,kicker:'Integrations',headline:'Your stack, upgraded.',body:'Connect the dots so your systems move like one engine.',link:L('fdx','Get my plan')}]},
+ 'fdx-resources':{brand:'fdx',fixed:4,cols:[
+  LEARN('fdx'),
+  {title:'Get help',w:1,items:LB('fdx',[{l:'FeedSupport™',ext:true,d:'24/7 support from feed specialists.'},'Help Center','Contact'])},
+  {title:'Build',w:1,items:LB('fdx',['Developer Docs','API Reference','Supported Integrations'])}]},
+ 'company':{brand:'cm',single:true,cols:[{title:'Company',w:1,items:[{l:'Customers',p:'/customers',d:'Stories from brands growing with us.'},{l:'About us',p:'/company',d:'Who we are and what we stand for.'},{l:'Partners',p:'/partners',d:'Agency, technology and solution partners.'}]}]},
+ 'industries':{brand:'cm',cols:IND},
+ 'learning':{brand:'cm',cols:LRN}
+};
+
+var NAV = {
+ cm:[{l:'Solutions',m:'solutions'},{l:'Industries',m:'industries'},{l:'Learning',m:'learning'},{l:'Company',m:'company'}],
+ bc:[{l:'Products',m:'bc-products'},{l:'Services',p:'/bigcommerce/services'},{l:'Integrations',p:'/bigcommerce/integrations'},{l:'Pricing',p:'/bigcommerce/pricing'},{l:'Resources',m:'bc-resources'}],
+ fdx:[{l:'Products',m:'fdx-products'},{l:'Integrations',m:'fdx-integrations'},{l:'Services',p:'/feedonomics/services'},{l:'Pricing',p:'/feedonomics/pricing'},{l:'Resources',m:'fdx-resources'}],
+};
+Object.keys(NAV).forEach(function(b){ NAV[b].forEach(function(n){ if(n.p) reg(n.p,n.l,b); }); });
+/* these now live in the parent strip, not the main nav, so register their pages explicitly */
+reg('/customers','Customers','cm'); reg('/company','Company','cm'); reg('/partners','Partners','cm');
+
+/* hero style per nav section: center, split, split, left-below, text, overview (Figma template) */
+var HERO = {
+ 'bc-products':{'Start & build':'split','Sell your way':'split','Run your business':'split','Developers':'text'},
+ 'bc-resources':{'Product info':'left-below','Community':'split','Build':'text'},
+ 'fdx-products':{'Overview':'center','Products':'split'},
+ 'fdx-integrations':{'Overview':'center','Supported platforms':'split'},
+ 'fdx-resources':{'Learn':'left-below','Get help':'split','Build':'text'},
+ 'industries':{'Industries':'split','Teams':'split'},
+ 'learning':{'Learning resources':'left-below','Browse by type':'text','Press':'center'}
+};
+Object.keys(HERO).forEach(function(m){ MENU[m].cols.forEach(function(c){
+  var t = HERO[m][c.title]; if(!t) return;
+  (c.sub ? [].concat.apply([],c.sub) : (c.items||[])).forEach(function(it){ if(PAGES[it.p]) PAGES[it.p].type = t; });
+}); });
+var setType = function(p,t){ if(PAGES[p]) PAGES[p].type = t; };
+setType('/customers','split'); setType('/company','split'); setType('/partners','center');
+['bc','fdx'].forEach(function(b){ setType(BRAND[b].base+'/product-overview','overview'); });
+
+/* breadcrumb parents: Home > nav section > page */
+var SECTIONS = {
+ 'bc-products':['Products','/bigcommerce/products','bc'],'bc-resources':['Resources','/bigcommerce/resources','bc'],
+ 'fdx-products':['Products','/feedonomics/products','fdx'],'fdx-integrations':['Integrations','/feedonomics/integrations','fdx'],'fdx-resources':['Resources','/feedonomics/resources','fdx'],
+ 'industries':['Industries','/industries','cm'],'learning':['Learning','/learning','cm']
+};
+Object.keys(SECTIONS).forEach(function(id){
+  var sc = SECTIONS[id]; reg(sc[1],sc[0],sc[2]); PAGES[sc[1]].section = true;
+  MENU[id].cols.forEach(function(c){
+    var its = c.card ? [c.link] : (c.sub ? [].concat.apply([],c.sub) : c.items);
+    its.forEach(function(it){ var pg = PAGES[it.p]; if(pg && !pg.section && !pg.parent) pg.parent = {label:sc[0],path:sc[1]}; });
+  });
+});
+reg('/solutions','Solutions','cm'); PAGES['/solutions'].section = true;
+['/ai-labs','/lorem-ipsum'].forEach(function(p){ PAGES[p].parent = {label:'Solutions',path:'/solutions'}; });
+
+/* sub-brand CTAs and log in */
+var CTA = {
+ cm:{primary:{l:'Get started',p:'/get-started'},secondary:{l:'Contact sales',p:'/contact-sales'}},
+ bc:{login:'/bigcommerce/log-in',primary:{l:'Try for free',p:'/bigcommerce/try-for-free'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
+ fdx:{login:'/feedonomics/log-in',primary:{l:'Get a demo',p:'/feedonomics/get-a-demo'},secondary:{l:'See how it works',p:'/feedonomics/how-it-works'},noHeaderSecondary:true},
+};
+reg('/contact-sales','Contact Sales','cm');
+Object.keys(CTA).forEach(function(b){ if(b==='cm') return; reg(CTA[b].login,'Log In',b); reg(CTA[b].primary.p,CTA[b].primary.l,b); reg(CTA[b].secondary.p,CTA[b].secondary.l,b); });
+
+/* ---------- blog hub (dummy content) ---------- */
+var HB_TOPICS=['Agentic commerce','B2B ecommerce','Channels and marketplaces','Ecommerce insights','Product data and feeds','Headless and composable','Payments and checkout'];
+var HB_MAX=8; /* groups with more available options than this get See more */
+var HB_CH=['Google Shopping','Amazon','Meta','TikTok Shop','AI shopping agents','Walmart','eBay','Pinterest','Microsoft Advertising','Snapchat'];
+var HB_IN=['Fashion and apparel','Health and beauty','Home and garden','B2B and wholesale','Automotive','Sports and outdoors','Food and beverage','Consumer electronics','Pet supplies','Jewelry and accessories','Toys and games','Manufacturing'];
+var HB_SO=['B2B commerce','Checkout and payments','Feed management','Headless commerce'];
+var HB_GROUPS=[{g:'tp',label:'Topics',vals:HB_TOPICS,open:true},{g:'br',label:'Brand',vals:['BigCommerce','Feedonomics'],open:false},{g:'ch',label:'Channels',vals:HB_CH},{g:'in',label:'Industries',vals:HB_IN},{g:'so',label:'Solutions',vals:HB_SO}];
+var BN={cm:'Commerce',bc:'BigCommerce',fdx:'Feedonomics'};
+var HB_PRE={cm:'/learning',bc:'/bigcommerce',fdx:'/feedonomics'};
+/* brand, title, date, topic, channels, industry, solution (indexes, -1 = none), type (default Blog), minutes (guides, reports, webinars) */
+var HB_RAW=[
+ ['cm','What agentic commerce means for merchants in 2027','2026-10-15',0,[4],-1,-1],
+ ['cm','The holiday playbook: get your catalog ready before the rush','2026-10-08',3,[0,2],-1,2],
+ ['cm','Why the next decade of commerce is open and composable','2026-09-24',5,[],-1,3],
+ ['cm','A new home for Commerce: how our brands fit together','2026-09-10',3,[],-1,-1],
+ ['cm','Selling through AI shopping agents: a first look at what works','2026-08-27',0,[4],-1,2],
+ ['cm','Five ecommerce metrics worth tracking this quarter','2026-08-06',3,[],-1,-1],
+ ['cm','How B2B buyers shop in 2026','2026-07-16',1,[],3,0],
+ ['cm','Inside AI Labs: what we are testing in agentic commerce','2026-06-25',0,[4],-1,-1],
+ ['bc','Checkout is the new storefront: six patterns that lift conversion','2026-10-14',6,[],-1,1],
+ ['bc','Headless without the headache: a practical migration path','2026-10-02',5,[],-1,3],
+ ['bc','B2B Edition explained: quotes, price lists and company accounts','2026-09-19',1,[],3,0],
+ ['bc','How to prepare your store for AI shopping agents','2026-09-12',0,[4],-1,-1],
+ ['bc','Multi-storefront strategy for brands that sell in many markets','2026-08-31',3,[],-1,-1],
+ ['bc','Payments in 2026: cutting fees without hurting approval rates','2026-08-20',6,[],-1,1],
+ ['bc','Selling on Amazon and Google from one catalog','2026-08-05',2,[0,1],-1,-1],
+ ['bc','What home and garden merchants can learn from peak season','2026-07-23',3,[],2,-1],
+ ['bc','Migrating to BigCommerce: a checklist from merchants who did it','2026-07-09',3,[],-1,-1],
+ ['bc','The B2B buyer portal: what to build first','2026-06-24',1,[],3,0],
+ ['bc','Performance budgets for storefronts that stay fast','2026-06-11',5,[],-1,3],
+ ['bc','Fashion and apparel: product pages that reduce returns','2026-05-28',3,[],0,-1],
+ ['bc','Promotions that protect your margin','2026-05-14',3,[],1,-1],
+ ['bc','Meet the MCP Toolkit: connect AI agents to your store','2026-04-30',0,[4],-1,-1],
+ ['fdx','Marketplace growth in 2027: what retail leaders plan next','2026-10-15',2,[1,3],-1,2],
+ ['fdx','A feed audit checklist for the holiday quarter','2026-10-06',4,[0,2],-1,2],
+ ['fdx','Why product data quality decides who AI recommends','2026-09-23',0,[4],-1,2],
+ ['fdx','Keeping one catalog consistent across 30 channels','2026-09-08',2,[0,1,2],-1,2],
+ ['fdx','Shopping ads underperforming? Start with your product titles','2026-08-25',4,[0],-1,2],
+ ['fdx','How agencies scale feed management without growing headcount','2026-08-12',4,[],-1,2],
+ ['fdx','Enriching product data with AI: what to automate and what to review','2026-07-30',4,[4],-1,2],
+ ['fdx','TikTok Shop for catalog-heavy brands','2026-07-15',2,[3],0,-1],
+ ['fdx','Order orchestration basics for multichannel sellers','2026-06-30',2,[1],-1,-1],
+ ['fdx','Marketplace taxonomy mapping, explained','2026-06-16',4,[1,0],-1,2],
+ ['fdx','Meta catalog ads: the fields that matter most','2026-06-02',4,[2],0,2],
+ ['fdx','Syncing your ecommerce platform to your feed: what to watch for','2026-05-19',4,[],-1,2],
+ ['fdx','Beauty and personal care: attribute rules that win in search','2026-05-05',4,[0],1,2],
+ ['cm','The agentic commerce readiness guide','2026-09-30',0,[4],-1,-1,'Guide',12],
+ ['cm','State of ecommerce 2026: the annual benchmark report','2026-08-20',3,[],-1,-1,'Report',30],
+ ['cm','The B2B buyer experience report','2026-07-02',1,[],3,0,'Report',25],
+ ['cm','A guide to composable commerce for marketing leaders','2026-05-21',5,[],-1,3,'Guide',15],
+ ['bc','The complete guide to headless commerce','2026-09-05',5,[],-1,3,'Guide',20],
+ ['bc','B2B ecommerce benchmark report','2026-08-14',1,[],3,0,'Report',28],
+ ['bc','Checkout optimization playbook','2026-07-11',6,[],-1,1,'Guide',14],
+ ['bc','The merchant guide to switching platforms','2026-06-05',3,[],-1,-1,'Guide',18],
+ ['bc','Payments and fraud: a data report','2026-04-17',6,[],-1,1,'Report',22],
+ ['fdx','The product feed optimization handbook','2026-09-18',4,[0,2],-1,2,'Guide',20],
+ ['fdx','Fixing product data for B2B catalogs','2026-08-27',4,[],3,2,'Guide',10],
+ ['fdx','A practical guide to optimizing for AI search','2026-08-03',0,[4],-1,2,'Guide',10],
+ ['fdx','Marketplace performance benchmark report','2026-07-10',2,[1],-1,2,'Report',30],
+ ['fdx','The product feed quality benchmark','2026-06-12',4,[0,2],-1,2,'Report',12],
+ ['fdx','A channel strategy guide for catalog-heavy brands','2026-05-08',2,[0,1,2,3],-1,-1,'Guide',45],
+ ['cm','Agentic commerce explained: a live Q&A with our experts','2026-09-29',0,[4],-1,-1,'Webinar',48],
+ ['cm','Holiday readiness: a panel on peak season strategy','2026-09-15',3,[],-1,-1,'Webinar',52],
+ ['cm','Building commerce for AI shoppers','2026-07-30',0,[4],-1,-1,'Webinar',35],
+ ['bc','Checkout conversion workshop','2026-10-09',6,[],-1,1,'Webinar',40],
+ ['bc','B2B selling made simple: a live demo of company accounts','2026-09-02',1,[],3,0,'Webinar',45],
+ ['bc','Going headless: lessons from three merchants','2026-07-17',5,[],-1,3,'Webinar',50],
+ ['bc','Sell on more channels without more work','2026-05-29',2,[0,1],-1,-1,'Webinar',30],
+ ['fdx','Find the ad spend hiding in your catalog','2026-10-01',4,[0],-1,2,'Webinar',54],
+ ['fdx','Feed strategy for performance advertising','2026-09-14',4,[0,2],-1,2,'Webinar',46],
+ ['fdx','Getting AI-ready: feeds for the next wave of shopping','2026-08-26',0,[4],-1,2,'Webinar',36],
+ ['fdx','Mistakes to avoid when adding new sales channels','2026-07-24',2,[1,3],-1,-1,'Webinar',29],
+ ['fdx','A conversation about social selling','2026-06-26',2,[3],-1,-1,'Webinar',20],
+ ['fdx','Planning an omnichannel strategy','2026-05-27',3,[],-1,-1,'Webinar',56],
+];
+var HB_TYPES={
+ blog:{title:'Blog',h2:'Latest news and insights',types:['Blog'],crumb:'Blog',desc:'News, insights and how-tos from the Commerce family of brands.'},
+ guides:{title:'Guides and reports',h2:'In-depth guides and data reports',types:['Guide','Report'],crumb:'Guides and reports',desc:'Playbooks, benchmarks and research from the Commerce family of brands.'},
+ webinars:{title:'Webinars',h2:'Webinars and expert sessions',types:['Webinar'],crumb:'Webinars',desc:'Live and on-demand sessions with our experts and partners.'},
+ all:{title:'All resources',h2:'Latest resources',types:null,crumb:'All resources',desc:'Blogs, guides, reports and webinars from the Commerce family of brands.'}
+};
+var HB_KEY={Blog:'blog',Guide:'guides',Report:'guides',Webinar:'webinars'};
+var HB_HUBPATH=function(b,key){ if(b==='cm') return '/learning/'+key; return HB_PRE[b]+'/'+{blog:'blog',guides:'guides-and-reports',webinars:'webinars'}[key]; };
+var hbCount={};
+var POSTS=HB_RAW.map(function(r){
+  var b=r[0]; hbCount[b]=(hbCount[b]||0);
+  var type=r[7]||'Blog', key=HB_KEY[type];
+  var p={b:b,br:b==='cm'?'':BN[b],i:hbCount[b]++,t:r[1],d:r[2],tp:HB_TOPICS[r[3]],ch:r[4].map(function(i){return HB_CH[i];}),in:r[5]>-1?HB_IN[r[5]]:'',so:r[6]>-1?HB_SO[r[6]]:'',type:type,min:r[8]||0};
+  var hub=HB_HUBPATH(b,key);
+  p.path=hub+'/'+slug(p.t);
+  reg(p.path,p.t,b); PAGES[p.path].parent={label:HB_TYPES[key].crumb,path:hub};
+  return p;
+});
+/* dummy distribution so the longer Channels and Industries lists have content */
+POSTS.forEach(function(p,i){
+  if(!p.in && i%3===0) p.in=HB_IN[5+((i/3|0)%7)];
+  if(!p.ch.length && i%4===1) p.ch=[HB_CH[5+(i%5)]];
+});
+var HB_MAP={'/learning/blog':'blog','/learning/guides':'guides','/learning/reports':'guides','/learning/webinars':'webinars','/learning/all-resources':'all'};
+['/bigcommerce','/feedonomics'].forEach(function(pre){ HB_MAP[pre+'/all-resources']='all'; HB_MAP[pre+'/blog']='blog'; HB_MAP[pre+'/guides-and-reports']='guides'; HB_MAP[pre+'/webinars']='webinars'; });
+Object.keys(HB_MAP).forEach(function(p){ PAGES[p].hub=HB_MAP[p]; });
+var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var fmtDate=function(d){ var a=d.split('-'); return MONTHS[+a[1]-1]+' '+(+a[2])+', '+a[0]; };
+var CAL='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2.5" y="3.5" width="11" height="10" rx="1" stroke="currentColor"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3" stroke="currentColor"/></svg>';
+var XI='<svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.2"/></svg>';
+var BOOK='<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1.5 3c1.9-.5 4-.4 6 .8v9.2c-2-1.2-4.1-1.3-6-.8V3zm13 0c-1.9-.5-4-.4-6 .8v9.2c2-1.2 4.1-1.3 6-.8V3z"/></svg>';
+var PLAY='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="13" height="13" rx="2" fill="currentColor"/><path d="M6.5 5l4 3-4 3V5z" fill="#fff"/></svg>';
+
+function hbOpt(g,v){ return '<label class="hb-opt"><input type="checkbox" data-g="'+g+'" value="'+esc(v)+'"><span class="hb-ot">'+esc(v)+'</span><span class="hb-oc"></span></label>'; }
+var HB_TILES=[['blog','News, insights and how-tos.'],['guides','Playbooks, benchmarks and research.'],['webinars','Live and on-demand sessions.']];
+function hbMeta(p){ return p.type==='Blog'?CAL+'<span>'+fmtDate(p.d)+'</span>':p.type==='Webinar'?PLAY+'<span>'+p.min+' min watch</span>':BOOK+'<span>'+p.min+' min read</span>'; }
+function hbModules(brand){
+  var scope = brand==='cm' ? POSTS : POSTS.filter(function(p){ return p.b===brand; });
+  var tiles = HB_TILES.map(function(t){
+    var n = scope.filter(function(p){ return HB_TYPES[t[0]].types.indexOf(p.type)>-1; }).length;
+    return '<a class="hb-tile" href="'+href(HB_HUBPATH(brand,t[0]))+'"><div class="hb-th" role="img" aria-label="Image placeholder"></div><div class="hb-tile-b"><h3>'+HB_TYPES[t[0]].title+'</h3><p>'+t[1]+'</p><span class="hb-tile-c">'+n+' items</span></div></a>';
+  }).join('');
+  return '<section class="hb-mod"><div class="wrap"><h2 class="hb-mh">Browse by type</h2><div class="hb-tiles">'+tiles+'</div></div></section>';
+}
+function hubHTML(brand,key){
+  var cfg=HB_TYPES[key];
+  var grps = HB_GROUPS.map(function(G){ return '<details class="hb-grp" data-g="'+G.g+'"'+(G.open?' open':'')+'><summary><span>'+G.label+'</span><span class="hb-bd" data-bd="'+G.g+'" hidden></span>'+SVG.chev+'</summary><div class="hb-opts">'+G.vals.map(function(v){ return hbOpt(G.g,v); }).join('')+'<button type="button" class="hb-more" data-more="'+G.g+'" aria-expanded="false" hidden></button></div></details>'; }).join('');
+  var per = [12,24,48].map(function(n){ return '<option value="'+n+'"'+(n===12?' selected':'')+'>'+n+'</option>'; }).join('');
+  var ct = cfg.types ? '' : '<label class="hb-per"><span>Filter by content type</span><select id="hb-ct" class="hb-sel hb-sel-w"><option value="all" selected>All types</option><option value="blog">Blogs</option><option value="guides">Guides and reports</option><option value="webinars">Webinars</option></select></label>';
+  var hero='<section class="hb-top"><div class="wrap"><span class="eyebrow">'+BRAND[brand].name+'</span><h1>'+cfg.title+'</h1><p class="desc" style="max-width:592px">'+cfg.desc+'</p></div></section>';
+  var body=(key==='all'?hbModules(brand):'')
+   +'<section class="hb-sec"><div class="wrap"><div class="hb-box" id="hb">'
+   +'<div class="hb-head"><h2>'+cfg.h2+'</h2><div class="hb-ctl">'+ct+'<label class="hb-per"><span>Items per page</span><select id="hb-per" class="hb-sel">'+per+'</select></label></div></div>'
+   +'<div class="hb-layout"><aside class="hb-side"><div class="hb-f"><label for="hb-q" class="hb-lbl">Search</label><input id="hb-q" class="hb-in" type="search" placeholder="Search resources" autocomplete="off"></div><div class="hb-f"><div class="hb-fhr"><h3 class="hb-fh">Filters</h3><button type="button" class="hb-clear" data-clear="1" hidden>Clear all</button></div><div class="hb-grps">'+grps+'</div></div></aside><div class="hb-res" id="hb-res" tabindex="-1"></div></div>'
+   +'<div class="sr" id="hb-live" aria-live="polite"></div></div></div></section>';
+  return {hero:hero,body:body};
+}
+function initHub(brand,key){
+  var root=document.getElementById('hb'); if(!root) return;
+  var resEl=document.getElementById('hb-res'), qEl=document.getElementById('hb-q'), live=document.getElementById('hb-live');
+  var cfg=HB_TYPES[key];
+  var G4=['br','tp','ch','in','so'];
+  var st={q:'',qRaw:'',ctype:'all',more:{},f:{br:{},tp:{},ch:{},in:{},so:{}},per:12,page:1};
+  if(brand!=='cm') st.f.br[BN[brand]]=true; /* arriving from a brand nav pre-selects that brand */
+  var has=function(p,g){ var sel=st.f[g]; if(!Object.keys(sel).length) return true; var v=p[g]; return Array.isArray(v)?v.some(function(x){return sel[x];}):!!sel[v]; };
+  var ok=function(p,skip){
+    if(cfg.types && cfg.types.indexOf(p.type)<0) return false;
+    if(st.ctype!=='all' && HB_TYPES[st.ctype].types.indexOf(p.type)<0) return false;
+    if(st.q){ var hay=(p.type+' '+p.t+' '+p.tp+' '+p.ch.join(' ')+' '+p.in+' '+p.so+' '+BN[p.b]).toLowerCase(); if(hay.indexOf(st.q)<0) return false; }
+    for(var i=0;i<G4.length;i++){ if(G4[i]!==skip && !has(p,G4[i])) return false; }
+    return true;
+  };
+  var pgList=function(cur,n){
+    var out=[],i; if(n<=7){ for(i=1;i<=n;i++) out.push(i); return out; }
+    var s=Math.max(2,cur-1), e=Math.min(n-1,cur+1);
+    if(cur<=3){ s=2; e=4; } if(cur>=n-2){ s=n-3; e=n-1; }
+    out.push(1); if(s>2) out.push('…'); for(i=s;i<=e;i++) out.push(i); if(e<n-1) out.push('…'); out.push(n); return out;
+  };
+  var meta=function(p){ return p.type==='Blog'?CAL+'<span>'+fmtDate(p.d)+'</span>':p.type==='Webinar'?PLAY+'<span>'+p.min+' min watch</span>':BOOK+'<span>'+p.min+' min read</span>'; };
+  var card=function(p){
+    return '<a class="hb-card" href="'+href(p.path)+'"><div class="hb-th" role="img" aria-label="Image placeholder"></div><div class="hb-tags"><span class="hb-tag">'+p.type+'</span></div><h3 class="hb-t">'+esc(p.t)+'</h3><div class="hb-date">'+meta(p)+'</div></a>';
+  };
+  function renderResults(){
+    var list=POSTS.filter(function(p){ return ok(p,''); }).sort(function(a,b){ return a.d<b.d?1:-1; });
+    var total=list.length, pages=Math.max(1,Math.ceil(total/st.per)); if(st.page>pages) st.page=pages;
+    var slice=list.slice((st.page-1)*st.per, st.page*st.per);
+    var countTxt=total+' matching result'+(total===1?'':'s');
+    var body;
+    if(!total){
+      body='<div class="hb-empty"><h3>No posts match your filters</h3><p>Try removing a filter or searching for something else.</p><button type="button" class="hb-btn" data-clear="1">Clear all filters</button></div>';
+    } else {
+      body='<div class="hb-grid">'+slice.map(card).join('')+'</div>';
+      if(pages>1){
+        body+='<nav class="hb-pgn" aria-label="Pagination"><span class="hb-pl">Page '+st.page+' of '+pages+'</span>'
+          +(st.page>1?'<button type="button" data-pg="prev">Previous</button>':'')
+          +pgList(st.page,pages).map(function(n){ return n==='…'?'<span class="hb-el">…</span>':'<button type="button" data-pg="'+n+'"'+(n===st.page?' class="cur" aria-current="page"':'')+' aria-label="Page '+n+'">'+n+'</button>'; }).join('')
+          +(st.page<pages?'<button type="button" data-pg="next">Next</button>':'')+'</nav>';
+      }
+    }
+    resEl.innerHTML='<div class="hb-rh"><span class="hb-n">'+countTxt+'</span></div>'+body;
+    live.textContent=countTxt;
+  }
+  function update(){
+    root.querySelectorAll('.hb-grp').forEach(function(grp){
+      var g=grp.dataset.g, avail=0, cut=0;
+      grp.querySelectorAll('.hb-opt').forEach(function(l){
+        var i=l.querySelector('input'), v=i.value;
+        i.checked=!!st.f[g][v];
+        var c=POSTS.filter(function(p){ return ok(p,g)&&(Array.isArray(p[g])?p[g].indexOf(v)>-1:p[g]===v); }).length;
+        l.querySelector('.hb-oc').textContent=c;
+        var hide=!(c>0||i.checked); /* options with no results are hidden, selected ones always stay */
+        if(!hide){ avail++; if(avail>HB_MAX && !st.more[g] && !i.checked){ hide=true; cut++; } }
+        l.hidden=hide;
+      });
+      var mb=grp.querySelector('.hb-more');
+      mb.hidden=!(avail>HB_MAX && (st.more[g]||cut>0));
+      mb.textContent=st.more[g]?'See less':'See more ('+cut+')';
+      mb.setAttribute('aria-expanded',st.more[g]?'true':'false');
+      grp.hidden=avail===0;
+    });
+    root.querySelectorAll('[data-bd]').forEach(function(e){ var n=Object.keys(st.f[e.dataset.bd]).length; e.hidden=!n; e.textContent=n+' filter'+(n===1?'':'s')+' applied'; });
+    var any=G4.some(function(g){ return Object.keys(st.f[g]).length; }) || !!st.q;
+    root.querySelector('.hb-fhr .hb-clear').hidden=!any;
+    renderResults();
+  }
+  root.addEventListener('change',function(e){
+    var t=e.target;
+    if(t.dataset && t.dataset.g){ if(t.checked) st.f[t.dataset.g][t.value]=true; else delete st.f[t.dataset.g][t.value]; st.page=1; update(); }
+    else if(t.id==='hb-ct'){ st.ctype=t.value; st.page=1; update(); }
+    else if(t.id==='hb-per'){ st.per=+t.value; st.page=1; renderResults(); }
+  });
+  root.addEventListener('input',function(e){
+    if(e.target.id==='hb-q'){ st.qRaw=e.target.value; st.q=e.target.value.trim().toLowerCase(); st.page=1; update(); }
+  });
+  root.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('button'):null; if(!b) return;
+    if(b.dataset.clear){
+      st.f={br:{},tp:{},ch:{},in:{},so:{}}; st.q=''; st.qRaw=''; qEl.value=''; st.page=1; update(); resEl.focus({preventScroll:true});
+    } else if(b.dataset.more){ st.more[b.dataset.more]=!st.more[b.dataset.more]; update();
+    } else if(b.dataset.pg){
+      var a=b.dataset.pg; st.page = a==='prev'?st.page-1:a==='next'?st.page+1:+a; renderResults(); resEl.focus();
+    }
+  });
+  update();
+}
+
+/* ---------- markup builders ---------- */
+var href = function(p){ return '#'+(p||'/'); };
+function itemHTML(it){
+  return '<a class="mni'+(it.feature?' feature':'')+'" href="'+href(it.p)+'"><span class="mni-b"><span class="mni-h"><span class="mni-t">'+esc(it.l)+'</span>'+(it.ext?SVG.ext:'')+'</span>'+(it.d?'<span class="mni-d">'+esc(it.d)+'</span>':'')+'</span></a>';
+}
+function itemsHTML(items){ return '<div class="items">'+items.map(itemHTML).join('')+'</div>'; }
+function cardHTML(c){
+  return '<div class="card"><span class="card-k">'+esc(c.kicker)+'</span><span class="card-h">'+esc(c.headline)+'</span><span class="card-b">'+esc(c.body)+'</span><a class="card-l" href="'+href(c.link.p)+'"><span>'+esc(c.link.l)+'</span>'+SVG.arrowRight+'</a></div>';
+}
+function colHTML(c){
+  if(c.card) return cardHTML(c);
+  var body = c.sub ? '<div class="subcols">'+c.sub.map(itemsHTML).join('')+'</div>' : itemsHTML(c.items);
+  return '<div class="col"><div class="sth"><div class="sth-t">'+esc(c.title)+'</div><div class="sth-d"></div></div>'+body+'</div>';
+}
+function panelHTML(id){
+  var m = MENU[id];
+  var tpl = m.cols.map(function(c){return (c.w||1)+'fr'}).join(' ');
+  var style = m.fixed ? 'grid-template-columns:repeat('+m.fixed+',minmax(0,1fr))' : m.single ? 'grid-template-columns:calc((100% - 24px) / 3)' : 'grid-template-columns:'+tpl;
+  return '<div class="panel" data-menu="'+id+'" hidden><div class="slot"><div class="wrap"><div class="cols" style="'+style+'">'+m.cols.map(colHTML).join('')+'</div></div></div></div>';
+}
+function solutionsPanelHTML(){
+  var PANEL_SOL = SOL.concat([AILABS]);
+  var picker = PANEL_SOL.map(function(s,i){
+    var ic = s.k==='bc'?SVG.bcMark:s.k==='fdx'?SVG.fdxMark:SVG.aiMark;
+    return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span><span class="pk-d" style="display:block">'+esc(s.desc)+'</span></span></a>';
+  }).join('');
+  var rights = PANEL_SOL.map(function(s,i){
+    var half = s.items.length/2;
+    return '<div class="sol-r" data-k="'+s.k+'"'+(i===0?'':' hidden')+'><div class="sol-hd"><div class="sol-hd-r"><span class="sth-t">'+(s.k==='ai'?'':esc(s.name)+' ')+'Products &amp; features</span><a class="explore" href="'+href(s.home)+'"><span>Explore</span>'+SVG.arrowRight+'</a></div><div class="sth-d"></div></div><div class="sol-grid">'+itemsHTML(s.items.slice(0,half))+itemsHTML(s.items.slice(half))+'</div></div>';
+  }).join('');
+  return '<div class="panel" data-menu="solutions" hidden><div class="slot"><div class="wrap"><div class="sol-row"><div class="picker">'+picker+'</div><div class="sol-right">'+rights+'</div></div></div></div></div>';
+}
+
+var CHECK = '<svg class="ck" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="#000" stroke-width="1.5"/></svg>';
+var tile = function(s,ic){ return '<span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span>'; };
+var markOf = function(k){ return k==='bc'?SVG.bcMark:SVG.fdxMark; };
+var cmTile = '<span class="pk-ic cm" style="background:#dfdfff">'+SVG.commerceMark+'</span>';
+function brandsPanelHTML(brand){
+  var items = [{k:'cm',name:'Commerce',desc:'AI-driven solutions for next-generation commerce',home:'/',ic:cmTile}].concat(SOL.map(function(s){ return {k:s.k,name:s.name,desc:s.desc,home:s.home,ic:tile(s,markOf(s.k))}; }));
+  var rows = items.map(function(it){
+    var here = it.k===brand;
+    return '<a class="pk'+(here?' on':'')+'" href="'+href(it.home)+'"'+(here?' aria-current="true"':'')+'>'+it.ic+'<span><span class="pk-n" style="display:block">'+esc(it.name)+'</span><span class="pk-d" style="display:block">'+esc(it.desc)+'</span></span>'+(here?CHECK:'')+'</a>';
+  });
+  return '<div class="panel pop w" data-menu="brands" hidden><div class="pop-list">'+rows[0]+'</div><div class="sth-d sol-div"></div><div class="pop-list">'+rows.slice(1).join('')+'</div></div>';
+}
+function loginPanelHTML(){
+  var rows = SOL.map(function(s){
+    return '<a class="pk s" href="'+href(CTA[s.k].login)+'">'+tile(s,markOf(s.k))+'<span class="pk-n">'+esc(s.name)+'</span></a>';
+  }).join('');
+  return '<div class="panel pop r" data-menu="login" hidden><div class="sth"><div class="sth-t">Log in to</div><div class="sth-d"></div></div><div class="pop-list">'+rows+'</div></div>';
+}
+function navHTML(brand){
+  return NAV[brand].map(function(n){
+    if(n.m) return '<button class="ni" type="button" data-trigger="'+n.m+'" aria-haspopup="true" aria-expanded="false"><span>'+n.l+'</span>'+SVG.chev+'</button>';
+    return '<a class="ni" href="'+href(n.p)+'">'+n.l+'</a>';
+  }).join('');
+}
+function ctasHTML(brand){
+  var c = CTA[brand];
+  return '<div class="btns"><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a><a class="tl" href="'+href(c.secondary.p)+'"><span>'+esc(c.secondary.l)+'</span>'+SVG.arrowRight+'</a></div>';
+}
+function rightHTML(brand){
+  if(brand==='cm') return '<div class="hdr-r"><a class="login" href="#/contact-sales">Contact sales</a><button class="login" type="button" data-trigger="login" aria-haspopup="true" aria-expanded="false"><span>Log in</span>'+SVG.chev+'</button><a class="cta" href="#/get-started">Get started</a></div>';
+  var c = CTA[brand];
+  return '<div class="hdr-r">'+'<a class="login" href="'+href(c.login)+'">Log in</a><a class="cta" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div>';
+}
+function switcherHTML(brand){
+  var b = BRAND[brand], home = brand==='cm' ? '#/' : href(b.base);
+  return '<span class="bgrp"><a class="'+(brand==='cm'?'logo':'bl')+'" href="'+home+'" aria-label="'+b.name+' home" title="'+b.name+' home">'+b.logo+'</a></span>';
+}
+
+/* ---------- parent strip ---------- */
+function stripHTML(brand){
+  var here = norm(readPath());
+  var item = function(label,path,on){ return '<a class="sl'+(on?' on':'')+'" href="'+href(path)+'"'+(on?' aria-current="'+(path.charAt(0)==='/'&&path.split('/').length>2||/^\/(customers|company|partners|contact-sales)$/.test(path)?'page':'true')+'"':'')+'><span class="slt">'+esc(label)+'</span></a>'; };
+  var left = item('Commerce','/',brand==='cm')+['bc','fdx'].map(function(k){ return item(BRAND[k].name,BRAND[k].base,k===brand); }).join('');
+  var right = [['Customers','/customers'],['Company','/company'],['Partners','/partners'],['Contact sales','/contact-sales']].map(function(x){ return item(x[0],x[1],here===x[1]); }).join('');
+  return '<div class="strip"><div class="wrap strip-in"><nav class="strip-l" aria-label="Commerce brands">'+left+'</nav><nav class="strip-r" aria-label="Commerce">'+right+'</nav></div></div>';
+}
+function subBarHTML(brand){
+  var b = BRAND[brand], c = CTA[brand], panels = '';
+  Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
+  var s0 = SOL.filter(function(x){return x.k===brand;})[0];
+  var id = '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+b.name+' overview"><span class="pk-ic" style="background:'+s0.bg+'">'+b.mark+'</span><span>'+b.name+'</span></a>';
+  return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
+}
+function headerHTML(brand){
+  /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
+  var left = switcherHTML('cm')+'<span class="vdiv"></span><nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
+  var panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+panelHTML('company')+loginPanelHTML();
+  return '<div class="stack"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+rightHTML('cm')+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>';
+}
+/* ---------- get started page ---------- */
+var GS=[
+ {k:'bc',logo:SVG.bcLogo,name:'BigCommerce',desc:'Open SaaS ecommerce platform for B2C and B2B brands.',acts:[{t:'Start a trial',d:'Free for 15 days. No credit card.',p:CTA.bc.primary.p},{t:'Get a demo',d:'See the platform with a product expert.',p:CTA.bc.secondary.p}]},
+ {k:'fdx',logo:SVG.fdxLogo,name:'Feedonomics',desc:'Full-service product feed management for ads, marketplaces, and agentic commerce.',acts:[{t:'Get a demo',d:'See how we optimize and sync your feeds.',p:CTA.fdx.primary.p}]},
+];
+function gsAct(a,cls){ return '<a class="gs-act'+(cls||'')+'" href="'+href(a.p)+'"><span class="gs-at"><span class="gs-an">'+esc(a.t)+'</span><span class="gs-ad">'+esc(a.d)+'</span></span>'+SVG.arrowRight+'</a>'; }
+function gsHTML(){
+  var cards=GS.map(function(c){
+    return '<section class="gs-card" aria-labelledby="gs-'+c.k+'"><h2 id="gs-'+c.k+'" class="gs-logo" aria-label="'+c.name+'"><span aria-hidden="true">'+c.logo+'</span></h2><p class="gs-desc">'+esc(c.desc)+'</p><div class="gs-acts">'+c.acts.map(function(a){ return gsAct(a); }).join('')+'</div></section>';
+  }).join('');
+  return '<section class="gs"><div class="wrap"><h1>How would you like to get started?</h1><div class="gs-grid">'+cards+'</div>'+gsAct({t:'Contact sales',d:'Not sure where to start? Talk to us about which solution fits.',p:'/contact-sales'},' gs-sales')+'</div></section>';
+}
+PAGES['/get-started'].gs=true;
+/* current live homepage copy (hero + announcement bar), copy only */
+var HOME = {
+ cm:{ann:null,eyebrow:'One unified purpose',h1:'We’re powering what’s next.',desc:'Flexible, AI-driven solutions for next-generation commerce.',ctas:[]},
+ bc:{ann:null,eyebrow:'Open SaaS ecommerce platform',h1:'Get your brand ready for agentic commerce.',desc:'AI agents are changing how customers discover, evaluate, and buy. Our solutions help you reach them— sharper product discovery, smoother buying, automated operations, and new agentic-ready features built to grow with the shift.',ctas:[{l:'Explore agentic commerce',p:'/bigcommerce/agentic-commerce'}]},
+ fdx:{ann:null,eyebrow:'Product data feed management',h1:'Go from invisible to everywhere.',desc:'Transform wild product data into optimized listings for 2,000+ destinations across ad channels, marketplaces, and AI surfaces. Be seen more and sell more.',ctas:[{l:'See how it works',p:'/feedonomics/how-it-works'}]},
+};
+function heroHome(brand){
+  var b = BRAND[brand], h = HOME[brand];
+  var ann = h.ann ? '<a class="ann" href="'+href(h.ann.p)+'"><div class="wrap ann-in"><strong>'+esc(h.ann.lead)+'</strong><span class="ann-d" aria-hidden="true">·</span><span class="ann-t">'+esc(h.ann.text)+'</span>'+SVG.arrowRight+'</div></a>' : '';
+  var btns = h.ctas.length ? '<div class="btns"><a class="btn" href="'+href(h.ctas[0].p)+'">'+esc(h.ctas[0].l)+'</a>'+(h.ctas[1]?'<a class="tl" href="'+href(h.ctas[1].p)+'"><span>'+esc(h.ctas[1].l)+'</span>'+SVG.arrowRight+'</a>':'')+'</div>' : '';
+  return '<div class="light">'+ann+'<section class="hero h-center"><div class="wrap">'+(h.eyebrow?'<span class="eyebrow">'+esc(h.eyebrow)+'</span>':'')+'<h1>'+esc(h.h1)+'</h1><p class="desc">'+esc(h.desc)+'</p>'+btns+VIS+'</div></section></div>';
+}
+var VIS = '<div class="visual" role="img" aria-label="Hero visual placeholder"></div>';
+function crumbsHTML(brand,page){
+  var mid = page.parent ? '<a href="'+href(page.parent.path)+'">'+esc(page.parent.label)+'</a>'+SVG.chevR : '';
+  var start = brand==='cm' ? '<a href="#/">Home</a>' : '<a href="#/">Commerce</a>'+SVG.chevR+'<a href="'+href(BRAND[brand].base)+'">'+BRAND[brand].name+'</a>';
+  return '<div class="crumbs"><div class="wrap crumbs-in">'+start+SVG.chevR+mid+'<span class="cur">'+esc(page.label)+'</span></div></div>';
+}
+function heroHTML(brand,label,type){
+  var eb = '<span class="eyebrow">'+BRAND[brand].name+'</span>', h = '<h1>'+esc(label)+'</h1>', d = '<p class="desc">'+LOREM+'</p>', C = ctasHTML(brand);
+  if(type==='overview') return '<section class="hero"><div class="wrap" style="display:flex;flex-direction:column;align-items:center;gap:64px"><div class="ov-left">'+eb+h+'</div><div class="visual" style="height:555px;width:100%" role="img" aria-label="Hero visual placeholder"></div></div></section>';
+  if(type==='split') return '<section class="hero h-split"><div class="wrap"><div class="h-text">'+eb+h+d+C+'</div>'+VIS+'</div></section>';
+  if(type==='left-below') return '<section class="hero h-below"><div class="wrap" style="display:flex;flex-direction:column;gap:64px"><div class="top-row"><div class="left">'+eb+h+'</div><div class="cta-col">'+d+C+'</div></div>'+VIS+'</div></section>';
+  if(type==='text') return '<section class="hero h-textonly"><div class="wrap"><div class="h-text">'+eb+h+d+C+'</div></div></section>';
+  return '<section class="hero h-center"><div class="wrap">'+eb+h+d+C+VIS+'</div></section>';
+}
+function pageHTML(brand,page){
+  if(page.hub){ var h=hubHTML(brand,page.hub); return '<div class="dark">'+crumbsHTML(brand,page)+h.hero+'</div><div class="light hb-body">'+h.body+'</div>'; }
+  if(page.gs) return '<div class="light">'+crumbsHTML(brand,page)+gsHTML()+'</div>';
+  return '<div class="'+BRAND[brand].cls+'">'+crumbsHTML(brand,page)+heroHTML(brand,page.label,page.type||'center')+'</div>';
+}
+
+/* ---------- menu behavior ---------- */
+var scrim = document.getElementById('scrim');
+var current = null, closeT = null, openedAt = 0, how = '';
+function setMenu(id,by){
+  var hdr = document.querySelector('.stack'); if(!hdr) return;
+  if(current===id) return;
+  current = id; how = by||''; openedAt = Date.now();
+  hdr.querySelectorAll('.panel').forEach(function(p){ p.hidden = p.dataset.menu!==id; });
+  hdr.querySelectorAll('[data-trigger]').forEach(function(t){ var on = t.dataset.trigger===id; t.classList.toggle('active',on); t.setAttribute('aria-expanded',on?'true':'false'); });
+  scrim.hidden = !id;
+  placeScrim();
+  if(id==='solutions') pick('bc');
+}
+function placeScrim(){ if(!current) return; var pn=document.querySelector('.stack .panel[data-menu="'+current+'"]'), h=pn&&pn.parentNode; if(h) scrim.style.top = Math.max(0,h.getBoundingClientRect().bottom)+'px'; }
+window.addEventListener('scroll',placeScrim,{passive:true});
+function closeMenu(){ setMenu(null,''); }
+var ptr = 'mouse';
+document.addEventListener('pointerdown',function(e){ ptr = e.pointerType || 'mouse'; },true);
+function pick(k){
+  document.querySelectorAll('.panel[data-menu="solutions"] .pk').forEach(function(p){ p.classList.toggle('on',p.dataset.k===k); });
+  document.querySelectorAll('.sol-r').forEach(function(r){ r.hidden = r.dataset.k!==k; });
+}
+function bindMenus(){
+  var hdr = document.querySelector('.stack');
+  hdr.querySelectorAll('[data-trigger]').forEach(function(t){
+    var id = t.dataset.trigger;
+    t.addEventListener('click',function(){ if(current===id) closeMenu(); else setMenu(id,'click'); });
+    t.addEventListener('keydown',function(e){ if(e.key==='ArrowDown'){ e.preventDefault(); setMenu(id,'click'); var a = hdr.querySelector('.panel[data-menu="'+id+'"] a'); if(a) a.focus(); } });
+  });
+  hdr.querySelectorAll('.panel[data-menu="solutions"] .pk').forEach(function(p){
+    p.addEventListener('pointerenter',function(e){ if(e.pointerType!=='touch') pick(p.dataset.k); });
+    p.addEventListener('focus',function(){ if(p.matches(':focus-visible')) pick(p.dataset.k); });
+    /* touch has no hover: first tap previews the brand, second tap (or Explore) goes to its home */
+    p.addEventListener('click',function(e){ if(ptr==='touch' && !p.classList.contains('on')){ e.preventDefault(); pick(p.dataset.k); } });
+  });
+}
+scrim.addEventListener('click',closeMenu);
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeMenu(); });
+
+/* ---------- router ---------- */
+var app = document.getElementById('app');
+function brandOf(path){ return path.indexOf('/bigcommerce')===0?'bc':path.indexOf('/feedonomics')===0?'fdx':'cm'; }
+function norm(p){ p=(p||'/').split('?')[0]; if(p.charAt(0)!=='/') p='/'+p; return p.replace(/\/+$/,'')||'/'; }
+function readPath(){ var h=''; try{ h=location.hash; }catch(e){} return h.slice(1)||'/'; }
+function route(path){
+  path = norm(path);
+  var brand = brandOf(path), page = PAGES[path], html;
+  current = null; scrim.hidden = true; clearTimeout(closeT);
+  if(path==='/') html = '<main class="home">'+heroHome('cm')+'</main>';
+  else if(brand!=='cm' && path===BRAND[brand].base) html = '<main class="home">'+heroHome(brand)+'</main>';
+  else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'})+'</main>';
+  document.body.classList.toggle('dark',brand!=='cm' && path!==BRAND[brand].base && !(page && page.hub)); /* dark only on deeper brand pages */
+  app.innerHTML = headerHTML(brand)+html;
+  bindMenus();
+  if(page && page.hub) initHub(brand,page.hub);
+  document.title = (path==='/'?'Commerce':(page?page.label:'Not found'))+' · Commerce navigation prototype';
+  window.scrollTo(0,0);
+  try{ parent.postMessage({type:'consolidated-nav:path',path:path},'*'); }catch(e){}
+}
+function navigate(path){ path = norm(path); try{ history.pushState(null,'','#'+path); }catch(e){} route(path); }
+document.addEventListener('click',function(e){
+  var a = e.target.closest ? e.target.closest('a[href^="#/"]') : null;
+  if(!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+  e.preventDefault(); navigate(a.getAttribute('href').slice(1));
+});
+window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:go' && typeof d.path==='string') navigate(d.path); });
+window.addEventListener('popstate',function(){ route(readPath()); });
+window.addEventListener('hashchange',function(){ route(readPath()); });
+route(readPath());
+})();
+</script>
+</body>
+</html>

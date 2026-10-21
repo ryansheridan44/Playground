@@ -33,6 +33,30 @@ function Home() {
             </div>
             <span className="row-action">View ↗</span>
           </Link>
+          <Link to="/prototypes/consolidated-navigation-3" className="row">
+            <div className="row-icon">3</div>
+            <div className="row-body">
+              <div className="row-name">Consolidated Navigation 3</div>
+              <div className="row-desc">Commerce global header with a sub-brand secondary bar.</div>
+            </div>
+            <span className="row-action">View ↗</span>
+          </Link>
+          <Link to="/prototypes/consolidated-navigation-4" className="row">
+            <div className="row-icon">4</div>
+            <div className="row-body">
+              <div className="row-name">Consolidated Navigation 4</div>
+              <div className="row-desc">Two tiers: Commerce header plus sub-brand bar, no parent strip.</div>
+            </div>
+            <span className="row-action">View ↗</span>
+          </Link>
+          <Link to="/prototypes/consolidated-navigation-5" className="row">
+            <div className="row-icon">5</div>
+            <div className="row-body">
+              <div className="row-name">Consolidated Navigation 5</div>
+              <div className="row-desc">Brand mode: Commerce mark and brand name, brand menus only.</div>
+            </div>
+            <span className="row-action">View ↗</span>
+          </Link>
         </div>
       </div>
     </section>

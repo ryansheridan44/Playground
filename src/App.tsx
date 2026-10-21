@@ -19,6 +19,18 @@ function App() {
         path="prototypes/consolidated-navigation-2"
         element={<ConsolidatedNavigation version={2} />}
       />
+      <Route
+        path="prototypes/consolidated-navigation-3"
+        element={<ConsolidatedNavigation version={3} />}
+      />
+      <Route
+        path="prototypes/consolidated-navigation-4"
+        element={<ConsolidatedNavigation version={4} />}
+      />
+      <Route
+        path="prototypes/consolidated-navigation-5"
+        element={<ConsolidatedNavigation version={5} />}
+      />
     </Routes>
   )
 }

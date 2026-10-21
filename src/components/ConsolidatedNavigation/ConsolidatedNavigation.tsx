@@ -3,10 +3,13 @@ import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import nav1 from './navigation-1.html?raw'
 import nav2 from './navigation-2.html?raw'
+import nav3 from './navigation-3.html?raw'
+import nav4 from './navigation-4.html?raw'
+import nav5 from './navigation-5.html?raw'
 import './ConsolidatedNavigation.css'
 
 const ORIGIN = 'https://www.commerce.com'
-const VERSIONS = { 1: nav1, 2: nav2 }
+const VERSIONS = { 1: nav1, 2: nav2, 3: nav3, 4: nav4, 5: nav5 }
 
 interface Props {
   version: keyof typeof VERSIONS
