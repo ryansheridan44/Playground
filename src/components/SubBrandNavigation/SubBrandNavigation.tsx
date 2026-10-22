@@ -45,6 +45,10 @@ function SubBrandNavigation() {
         </div>
         {open && (
           <>
+            <label className="sbn-check">
+              <input type="checkbox" checked={sl} disabled={sv === 'mark-only'} onChange={(e) => setSl(e.target.checked)} />
+              <span>Show “Solution /” before the sub-brand name</span>
+            </label>
             <div className="sbn-row">
               <span>Page</span>
               <div className="sbn-seg" role="group" aria-label="Page">
@@ -66,10 +70,6 @@ function SubBrandNavigation() {
               </div>
               <p className="sbn-note">{VISIBILITY.find((v) => v.value === sv)?.summary}</p>
             </div>
-            <label className="sbn-check">
-              <input type="checkbox" checked={sl} disabled={sv === 'mark-only'} onChange={(e) => setSl(e.target.checked)} />
-              <span>Show “Solution /” before the sub-brand name</span>
-            </label>
             <div className="sbn-row">
               <span>Button variations</span>
               <div className="sbn-seg" role="group" aria-label="Button variations">

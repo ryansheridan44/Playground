@@ -20,7 +20,7 @@ export const VISIBILITY: { value: SubBrandVisibility; label: string; summary: st
   { value: 'black', label: 'Black mark', summary: 'The logo mark in black, no tile.' },
   { value: 'shape', label: 'Shape', summary: 'Just the shape of the mark: a triangle for BigCommerce, a diamond for Feedonomics.' },
   { value: 'text', label: 'Text', summary: 'No marks anywhere. Names only.' },
-  { value: 'mark-only', label: 'Mark only', summary: 'The mark on its tile, no name in the sub-brand bar, then a divider.' },
+  { value: 'mark-only', label: 'Mark only', summary: 'The bare black mark, no name in the sub-brand bar, then a divider.' },
 ]
 
 export const BUTTON_VARIATIONS = [
