@@ -11,6 +11,7 @@ function SubBrandNavigation() {
   const frame = useRef<HTMLIFrameElement>(null)
   const [sv, setSv] = useState<SubBrandVisibility>('mark')
   const [bt, setBt] = useState(1)
+  const [sl, setSl] = useState(true)
   const [path, setPath] = useState('/bigcommerce')
   const [open, setOpen] = useState(true)
 
@@ -29,8 +30,8 @@ function SubBrandNavigation() {
   }, [])
 
   useEffect(() => {
-    post({ type: 'consolidated-nav:config', sv, bt })
-  }, [sv, bt])
+    post({ type: 'consolidated-nav:config', sv, bt, sl })
+  }, [sv, bt, sl])
 
   return (
     <div className="sbn">
@@ -65,6 +66,10 @@ function SubBrandNavigation() {
               </div>
               <p className="sbn-note">{VISIBILITY.find((v) => v.value === sv)?.summary}</p>
             </div>
+            <label className="sbn-check">
+              <input type="checkbox" checked={sl} onChange={(e) => setSl(e.target.checked)} />
+              <span>Show “Solution /” before the sub-brand name</span>
+            </label>
             <div className="sbn-row">
               <span>Button variations</span>
               <div className="sbn-seg" role="group" aria-label="Button variations">

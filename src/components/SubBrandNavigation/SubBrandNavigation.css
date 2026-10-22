@@ -118,3 +118,17 @@
   color: #000;
   background: #fff;
 }
+
+.sbn-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d0d5dd;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.sbn-check input {
+  margin: 0;
+  accent-color: #fff;
+}
