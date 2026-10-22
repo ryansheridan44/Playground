@@ -163,3 +163,45 @@ a {
 .group-title {
   margin-top: 96px;
 }
+
+/* Home: a plain menu of projects */
+.container-narrow {
+  max-width: 560px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.menu-arrow {
+  color: var(--muted);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity 0.15s, transform 0.2s;
+}
+
+.menu-link:hover .menu-arrow,
+.menu-link:focus-visible .menu-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none) {
+  .menu-arrow {
+    opacity: 1;
+    transform: none;
+  }
+}

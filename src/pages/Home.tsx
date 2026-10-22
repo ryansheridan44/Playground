@@ -1,60 +1,26 @@
 import { Link } from 'react-router-dom'
 
+const PROJECTS = [
+  { name: 'Consolidated Navigation 6', to: '/prototypes/sub-brand-navigation' },
+  { name: 'Consolidated Navigation 5', to: '/prototypes/consolidated-navigation-5' },
+  { name: 'Consolidated Navigation 4', to: '/prototypes/consolidated-navigation-4' },
+  { name: 'Consolidated Navigation 3', to: '/prototypes/consolidated-navigation-3' },
+  { name: 'Consolidated Navigation 2', to: '/prototypes/consolidated-navigation-2' },
+  { name: 'Consolidated Navigation 1', to: '/prototypes/consolidated-navigation-1' },
+]
+
 function Home() {
   return (
     <section className="section">
-      <div className="container">
-        <h1 className="page-title">Prototypes</h1>
-        <div className="list">
-          <Link to="/prototypes/sub-brand-navigation" className="row">
-            <div className="row-icon">6</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 6</div>
-              <div className="row-desc">Sub-brand visibility, navigation styles and button layouts on one prototype.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-5" className="row">
-            <div className="row-icon">5</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 5</div>
-              <div className="row-desc">Navigation 4 with floating, rounded dropdown menus.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-4" className="row">
-            <div className="row-icon">4</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 4</div>
-              <div className="row-desc">Two tiers: Commerce header plus sub-brand bar, no parent strip.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-3" className="row">
-            <div className="row-icon">3</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 3</div>
-              <div className="row-desc">Commerce global header with a sub-brand secondary bar.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-2" className="row">
-            <div className="row-icon">2</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 2</div>
-              <div className="row-desc">Parent strip navigation prototype.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-1" className="row">
-            <div className="row-icon">1</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 1</div>
-              <div className="row-desc">Logo switcher; header without the tertiary CTA.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-        </div>
+      <div className="container container-narrow">
+        <nav className="menu" aria-label="Projects">
+          {PROJECTS.map((p) => (
+            <Link key={p.to} to={p.to} className="menu-link">
+              <span>{p.name}</span>
+              <span className="menu-arrow" aria-hidden="true">↗</span>
+            </Link>
+          ))}
+        </nav>
       </div>
     </section>
   )
