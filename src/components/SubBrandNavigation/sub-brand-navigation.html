@@ -516,6 +516,8 @@ body[data-nl="panel"] .menu__cols:has(>.feats)>.card{background:transparent;marg
 .feat:hover{background:#e8ecf2}
 .feat__top{display:flex;align-items:flex-start;justify-content:space-between}
 .feat__i{width:24px;height:24px;color:#344054}
+.feat__i--mark{display:block;color:var(--text)}
+.feat__i--mark svg{display:block;width:24px;height:24px}
 .feat__go{opacity:0;transform:translateX(-4px);transition:opacity .25s var(--ease),transform .4s var(--ease-out)}
 .feat__go svg{width:16px;height:16px}
 .feat:hover .feat__go{opacity:1;transform:none}
@@ -724,7 +726,7 @@ var FEATS = {
   {i:'book',t:'BigCommerce University',d:'Courses and certifications for merchants and developers.',p:L('bc','BigCommerce University').p},
   {i:'chat',t:'Community Q&A',d:'Ask questions and share what works with other merchants.',p:L('bc','Community Q&A').p}]},
  'fdx-products':{cards:[
-  {i:'box',t:'Feedonomics Surface',d:'Install on BigCommerce. Free and ready in minutes.',p:L('fdx','Explore Surface').p},
+  {i:'box',mark:'fdx',t:'Feedonomics Surface',d:'Install on BigCommerce. Free and ready in minutes.',p:L('fdx','Explore Surface').p},
   {i:'layers',t:'How it works',d:'See how one feed reaches every channel.',p:L('fdx','How It Works').p}]},
  'fdx-integrations':{stack:true,cards:[
   {i:'plug',t:'Get my plan',d:'Your stack, upgraded. Connect the dots so your systems move like one engine.',p:L('fdx','Get my plan').p},
@@ -1070,7 +1072,7 @@ function featCols(id,m){
 function featsHTML(id){
   var f = FEATS[id]; if(CFG.nl!=='panel' || !f) return '';
   return '<div class="feats'+(f.stack?' feats--stack':'')+'">'+f.cards.map(function(c,k){
-    return '<a class="feat reveal" style="--d:'+(k+3)+'" href="'+href(c.p)+'"><span class="feat__top"><svg class="feat__i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+FICON[c.i]+'</svg><span class="feat__go" aria-hidden="true">'+ARR+'</span></span><span class="feat__b"><span class="feat__t">'+esc(c.t)+'</span><span class="feat__d">'+esc(c.d)+'</span></span></a>';
+    return '<a class="feat reveal" style="--d:'+(k+3)+'" href="'+href(c.p)+'"><span class="feat__top">'+(c.mark ? '<span class="feat__i feat__i--mark" aria-hidden="true">'+SVG[c.mark+'Mark']+'</span>' : '<svg class="feat__i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+FICON[c.i]+'</svg>')+'<span class="feat__go" aria-hidden="true">'+ARR+'</span></span><span class="feat__b"><span class="feat__t">'+esc(c.t)+'</span><span class="feat__d">'+esc(c.d)+'</span></span></a>';
   }).join('')+'</div>';
 }
 function menuHTML(id){
