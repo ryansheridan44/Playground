@@ -584,10 +584,9 @@ body[data-nl="panel"] .menu__cols:has(>.feats)>.card{background:transparent;marg
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* every visibility: no connectors or sub-lines, items left aligned with the mark, a divider under each header, four equal columns sized to their content (180px to 260px) */
 body[data-sv] .menu .tile--bare{width:20px;height:24px}
-/* Mark: a smaller tile; headers are as tall as the tile so the dividers line up across columns */
-body[data-sv="mark"] .menu .tile--mark{width:32px;height:32px}
-body[data-sv="mark"] .menu .tile--mark svg{width:18px;height:18px}
-body[data-sv="mark"] .menu .menu__cols :is(.product__head,.group__title){min-height:32px}
+/* Mark: the same 24px tile as the sub-brand bar, so headers keep the shared 24px height and the dividers line up */
+body[data-sv="mark"] .menu .tile--mark{width:24px;height:24px}
+body[data-sv="mark"] .menu .tile--mark svg{width:14px;height:14px}
 body[data-sv] .product__head,body[data-sv] .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid #eaecf0}
 body[data-sv] :is(.product__head,.menu .group__title){box-sizing:content-box}
 body[data-sv] .menu .group .list{margin-top:12px}
