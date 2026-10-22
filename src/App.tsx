@@ -4,7 +4,6 @@ import ButtonPage from './pages/ButtonPage'
 import ConsolidatedNavigation from './components/ConsolidatedNavigation/ConsolidatedNavigation'
 import Home from './pages/Home'
 import NavigationPage from './pages/NavigationPage'
-import SubBrandMenus from './components/SubBrandNavigation/SubBrandMenus'
 import SubBrandNavigation from './components/SubBrandNavigation/SubBrandNavigation'
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
         <Route path="button" element={<ButtonPage />} />
         <Route path="navigation" element={<NavigationPage />} />
       </Route>
-      <Route path="prototypes/sub-brand-navigation/menus" element={<SubBrandMenus />} />
       <Route path="prototypes/sub-brand-navigation" element={<SubBrandNavigation />} />
       <Route path="prototypes/sub-brand-navigation/*" element={<Navigate to="/prototypes/sub-brand-navigation" replace />} />
       <Route

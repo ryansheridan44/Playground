@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { BUTTON_VARIATIONS, MENU_LAYOUTS, VISIBILITY } from '../components/SubBrandNavigation/variants'
+import { BUTTON_VARIATIONS, VISIBILITY } from '../components/SubBrandNavigation/variants'
 
 const EARLIER = [
   { n: 1, desc: 'Logo switcher; header without the tertiary CTA.' },
@@ -17,31 +17,14 @@ function NavigationPage() {
         <p className="eyebrow">Navigation prototypes</p>
         <h1 className="hero-title">Sub-brand navigation</h1>
         <p className="hero-sub">
-          One prototype with the floating-menu navigation and the reference menu content. A control panel at
-          the bottom left switches three things: how the dropdowns are laid out, how visible the sub-brands
-          are, and how the buttons on the right side of the bars are styled.
+          One prototype that matches the reference navigation: its bars, nav items and dropdowns. A control
+          panel at the bottom left switches two things: how visible the sub-brands are, and how the buttons
+          on the right side of the bars are styled.
         </p>
         <div className="actions">
           <Link to="/prototypes/sub-brand-navigation" className="action action-primary">
             Open the prototype
           </Link>
-          <Link to="/prototypes/sub-brand-navigation/menus" className="action">
-            Compare the menu layouts
-          </Link>
-        </div>
-
-        <h2 className="group-heading">Menu layout</h2>
-        <div className="list">
-          {MENU_LAYOUTS.map((m) => (
-            <Link key={m.id} to={`/prototypes/sub-brand-navigation?ml=${m.id}`} className="row">
-              <div className="row-icon">{m.name}</div>
-              <div className="row-body">
-                <div className="row-name">{m.title}</div>
-                <div className="row-desc">{m.summary}</div>
-              </div>
-              <span className="row-action">View ↗</span>
-            </Link>
-          ))}
         </div>
 
         <h2 className="group-heading">Sub-brand visibility</h2>

@@ -32,7 +32,7 @@ function Home() {
             <div className="tile-body">
               <div className="tile-title">Navigation prototypes</div>
               <div className="tile-desc">
-                The consolidated Commerce navigation with switchable menu layouts, sub-brand visibility and button styles, plus five earlier rounds.
+                The consolidated Commerce navigation with switchable sub-brand visibility and button styles, plus five earlier rounds.
               </div>
             </div>
             <span className="tile-count">6 prototypes</span>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
-import { BUTTON_VARIATIONS, MENU_LAYOUTS, PAGES, VISIBILITY, buildDoc } from './variants'
+import { Link } from 'react-router-dom'
+import { BUTTON_VARIATIONS, PAGES, VISIBILITY, buildDoc } from './variants'
 import type { SubBrandVisibility } from './variants'
 import './SubBrandNavigation.css'
 
@@ -9,16 +9,13 @@ const brandOf = (path: string) =>
 
 function SubBrandNavigation() {
   const frame = useRef<HTMLIFrameElement>(null)
-  const [params] = useSearchParams()
-  const initialMl = Math.min(MENU_LAYOUTS.length, Math.max(1, Number(params.get('ml')) || 1))
-  const [ml, setMl] = useState(initialMl)
   const [sv, setSv] = useState<SubBrandVisibility>('mark')
   const [bt, setBt] = useState(1)
   const [path, setPath] = useState('/bigcommerce')
   const [open, setOpen] = useState(true)
 
   // the document is built once; later changes reach the iframe by message so the page never reloads
-  const doc = useMemo(() => buildDoc({ ml: initialMl, start: '/bigcommerce' }), []) // eslint-disable-line react-hooks/exhaustive-deps
+  const doc = useMemo(() => buildDoc({ start: '/bigcommerce' }), []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const post = (msg: object) => frame.current?.contentWindow?.postMessage(msg, '*')
 
@@ -32,8 +29,8 @@ function SubBrandNavigation() {
   }, [])
 
   useEffect(() => {
-    post({ type: 'consolidated-nav:config', ml, sv, bt })
-  }, [ml, sv, bt])
+    post({ type: 'consolidated-nav:config', sv, bt })
+  }, [sv, bt])
 
   return (
     <div className="sbn">
@@ -41,7 +38,6 @@ function SubBrandNavigation() {
       <aside className={`sbn-dock${open ? '' : ' closed'}`} aria-label="Prototype controls">
         <div className="sbn-top">
           <Link to="/navigation" className="sbn-link">← All</Link>
-          <Link to="/prototypes/sub-brand-navigation/menus" className="sbn-link">Compare menus</Link>
           <button type="button" className="sbn-link sbn-fold" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
             {open ? 'Hide' : 'Controls'}
           </button>
@@ -57,17 +53,6 @@ function SubBrandNavigation() {
                   </button>
                 ))}
               </div>
-            </div>
-            <div className="sbn-row">
-              <span>Menu layout</span>
-              <div className="sbn-seg" role="group" aria-label="Menu layout">
-                {MENU_LAYOUTS.map((m) => (
-                  <button key={m.id} type="button" className={ml === m.id ? 'on' : ''} onClick={() => setMl(m.id)} title={m.summary}>
-                    {m.name}
-                  </button>
-                ))}
-              </div>
-              <p className="sbn-note">{MENU_LAYOUTS[ml - 1].title}. {MENU_LAYOUTS[ml - 1].summary}</p>
             </div>
             <div className="sbn-row">
               <span>Sub-brand visibility</span>
