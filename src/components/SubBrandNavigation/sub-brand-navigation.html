@@ -490,21 +490,21 @@ body[data-sv="mark-only"] .stack .bar--sub{gap:14px}
 body[data-sv="mark-only"] .sub-bar__label{min-width:0;margin-right:10px}
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
-/* black mark and shape: no tree connectors or sub-lines, a divider under each header, three equal columns */
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .tree{padding-top:6px}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .tree li{padding:6px 0}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .tree li::before,:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .tree li::after{display:none}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .product__tag{display:none}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu .tile--bare{width:20px;height:24px}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .product__head,:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid #eaecf0}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu .group__title{box-sizing:content-box}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu .group .list{margin-top:12px}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu--lg{width:min(1120px,calc(100vw - 2 * var(--gutter)))}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu--lg .menu__cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gap)}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu--lg .menu__cols>section{min-width:0}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu--lg .menu__cols>section:first-child{grid-column:span 2}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu--lg .product-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--gap)}
-:is(body[data-sv="black"],body[data-sv="shape"],body[data-sv="mark-only"]) .menu--lg .group-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}
+/* every visibility except Mark: no tree connectors or sub-lines, a divider under each header, four equal columns sized to their content (180px to 260px) */
+body:not([data-sv="mark"]) .tree{padding-top:6px}
+body:not([data-sv="mark"]) .tree li{padding:6px 0}
+body:not([data-sv="mark"]) .tree li::before,body:not([data-sv="mark"]) .tree li::after{display:none}
+body:not([data-sv="mark"]) .product__tag{display:none}
+body:not([data-sv="mark"]) .menu .tile--bare{width:20px;height:24px}
+body:not([data-sv="mark"]) .product__head,body:not([data-sv="mark"]) .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid #eaecf0}
+body:not([data-sv="mark"]) :is(.product__head,.menu .group__title){box-sizing:content-box}
+body:not([data-sv="mark"]) .menu .group .list{margin-top:12px}
+body:not([data-sv="mark"]) .menu--lg .menu__cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:48px}
+body:not([data-sv="mark"]) .menu--lg .menu__cols>section{min-width:0}
+body:not([data-sv="mark"]) .menu--lg .menu__cols>section{grid-column:span 2}
+body:not([data-sv="mark"]) .menu--lg :is(.product,.group){min-width:180px;max-width:260px}
+body:not([data-sv="mark"]) .menu--lg .product-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
+body:not([data-sv="mark"]) .menu--lg .group-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
 @media (prefers-reduced-motion:reduce){.menu,.menu *,.nav-item::before{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}}
 </style>
 </head>
