@@ -40,13 +40,8 @@ export const BUTTON_VARIATIONS = [
   },
   {
     id: 4,
-    name: 'Context swap',
-    summary: 'On sub-brand pages the header button becomes the brand’s primary CTA (Free trial, Get a demo).',
-  },
-  {
-    id: 5,
-    name: 'Two-button header',
-    summary: 'Contact sales becomes an outlined button beside a solid Get started, sized to match the sub-brand bar.',
+    name: 'Compact one button',
+    summary: 'Like One button, with a smaller Get started and every main and sub-brand nav link at the same 14px.',
   },
 ]
 

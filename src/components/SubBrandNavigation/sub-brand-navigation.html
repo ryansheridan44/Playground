@@ -469,6 +469,8 @@ body[data-sv="text"] .tree{padding-top:12px}
 .menu .promo:has(:focus-visible),.menu .strip:has(:focus-visible){outline:2px solid var(--text);outline-offset:2px}
 .promo__eyebrow{color:var(--text-tertiary)}
 .promo__text{font-weight:var(--w-medium);white-space:normal!important}
+/* button variation 4: one type size across the main and sub bars */
+body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* black mark and shape: no tree connectors or sub-lines, a divider under each header, three equal columns */
 :is(body[data-sv="black"],body[data-sv="shape"]) .tree{padding-top:9px}
 :is(body[data-sv="black"],body[data-sv="shape"]) .tree li{padding-left:0}
@@ -967,15 +969,14 @@ function stripHTML(brand){
 }
 /* Button variations (right side of both bars). BigCommerce: demo + free trial. Feedonomics: demo.
    1 global primary, 2 links on top and buttons below, 3 one button on the page,
-   4 the header button swaps to the brand's primary CTA, 5 two-button header (Contact sales as a button). */
+   4 one button like 3, with a smaller Get started and every nav link at the same 14px. */
 function subRightHTML(brand){
   var c = CTA[brand], bt = CFG.bt;
   var A = function(cls,x){ return '<a class="'+cls+'" href="'+href(x.p)+'"><span>'+esc(x.l)+'</span></a>'; };
   var L = function(x){ return '<a class="nav-item" href="'+href(x.p)+'"><span class="nav-item__label">'+esc(x.l)+'</span></a>'; };
   var demo = brand==='bc' ? c.secondary : c.primary, trial = brand==='bc' ? c.primary : null;
   if(bt===2) return brand==='bc' ? A('btn btn--secondary btn--sm',demo)+A('btn btn--primary btn--sm',trial) : A('btn btn--primary btn--sm',demo);
-  if(bt===3) return L(demo)+(trial?L(trial):'');
-  if(bt===4) return brand==='bc' ? L(demo) : '';
+  if(bt===3||bt===4) return L(demo)+(trial?L(trial):'');
   return brand==='bc' ? L(demo)+A('btn btn--secondary btn--sm',trial) : A('btn btn--secondary btn--sm',demo);
 }
 function hdrRightHTML(ctx){
@@ -983,11 +984,9 @@ function hdrRightHTML(ctx){
   var L = function(label,attrs){ return '<'+(attrs.indexOf('href')>-1?'a':'button type="button"')+' class="nav-item" '+attrs+'><span class="nav-item__label">'+label+'</span></'+(attrs.indexOf('href')>-1?'a':'button')+'>'; };
   var contact = L('Contact sales','href="#/contact-sales"');
   var login = L('Log in','data-modal="login" aria-haspopup="dialog"');
-  var started = '<button class="btn btn--primary" type="button" data-modal="started" aria-haspopup="dialog"><span>Get started</span></button>';
+  var started = '<button class="btn btn--primary'+(bt===4?' btn--sm':'')+'" type="button" data-modal="started" aria-haspopup="dialog"><span>Get started</span></button>';
   var inner;
   if(bt===2) inner = contact+login+L('Get started','data-modal="started" aria-haspopup="dialog"');
-  else if(bt===4 && ctx!=='cm') inner = contact+login+'<a class="btn btn--primary" href="'+href(CTA[ctx].primary.p)+'"><span>'+esc(CTA[ctx].primary.l)+'</span></a>';
-  else if(bt===5) inner = '<a class="btn btn--secondary" href="#/contact-sales"><span>Contact sales</span></a>'+login+started;
   else inner = contact+login+started;
   return '<div class="bar-cta">'+inner+'</div>';
 }
@@ -1144,7 +1143,7 @@ function route(path){
   else if(brand!=='cm' && path===BRAND[brand].base) html = '<main class="home">'+heroHome(brand)+'</main>';
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'})+'</main>';
   document.body.classList.toggle('dark',brand!=='cm' && path!==BRAND[brand].base && !(page && page.hub)); /* dark only on deeper brand pages */
-  document.body.dataset.sv = CFG.sv;
+  document.body.dataset.sv = CFG.sv; document.body.dataset.bt = CFG.bt;
   app.innerHTML = headerHTML(brand)+html;
   bindMenus();
   if(page && page.hub) initHub(brand,page.hub);
