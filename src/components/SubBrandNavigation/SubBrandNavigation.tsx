@@ -14,7 +14,7 @@ function SubBrandNavigation() {
   const [sl, setSl] = useState(true)
   const [nl, setNl] = useState<NavLayout>('full')
   const [path, setPath] = useState('/bigcommerce')
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(() => window.innerWidth > 760)
 
   // the document is built once; later changes reach the iframe by message so the page never reloads
   const doc = useMemo(() => buildDoc({ start: '/bigcommerce' }), []) // eslint-disable-line react-hooks/exhaustive-deps

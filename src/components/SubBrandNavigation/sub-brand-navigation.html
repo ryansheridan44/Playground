@@ -446,18 +446,9 @@ body.menu-open #scrim{opacity:1;pointer-events:auto}
 .product__name::after{content:"→";display:inline-block;margin-left:.5em;opacity:0;filter:blur(2px);transform:translateX(-30%);transition:opacity .4s var(--ease-soft),filter .4s var(--ease-soft),transform .6s var(--ease-out)}
 .product__head:hover .product__name::after,.product__head:focus-visible .product__name::after{opacity:.45;filter:blur(0);transform:none}
 .product__tag{color:var(--text-tertiary)}
-.tree{display:flex;flex-direction:column;padding-top:18px}
-.tree li{position:relative;padding:7px 0 7px 44px}
-.tree li::before,.tree li::after{content:"";position:absolute;left:19.25px}
-.tree li::before{top:0;bottom:0;border-left:1.5px solid var(--border)}
-.tree li:first-child::before{top:-18px}
-.tree li:last-child::before{bottom:auto;height:calc(50% - 12px)}
-.tree li:first-child:last-child::before{height:calc(50% - 12px + 18px)}
-.tree li::after{top:calc(50% - 12px);width:12px;height:12px;border-left:1.5px solid var(--border);border-bottom:1.5px solid var(--border);border-bottom-left-radius:12px}
-body[data-sv="text"] .tree li{padding:6px 0}
-body[data-sv="text"] .tree li::before,body[data-sv="text"] .tree li::after{display:none}
-body[data-sv="text"] .tree{padding-top:10px}
-body[data-sv="text"] .product__tag{display:none}
+.tree{display:flex;flex-direction:column;padding-top:6px}
+.tree li{padding:6px 0}
+.product__tag{display:none}
 .menu .strip{border:0;box-shadow:none;position:relative;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;height:auto;margin-top:28px;padding:14px 20px;background:var(--surface-2);border-radius:14px;font-size:inherit}
 .strip__text{display:flex;align-items:center;gap:8px}
 .strip__title{font-weight:var(--w-medium);font-size:15px}
@@ -503,7 +494,7 @@ body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .sub-bar{border-
 body:is([data-nl="floating"],[data-nl="panel"]) .stack:not(.has-sub)~main{margin-top:calc(var(--sub-h) + 1px)}
 body[data-nl="panel"]{--menu-gap:0px}
 body[data-nl="panel"] .stack{width:min(max(75vw,1260px),calc(100vw - 32px));margin-left:auto;margin-right:auto}
-body[data-nl="panel"] .bar__right>.nav,body[data-nl="panel"] .nav--sub{margin-right:120px}
+body[data-nl="panel"] .bar__right>.nav,body[data-nl="panel"] .nav--sub{margin-right:clamp(16px,calc(100vw - 1172px),120px)}
 body[data-nl="panel"] .nav-slot{position:static}
 body[data-nl="panel"] .menu{left:-1px;right:-1px;width:auto;max-width:none;padding:32px var(--gutter);border:1px solid var(--border);border-top:0;border-radius:0 0 var(--r-lg) var(--r-lg);box-shadow:0 20px 24px -12px rgba(0,0,0,.16);transform:translateY(-8px)}
 body[data-nl="panel"] .menu.is-open{transform:none}
@@ -525,23 +516,87 @@ body[data-nl="panel"] .menu__cols:has(>.feats)>.card{background:transparent;marg
 .feat__b{display:flex;flex-direction:column;gap:4px}
 .feat__t{font-weight:var(--w-medium);font-size:16px;line-height:22.4px}
 .feat__d{white-space:normal;color:var(--text-tertiary)}
+/* ===== responsive: under 1140px the navigation collapses ===== */
+/* closed dropdowns are positioned for their trigger and can sit past the viewport edge; clip them so the page never scrolls sideways */
+#app{overflow-x:clip}
+.m-toggle,.mpanel{display:none}
+@media(max-width:1139px){
+ :root{--gutter:24px}
+ .stack .bar__right>.nav,.stack .bar-cta>:not([data-cta]),.stack .nav--sub,.stack .sub-bar__right,.sub-bar__div,.menu{display:none!important}
+ .stack .bar--sub{gap:12px}
+ .sub-bar__label{margin-right:0!important;min-width:0;overflow:hidden}
+ .sub-bar__label>span:last-child{overflow:hidden;text-overflow:ellipsis}
+ .bar-cta{margin-left:auto}
+ .m-toggle{display:inline-flex;align-items:center;justify-content:center;flex:none;color:var(--text);cursor:pointer}
+ .m-toggle--global{width:44px;height:44px;margin-left:8px;margin-right:-10px;border-radius:var(--r-md)}
+ .m-toggle--global:hover{background:var(--surface-2)}
+ .bar-cta+.m-toggle--global{margin-left:4px}
+ .m-ico,.m-ico::before,.m-ico::after{display:block;width:20px;height:1.5px;background:currentColor;border-radius:1px;transition:transform .3s var(--ease-out),opacity .2s}
+ .m-ico{position:relative}
+ .m-ico::before,.m-ico::after{content:"";position:absolute;left:0}
+ .m-ico::before{top:-6px}.m-ico::after{top:6px}
+ .m-toggle[aria-expanded="true"] .m-ico{background:transparent}
+ .m-toggle[aria-expanded="true"] .m-ico::before{top:0;transform:rotate(45deg)}
+ .m-toggle[aria-expanded="true"] .m-ico::after{top:0;transform:rotate(-45deg)}
+ .m-toggle--sub{gap:6px;height:36px;margin-left:auto;padding:0 12px;border:1px solid var(--border-strong);border-radius:var(--r-sm);font-size:var(--type-s)}
+ .m-toggle--sub svg{width:12px;height:12px;transition:transform .3s var(--ease-out)}
+ .m-toggle--sub[aria-expanded="true"] svg{transform:rotate(180deg)}
+ body.m-open{overflow:hidden}
+ .mpanel{position:fixed;left:0;right:0;top:var(--mp-top,72px);bottom:0;z-index:45;flex-direction:column;padding:4px var(--gutter) 28px;background:var(--surface);overflow-y:auto;overscroll-behavior:contain;font-size:var(--type-m);line-height:var(--lh-m);color:var(--text);display:flex}
+ .mpanel[hidden]{display:none}
+ body:is([data-nl="floating"],[data-nl="panel"]) .mpanel{left:16px;right:16px;bottom:16px;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:0 16px 32px rgba(0,0,0,.14)}
+ .macc,.macc__h--link{border-bottom:1px solid var(--border)}
+ .macc__h{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:56px;padding:0;background:none;border:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+ .macc__h svg{width:12px;height:12px;flex:none;transition:transform .3s var(--ease-out)}
+ .macc__h[aria-expanded="true"] svg{transform:rotate(180deg)}
+ .macc__h[aria-expanded="true"]>span{font-weight:var(--w-medium)}
+ .macc__b{padding:0 0 16px}
+ .m-gt{display:block;margin:16px 0 2px;font-weight:var(--w-medium);font-size:var(--type-s);color:var(--text-tertiary)}
+ .m-gt--link{color:var(--text)}
+ .m-list{display:grid;grid-template-columns:minmax(0,1fr)}
+ .mpanel ul{list-style:none;margin:0;padding:0}
+ .m-link{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;color:var(--text)}
+ .m-ai{margin-top:8px;padding:0 16px;border-radius:var(--r-md);background:var(--surface-2);font-weight:var(--w-medium)}
+ .m-cta{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+ .m-cta .btn{width:100%}
+ .m-login{justify-content:center;color:var(--text-tertiary)}
+ .mpanel .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border:1px solid transparent;border-radius:var(--r-sm);font-size:var(--type-m);line-height:var(--lh-m);cursor:pointer;background:none;color:var(--text)}
+ .mpanel .btn--primary{background:var(--surface-inverse);color:var(--text-inverse)}
+ .mpanel .btn--secondary{border-color:var(--border-strong)}
+ .mpanel .tag{padding:1px 6px;border-radius:4px;background:var(--surface-2);color:var(--text-tertiary);font-size:var(--type-s)}
+ /* the page under the navigation */
+ .hero{padding:72px 0}
+ .visual,.ov .visual,.h-center .visual,.h-split .visual,.h-below .visual{height:360px!important}
+}
+@media(min-width:560px) and (max-width:1139px){ .m-list--2{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px} }
+@media(max-width:640px){
+ :root{--gutter:16px}
+ h1{font-size:36px!important;line-height:42px!important}
+ .hero{padding:48px 0}
+ .home .hero,.ov .hero,.ov-left{gap:32px}
+ .visual,.ov .visual,.h-center .visual,.h-split .visual,.h-below .visual{height:240px!important}
+ .btns{flex-wrap:wrap;gap:12px 20px}
+ .wrap{width:calc(100% - 32px)}
+ .mod-ov{padding:12px}
+}
+@media(max-width:420px){ .stack .bar-cta{display:none} .m-toggle--global{margin-left:auto} }
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
-/* every visibility except Mark: no tree connectors or sub-lines, a divider under each header, four equal columns sized to their content (180px to 260px) */
-body:not([data-sv="mark"]) .tree{padding-top:6px}
-body:not([data-sv="mark"]) .tree li{padding:6px 0}
-body:not([data-sv="mark"]) .tree li::before,body:not([data-sv="mark"]) .tree li::after{display:none}
-body:not([data-sv="mark"]) .product__tag{display:none}
-body:not([data-sv="mark"]) .menu .tile--bare{width:20px;height:24px}
-body:not([data-sv="mark"]) .product__head,body:not([data-sv="mark"]) .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid #eaecf0}
-body:not([data-sv="mark"]) :is(.product__head,.menu .group__title){box-sizing:content-box}
-body:not([data-sv="mark"]) .menu .group .list{margin-top:12px}
-body:not([data-sv="mark"]) .menu--lg .menu__cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:48px}
-body:not([data-sv="mark"]) .menu--lg .menu__cols>section{min-width:0}
-body:not([data-sv="mark"]) .menu--lg .menu__cols>section{grid-column:span 2}
-body:not([data-sv="mark"]) .menu--lg :is(.product,.group){min-width:180px;max-width:260px}
-body:not([data-sv="mark"]) .menu--lg .product-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
-body:not([data-sv="mark"]) .menu--lg .group-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
+/* every visibility: no connectors or sub-lines, items left aligned with the mark, a divider under each header, four equal columns sized to their content (180px to 260px) */
+body[data-sv] .menu .tile--bare{width:20px;height:24px}
+/* Mark: a smaller tile; headers are as tall as the tile so the dividers line up across columns */
+body[data-sv="mark"] .menu .tile--mark{width:32px;height:32px}
+body[data-sv="mark"] .menu .tile--mark svg{width:18px;height:18px}
+body[data-sv="mark"] .menu .menu__cols :is(.product__head,.group__title){min-height:32px}
+body[data-sv] .product__head,body[data-sv] .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid #eaecf0}
+body[data-sv] :is(.product__head,.menu .group__title){box-sizing:content-box}
+body[data-sv] .menu .group .list{margin-top:12px}
+body[data-sv] .menu--lg .menu__cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:48px}
+body[data-sv] .menu--lg .menu__cols>section{min-width:0}
+body[data-sv] .menu--lg .menu__cols>section{grid-column:span 2}
+body[data-sv] .menu--lg :is(.product,.group){min-width:180px;max-width:260px}
+body[data-sv] .menu--lg .product-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
+body[data-sv] .menu--lg .group-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
 @media (prefers-reduced-motion:reduce){.menu,.menu *,.nav-item::before{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}}
 </style>
 </head>
@@ -1080,15 +1135,15 @@ function hdrRightHTML(ctx){
   var L = function(label,attrs){ return '<'+(attrs.indexOf('href')>-1?'a':'button type="button"')+' class="nav-item" '+attrs+'><span class="nav-item__label">'+label+'</span></'+(attrs.indexOf('href')>-1?'a':'button')+'>'; };
   var contact = L('Contact sales','href="#/contact-sales"');
   var login = L('Log in','data-modal="login" aria-haspopup="dialog"');
-  var started = '<button class="btn btn--primary'+(bt===4?' btn--sm':'')+'" type="button" data-modal="started" aria-haspopup="dialog"><span>Get started</span></button>';
+  var started = '<button class="btn btn--primary'+(bt===4?' btn--sm':'')+'" type="button" data-modal="started" aria-haspopup="dialog" data-cta><span>Get started</span></button>';
   var inner;
-  if(bt===2) inner = contact+login+L('Get started','data-modal="started" aria-haspopup="dialog"');
+  if(bt===2) inner = contact+login+L('Get started','data-modal="started" aria-haspopup="dialog" data-cta');
   else inner = contact+login+started;
   return '<div class="bar-cta">'+inner+'</div>';
 }
 function subBarHTML(brand){
   var b = BRAND[brand];
-  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+'<span class="sub-bar__div" aria-hidden="true"></span>'+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
+  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+'<span class="sub-bar__div" aria-hidden="true"></span>'+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+'</nav></div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
@@ -1110,7 +1165,7 @@ function headerHTML(brand){
   /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
   var logo = '<a class="logo" href="#/" aria-label="Commerce home"><img src="'+WORDMARK+'" alt="Commerce" width="163" height="24"></a>';
   var nav = '<ul class="nav">'+NAV.cm.map(function(n){ return navItemHTML(n,false); }).join('')+'</ul>';
-  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="commerce-bar"><nav class="bar" aria-label="Commerce">'+logo+'<div class="bar__right">'+nav+hdrRightHTML(brand)+'</div>'+menuHTML('solutions')+menuHTML('learning')+'</nav></header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+loginModalHTML()+startedModalHTML();
+  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="commerce-bar"><nav class="bar" aria-label="Commerce">'+logo+'<div class="bar__right">'+nav+hdrRightHTML(brand)+'</div>'+mToggle('global')+menuHTML('solutions')+menuHTML('learning')+'</nav></header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+mobilePanelsHTML(brand)+loginModalHTML()+startedModalHTML();
 }
 /* ---------- get started page ---------- */
 var GS=[
@@ -1156,6 +1211,58 @@ function pageHTML(brand,page,isHome){
   if(page.gs) return '<div class="light">'+crumbsHTML(brand,page)+gsHTML()+'</div>';
   return '<div class="'+BRAND[brand].cls+'">'+(isHome?'':crumbsHTML(brand,page))+heroHTML(brand,page.label,page.type||'center')+'</div>';
 }
+
+/* ---------- collapsed navigation (under 1140px): hamburger and accordion panels ---------- */
+var M_MAX = 1139;
+function mToggle(id){
+  return id==='sub'
+    ? '<button class="m-toggle m-toggle--sub" type="button" data-mpanel="sub" aria-expanded="false" aria-controls="mp-sub"><span>Menu</span>'+CHEV+'</button>'
+    : '<button class="m-toggle m-toggle--global" type="button" data-mpanel="global" aria-expanded="false" aria-controls="mp-global" aria-label="Menu"><span class="m-ico" aria-hidden="true"></span></button>';
+}
+function mLinkHTML(it){ return '<li><a class="m-link" href="'+href(it.p)+'"><span>'+esc(it.l)+(it.ai?' ✦':'')+'</span>'+(it.tag?'<span class="tag">'+esc(it.tag)+'</span>':'')+'</a></li>'; }
+function mGroupHTML(g){
+  var title = g.head ? '<a class="m-gt m-gt--link" href="'+href(g.head.p)+'">'+esc(g.title)+'</a>' : '<p class="m-gt">'+esc(g.title)+'</p>';
+  return '<div class="m-group">'+title+'<ul class="m-list'+(g.items.length>6 && !g.head?' m-list--2':'')+'">'+g.items.filter(function(it){ return !it.cta; }).map(mLinkHTML).join('')+'</ul></div>';
+}
+function mAccHTML(n){
+  var m = MENU[n.m], f = m.footer;
+  var body = m.cols.filter(function(c){ return !c.card; }).map(mGroupHTML).join('')
+    + (f ? '<a class="m-link m-ai" href="'+href(f.p)+'"><span>✦ '+esc(f.l)+'</span></a>' : '');
+  return '<div class="macc"><button class="macc__h" type="button" aria-expanded="false" aria-controls="macc-'+n.m+'"><span>'+esc(n.l)+'</span>'+CHEV+'</button><div class="macc__b" id="macc-'+n.m+'" hidden>'+body+'</div></div>';
+}
+function mNavHTML(list,label){
+  return '<nav aria-label="'+esc(label)+'">'+list.map(function(n){
+    return n.m ? mAccHTML(n) : '<a class="macc__h macc__h--link" href="'+href(n.p)+'"><span>'+esc(n.l)+'</span></a>';
+  }).join('')+'</nav>';
+}
+function mobilePanelsHTML(brand){
+  var A = function(cls,x){ return '<a class="btn '+cls+'" href="'+href(x.p)+'"><span>'+esc(x.l)+'</span></a>'; };
+  var global = '<div class="mpanel" id="mp-global" data-for="global" hidden>'+mNavHTML(NAV.cm,'Commerce')
+    +'<div class="m-cta"><button class="btn btn--primary" type="button" data-modal="started" aria-haspopup="dialog"><span>Get started</span></button><a class="btn btn--secondary" href="#/contact-sales"><span>Contact sales</span></a><button class="btn btn--secondary" type="button" data-modal="login" aria-haspopup="dialog"><span>Log in</span></button></div></div>';
+  if(brand==='cm') return global;
+  var c = CTA[brand];
+  var sub = '<div class="mpanel" id="mp-sub" data-for="sub" hidden>'+mNavHTML(NAV[brand],BRAND[brand].name)
+    +'<div class="m-cta">'+A('btn--primary',c.primary)+(c.noHeaderSecondary?'':A('btn--secondary',c.secondary))+'<a class="m-link m-login" href="'+href(c.login)+'"><span>Log in to '+esc(BRAND[brand].name)+'</span></a></div></div>';
+  return global+sub;
+}
+var mOpen = null;
+function setMobile(id){
+  mOpen = id;
+  document.querySelectorAll('.m-toggle').forEach(function(t){ t.setAttribute('aria-expanded', String(t.dataset.mpanel===id)); });
+  document.querySelectorAll('.mpanel').forEach(function(p){ p.hidden = p.dataset.for!==id; });
+  document.body.classList.toggle('m-open', !!id);
+  var panel = id && document.getElementById('mp-'+id), stack = document.querySelector('.stack');
+  if(panel && stack) panel.style.setProperty('--mp-top', Math.round(stack.getBoundingClientRect().bottom + (/floating|panel/.test(document.body.dataset.nl||'') ? 8 : 0))+'px');
+}
+document.addEventListener('click',function(e){
+  var t = e.target.closest ? e.target.closest('.m-toggle,.macc__h[aria-controls]') : null; if(!t) return;
+  if(t.classList.contains('m-toggle')){ setMobile(mOpen===t.dataset.mpanel ? null : t.dataset.mpanel); return; }
+  var open = t.getAttribute('aria-expanded')==='true';
+  t.setAttribute('aria-expanded', String(!open));
+  var body = document.getElementById(t.getAttribute('aria-controls')); if(body) body.hidden = open;
+});
+document.addEventListener('keydown',function(e){ if(e.key==='Escape' && mOpen) setMobile(null); });
+window.addEventListener('resize',function(){ if(mOpen && window.innerWidth>M_MAX) setMobile(null); });
 
 /* ---------- menu behavior ---------- */
 var scrim = document.getElementById('scrim');
@@ -1242,7 +1349,7 @@ function route(path){
   var root = brandOf(path); if(root!=='cm' && path===BRAND[root].base){ path = BRAND[root].home; try{ history.replaceState(null,'','#'+path); }catch(e){} }
   curPath = path;
   var brand = brandOf(path), page = PAGES[path], html;
-  current = null; document.body.classList.remove('menu-open'); clearTimeout(closeT);
+  current = null; mOpen = null; document.body.classList.remove('menu-open','m-open'); clearTimeout(closeT);
   if(path==='/') html = '<main class="home">'+heroHome('cm')+'</main>';
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'}, brand!=='cm' && path===BRAND[brand].home)+'</main>';
   document.body.classList.toggle('dark',brand!=='cm' && !(page && page.hub)); /* dark on every brand page except hubs */
