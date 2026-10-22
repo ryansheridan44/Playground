@@ -538,22 +538,22 @@ var slug = function(s){return s.toLowerCase().replace(/&/g,'and').replace(/™/g
 var CFG = {sv:'mark',bt:1,start:''};
 var curPath = '/';
 var BRAND = {
-  bc:{name:'BigCommerce',tag:'Ecommerce platform for B2C and B2B',base:'/bigcommerce',logo:SVG.bcLogo,mark:SVG.bcMark,cls:'dark'},
-  fdx:{name:'Feedonomics',tag:'Product feed management',base:'/feedonomics',logo:SVG.fdxLogo,mark:SVG.fdxMark,cls:'dark'},
+  bc:{name:'BigCommerce',tag:'Ecommerce platform for B2C and B2B',base:'/bigcommerce',home:'/bigcommerce/product-overview',logo:SVG.bcLogo,mark:SVG.bcMark,cls:'dark'},
+  fdx:{name:'Feedonomics',tag:'Product feed management',base:'/feedonomics',home:'/feedonomics/product-overview',logo:SVG.fdxLogo,mark:SVG.fdxMark,cls:'dark'},
   cm:{name:'Commerce',base:'',logo:SVG.commerceLogo,cls:'light'}
 };
 var PAGES = {};
 var reg = function(path,label,brand){ if(!PAGES[path]) PAGES[path]={label:label,brand:brand}; return path; };
 var L = function(brand,l,o){ o=o||{}; var path = o.p || (BRAND[brand].base + '/' + slug(l)); reg(path,l,brand); var it={l:l,p:path}; for(var k in o) it[k]=o[k]; return it; };
 var LB = function(brand,arr){ return arr.map(function(x){ return typeof x==='string' ? L(brand,x) : L(brand,x.l,x); }); };
-['bc','fdx'].forEach(function(b){ reg(BRAND[b].base+'/product-overview','Product Overview',b); reg(BRAND[b].base,BRAND[b].name,b); });
+['bc','fdx'].forEach(function(b){ reg(BRAND[b].base+'/product-overview','Product Overview',b); });
 reg('/','Commerce','cm');
 
 /* ---------- content data (from the Figma file) ---------- */
 var LOREM = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 var SOL = [
- {k:'bc',name:'BigCommerce',desc:'Open SaaS ecommerce platform for B2C & B2B brands.',bg:'#e4e7ec',home:'/bigcommerce',items:LB('bc',['Product overview','B2B Commerce','Headless Commerce','Payments','Agentic Commerce','Multi-Storefront','Checkout','Apps & Integrations'])},
- {k:'fdx',name:'Feedonomics',desc:'Feed management for ads & agentic commerce',bg:'#cfdcff',home:'/feedonomics',items:LB('fdx',['Product overview','AI Data Enrichment','Agentic Commerce','Ecommerce Platform Sync','Advertising','Marketplaces','Order Orchestration','Integrations'])},
+ {k:'bc',name:'BigCommerce',desc:'Open SaaS ecommerce platform for B2C & B2B brands.',bg:'#e4e7ec',home:'/bigcommerce/product-overview',items:LB('bc',['Product overview','B2B Commerce','Headless Commerce','Payments','Agentic Commerce','Multi-Storefront','Checkout','Apps & Integrations'])},
+ {k:'fdx',name:'Feedonomics',desc:'Feed management for ads & agentic commerce',bg:'#cfdcff',home:'/feedonomics/product-overview',items:LB('fdx',['Product overview','AI Data Enrichment','Agentic Commerce','Ecommerce Platform Sync','Advertising','Marketplaces','Order Orchestration','Integrations'])},
 ];
 reg('/ai-labs','AI Labs','cm'); reg('/lorem-ipsum','Lorem Ipsum','cm');
 var AILABS = {k:'ai',name:'AI Labs',desc:'Experiments & early access in agentic commerce',bg:'#e3d9fb',home:'/ai-labs',items:[1,2,3,4,5,6,7,8].map(function(){ return {l:'Lorem Ipsum',p:'/lorem-ipsum'}; })};
@@ -566,8 +566,8 @@ reg('/get-started','Get started','cm');
 /* group: {title, items, head (brand link), section (label above a run of groups), n (inner columns)}; card = promo */
 var MENU = {
  'solutions':{brand:'cm',label:'Solutions',gap:72,cols:[
-  {title:'BigCommerce',section:'Products',head:{k:'bc',l:'BigCommerce',p:'/bigcommerce'},items:LB('bc',['B2B Commerce','Headless Commerce','Payments',{l:'Agentic Commerce',ai:true},'Multi-Storefront','Checkout','Apps & Integrations'])},
-  {title:'Feedonomics',section:'Products',head:{k:'fdx',l:'Feedonomics',p:'/feedonomics'},items:LB('fdx',[{l:'AI Data Enrichment',ai:true},{l:'Agentic Commerce',ai:true},'Ecommerce Platform Sync','Advertising','Marketplaces','Order Orchestration','Integrations'])},
+  {title:'BigCommerce',section:'Products',head:{k:'bc',l:'BigCommerce',p:'/bigcommerce/product-overview'},items:LB('bc',['B2B Commerce','Headless Commerce','Payments',{l:'Agentic Commerce',ai:true},'Multi-Storefront','Checkout','Apps & Integrations'])},
+  {title:'Feedonomics',section:'Products',head:{k:'fdx',l:'Feedonomics',p:'/feedonomics/product-overview'},items:LB('fdx',[{l:'AI Data Enrichment',ai:true},{l:'Agentic Commerce',ai:true},'Ecommerce Platform Sync','Advertising','Marketplaces','Order Orchestration','Integrations'])},
   {title:'Industries',section:'Capabilities',n:2,items:gl('industries',['Automotive','B2B & Wholesale','Health & Beauty','Home & Garden','Sports & Outdoors','Fashion & Apparel','Food & Beverage','Manufacturing'])},
   {title:'Teams',section:'Capabilities',items:gl('teams',['Marketing','Developers','Ecommerce','IT & Security'])}],
   footer:{l:'Visit our AI Labs',text:'Experiments and early access to what we’re building in agentic commerce.',cta:'Learn more',p:'/ai-labs'}},
@@ -974,7 +974,7 @@ function rightHTML(brand){
   return '<div class="hdr-r">'+'<a class="login" href="'+href(c.login)+'">Log in</a><a class="cta" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div>';
 }
 function switcherHTML(brand){
-  var b = BRAND[brand], home = brand==='cm' ? '#/' : href(b.base);
+  var b = BRAND[brand], home = brand==='cm' ? '#/' : href(b.home);
   return '<span class="bgrp"><a class="'+(brand==='cm'?'logo':'bl')+'" href="'+home+'" aria-label="'+b.name+' home" title="'+b.name+' home">'+b.logo+'</a></span>';
 }
 
@@ -982,7 +982,7 @@ function switcherHTML(brand){
 function stripHTML(brand){
   var here = norm(readPath());
   var item = function(label,path,on){ return '<a class="sl'+(on?' on':'')+'" href="'+href(path)+'"'+(on?' aria-current="'+(path.charAt(0)==='/'&&path.split('/').length>2||/^\/(customers|company|partners|contact-sales)$/.test(path)?'page':'true')+'"':'')+'><span class="slt">'+esc(label)+'</span></a>'; };
-  var left = item('Commerce','/',brand==='cm')+['bc','fdx'].map(function(k){ return item(BRAND[k].name,BRAND[k].base,k===brand); }).join('');
+  var left = item('Commerce','/',brand==='cm')+['bc','fdx'].map(function(k){ return item(BRAND[k].name,BRAND[k].home,k===brand); }).join('');
   var right = [['Customers','/customers'],['Company','/company'],['Partners','/partners'],['Contact sales','/contact-sales']].map(function(x){ return item(x[0],x[1],here===x[1]); }).join('');
   return '<div class="strip"><div class="wrap strip-in"><nav class="strip-l" aria-label="Commerce brands">'+left+'</nav><nav class="strip-r" aria-label="Commerce">'+right+'</nav></div></div>';
 }
@@ -1011,7 +1011,7 @@ function hdrRightHTML(ctx){
 }
 function subBarHTML(brand){
   var b = BRAND[brand];
-  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+(CFG.sv==='text'||CFG.sv==='mark-only'?'<span class="sub-bar__div" aria-hidden="true"></span>':'')+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
+  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+(CFG.sv==='text'||CFG.sv==='mark-only'?'<span class="sub-bar__div" aria-hidden="true"></span>':'')+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
@@ -1063,7 +1063,7 @@ function heroHome(brand){
 var VIS = '<div class="visual" role="img" aria-label="Hero visual placeholder"></div>';
 function crumbsHTML(brand,page){
   var mid = page.parent ? '<a href="'+href(page.parent.path)+'">'+esc(page.parent.label)+'</a>'+SVG.chevR : '';
-  var start = brand==='cm' ? '<a href="#/">Home</a>' : '<a href="#/">Commerce</a>'+SVG.chevR+'<a href="'+href(BRAND[brand].base)+'">'+BRAND[brand].name+'</a>';
+  var start = brand==='cm' ? '<a href="#/">Home</a>' : '<a href="#/">Commerce</a>'+SVG.chevR+'<a href="'+href(BRAND[brand].home)+'">'+BRAND[brand].name+'</a>';
   return '<div class="crumbs"><div class="wrap crumbs-in">'+start+SVG.chevR+mid+'<span class="cur">'+esc(page.label)+'</span></div></div>';
 }
 function heroHTML(brand,label,type){
@@ -1074,10 +1074,10 @@ function heroHTML(brand,label,type){
   if(type==='text') return '<section class="hero h-textonly"><div class="wrap"><div class="h-text">'+eb+h+d+C+'</div></div></section>';
   return '<section class="hero h-center"><div class="wrap">'+eb+h+d+C+VIS+'</div></section>';
 }
-function pageHTML(brand,page){
+function pageHTML(brand,page,isHome){
   if(page.hub){ var h=hubHTML(brand,page.hub); return '<div class="dark">'+crumbsHTML(brand,page)+h.hero+'</div><div class="light hb-body">'+h.body+'</div>'; }
   if(page.gs) return '<div class="light">'+crumbsHTML(brand,page)+gsHTML()+'</div>';
-  return '<div class="'+BRAND[brand].cls+'">'+crumbsHTML(brand,page)+heroHTML(brand,page.label,page.type||'center')+'</div>';
+  return '<div class="'+BRAND[brand].cls+'">'+(isHome?'':crumbsHTML(brand,page))+heroHTML(brand,page.label,page.type||'center')+'</div>';
 }
 
 /* ---------- menu behavior ---------- */
@@ -1155,13 +1155,15 @@ function brandOf(path){ return path.indexOf('/bigcommerce')===0?'bc':path.indexO
 function norm(p){ p=(p||'/').split('?')[0]; if(p.charAt(0)!=='/') p='/'+p; return p.replace(/\/+$/,'')||'/'; }
 function readPath(){ var h=''; try{ h=location.hash; }catch(e){} return h.slice(1)||'/'; }
 function route(path){
-  path = norm(path); curPath = path;
+  path = norm(path);
+  /* sub-brands have no homepage: the brand root redirects to its product overview, which is the landing page */
+  var root = brandOf(path); if(root!=='cm' && path===BRAND[root].base){ path = BRAND[root].home; try{ history.replaceState(null,'','#'+path); }catch(e){} }
+  curPath = path;
   var brand = brandOf(path), page = PAGES[path], html;
   current = null; document.body.classList.remove('menu-open'); clearTimeout(closeT);
   if(path==='/') html = '<main class="home">'+heroHome('cm')+'</main>';
-  else if(brand!=='cm' && path===BRAND[brand].base) html = '<main class="home">'+heroHome(brand)+'</main>';
-  else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'})+'</main>';
-  document.body.classList.toggle('dark',brand!=='cm' && path!==BRAND[brand].base && !(page && page.hub)); /* dark only on deeper brand pages */
+  else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'}, brand!=='cm' && path===BRAND[brand].home)+'</main>';
+  document.body.classList.toggle('dark',brand!=='cm' && !(page && page.hub)); /* dark on every brand page except hubs */
   document.body.dataset.sv = CFG.sv; document.body.dataset.bt = CFG.bt;
   app.innerHTML = headerHTML(brand)+html;
   bindMenus();
