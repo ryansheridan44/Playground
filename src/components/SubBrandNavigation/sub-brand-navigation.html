@@ -489,13 +489,29 @@ body[data-sv="black"] .sub-bar__label{gap:8px}
 /* mark only: the tile alone, then a divider */
 body[data-sv="mark-only"] .stack .bar--sub{gap:14px}
 body[data-sv="mark-only"] .sub-bar__label{min-width:0;margin-right:10px}
-/* navigation style: body[data-nl="floating"] wraps both bars in one rounded container 24px from the page edges. Dropdowns stay floating cards, 12px below the container.
-   The page content starts at the same height whether the sub-brand bar is there or not, so going to a sub-brand never moves it. */
-body[data-nl="floating"] .stack{top:24px;margin:24px 24px 0;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:0 8px 24px rgba(0,0,0,.08)}
-body[data-nl="floating"] .stack.has-sub{top:24px;transform:none!important;transition:none}
-body[data-nl="floating"] .commerce-bar,body[data-nl="floating"] .stack .bar{background:transparent}
-body[data-nl="floating"] .stack>:last-child .bar{border-bottom:0}
-body[data-nl="floating"] .stack:not(.has-sub)~main{margin-top:var(--sub-h)}
+/* navigation styles. Full width: bars edge to edge. Floating cards: both bars in rounded cards 16px from the page edges, dropdowns float as cards 16px below.
+   Floating panel: the same at 3/4 of the screen (at least 1180px), 120px minimum between the main links and the actions, and the dropdown is an attached full-width panel under a divider.
+   The page content starts at the same height with or without the sub-brand bar. */
+body:is([data-nl="floating"],[data-nl="panel"]) .stack{top:16px;margin:16px 16px 0;background:transparent}
+body:is([data-nl="floating"],[data-nl="panel"]) .stack.has-sub{top:calc(16px - var(--bar-h) - 1px)}
+body:is([data-nl="floating"],[data-nl="panel"]) .stack.has-sub.up{transform:translateY(calc(var(--bar-h) + 1px))}
+body:is([data-nl="floating"],[data-nl="panel"]) :is(.commerce-bar,.sub-bar){background:var(--surface);border:1px solid var(--border)}
+body:is([data-nl="floating"],[data-nl="panel"]) .stack .bar{background:transparent;border-bottom:0}
+body:is([data-nl="floating"],[data-nl="panel"]) .commerce-bar{border-radius:var(--r-lg);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+body:is([data-nl="floating"],[data-nl="panel"]) .stack.has-sub .commerce-bar{border-bottom:0;border-radius:var(--r-lg) var(--r-lg) 0 0;box-shadow:none}
+body:is([data-nl="floating"],[data-nl="panel"]) .sub-bar{border-radius:0 0 var(--r-lg) var(--r-lg);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+/* scrolled down with the sub-brand bar showing: the Commerce bar tucks away and the sub-brand bar stands alone */
+body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .commerce-bar{visibility:hidden}
+body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .sub-bar{border-radius:var(--r-lg)}
+body:is([data-nl="floating"],[data-nl="panel"]) .stack:not(.has-sub)~main{margin-top:calc(var(--sub-h) + 1px)}
+body[data-nl="panel"]{--menu-gap:0px}
+body[data-nl="panel"] .stack{width:min(max(75vw,1180px),calc(100vw - 32px));margin-left:auto;margin-right:auto}
+body[data-nl="panel"] .bar__right>.nav,body[data-nl="panel"] .nav--sub{margin-right:120px}
+body[data-nl="panel"] .nav-slot{position:static}
+body[data-nl="panel"] .menu{left:-1px;right:-1px;width:auto;max-width:none;padding:32px var(--gutter);border:1px solid var(--border);border-top:0;border-radius:0 0 var(--r-lg) var(--r-lg);box-shadow:0 20px 24px -12px rgba(0,0,0,.16);transform:translateY(-8px)}
+body[data-nl="panel"] .menu.is-open{transform:none}
+body[data-nl="panel"] .menu__cols>.card{margin-right:calc(8px - var(--gutter))}
+body.menu-open[data-nl="panel"] :is(.sub-bar,.stack:not(.has-sub) .commerce-bar){border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:none}
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* every visibility except Mark: no tree connectors or sub-lines, a divider under each header, four equal columns sized to their content (180px to 260px) */
@@ -1100,7 +1116,8 @@ function fitMenu(panel){
   }
   /* every dropdown sits --menu-gap below the bottom of the whole navigation, whichever bar it opens from */
   var stack = document.querySelector('.stack'), parent0 = panel.offsetParent;
-  if(stack && parent0) panel.style.top = Math.round(stack.getBoundingClientRect().bottom - parent0.getBoundingClientRect().top + (parseFloat(getComputedStyle(document.body).getPropertyValue('--menu-gap')) || 16)) + 'px';
+  var gap = parseFloat(getComputedStyle(document.body).getPropertyValue('--menu-gap'));
+  if(stack && parent0) panel.style.top = Math.round(stack.getBoundingClientRect().bottom - parent0.getBoundingClientRect().top + (isNaN(gap) ? 16 : gap)) + 'px';
   var r = panel.getBoundingClientRect(), vw = document.documentElement.clientWidth, shift = 0;
   if(r.right > vw-32) shift = vw-32-r.right;
   if(r.left+shift < 32) shift = 32-r.left;
@@ -1132,6 +1149,7 @@ window.addEventListener('scroll',function(){
   if(y<=72) st.classList.remove('up');
   else if(y<lastY-4) st.classList.add('up');
   else if(y>lastY+4) st.classList.remove('up');
+  st.classList.toggle('sub-only', y>72 && !st.classList.contains('up'));
   lastY = y;
 },{passive:true});
 function closeMenu(){ setMenu(null); }
