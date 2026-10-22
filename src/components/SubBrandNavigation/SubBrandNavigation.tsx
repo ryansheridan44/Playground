@@ -57,8 +57,8 @@ function SubBrandNavigation() {
               </div>
             </div>
             <div className="sbn-row">
-              <span>Navigation</span>
-              <div className="sbn-seg" role="group" aria-label="Navigation">
+              <span>Nav style</span>
+              <div className="sbn-seg" role="group" aria-label="Nav style">
                 {NAV_LAYOUTS.map((n) => (
                   <button key={n.value} type="button" className={nl === n.value ? 'on' : ''} onClick={() => setNl(n.value)} title={n.summary}>
                     {n.label}

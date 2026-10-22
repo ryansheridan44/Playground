@@ -27,8 +27,8 @@ export const VISIBILITY: { value: SubBrandVisibility; label: string; summary: st
 
 export const NAV_LAYOUTS: { value: NavLayout; label: string; summary: string }[] = [
   { value: 'full', label: 'Full width', summary: 'Bars run edge to edge. Dropdowns float below as rounded cards.' },
-  { value: 'floating', label: 'Floating cards', summary: 'Both bars float in rounded cards 16px from the page edges. Dropdowns float below as cards.' },
-  { value: 'panel', label: 'Floating panel', summary: 'A narrower floating nav (3/4 of the screen) with 120px between the links and the actions. Dropdowns are full width panels attached under a divider.' },
+  { value: 'floating', label: 'Floating', summary: 'Both bars float in rounded cards 16px from the page edges. Dropdowns float below as cards.' },
+  { value: 'panel', label: 'Centered', summary: 'A narrower, centered floating nav (3/4 of the screen) with 120px between the links and the actions. Dropdowns are full width panels attached under a divider.' },
 ]
 
 export const BUTTON_VARIATIONS = [

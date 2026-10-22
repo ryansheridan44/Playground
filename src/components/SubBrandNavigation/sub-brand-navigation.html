@@ -493,8 +493,12 @@ body:is([data-nl="floating"],[data-nl="panel"]) .commerce-bar{border-radius:var(
 body:is([data-nl="floating"],[data-nl="panel"]) .stack.has-sub .commerce-bar{border-bottom:0;border-radius:var(--r-lg) var(--r-lg) 0 0;box-shadow:none}
 body:is([data-nl="floating"],[data-nl="panel"]) .sub-bar{border-radius:0 0 var(--r-lg) var(--r-lg);box-shadow:0 8px 24px rgba(0,0,0,.08)}
 /* scrolled down with the sub-brand bar showing: the Commerce bar tucks away and the sub-brand bar stands alone */
-body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .commerce-bar{visibility:hidden}
+body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .commerce-bar{opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s linear .3s}
 body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .sub-bar{border-radius:var(--r-lg)}
+/* every part of the move eases together instead of snapping */
+body:is([data-nl="floating"],[data-nl="panel"]) .stack.has-sub{transition:transform .5s cubic-bezier(.33,.6,.2,1);will-change:transform}
+body:is([data-nl="floating"],[data-nl="panel"]) .commerce-bar{transition:opacity .3s ease,visibility 0s}
+body:is([data-nl="floating"],[data-nl="panel"]) .sub-bar{transition:border-radius .5s cubic-bezier(.33,.6,.2,1)}
 body:is([data-nl="floating"],[data-nl="panel"]) .stack:not(.has-sub)~main{margin-top:calc(var(--sub-h) + 1px)}
 body[data-nl="panel"]{--menu-gap:0px}
 body[data-nl="panel"] .stack{width:min(max(75vw,1260px),calc(100vw - 32px));margin-left:auto;margin-right:auto}
@@ -1307,15 +1311,24 @@ function setMenu(id){
   document.body.classList.toggle('menu-open',!!id);
   if(id){ var m = document.getElementById('menu-'+id); if(m) fitMenu(m); }
 }
-var lastY = 0;
+var lastY = 0, scrollAcc = 0, scrollTick = false;
+/* Hide the Commerce bar on the way down and bring it back on the way up. A direction change only counts after 12px of travel,
+   so trackpad jitter and inertia cannot flip it back and forth, and the work runs once per frame. */
 window.addEventListener('scroll',function(){
-  var st = document.querySelector('.stack.has-sub'); if(!st) return;
-  var y = window.pageYOffset||0;
-  if(y<=72) st.classList.remove('up');
-  else if(y<lastY-4) st.classList.add('up');
-  else if(y>lastY+4) st.classList.remove('up');
-  st.classList.toggle('sub-only', y>72 && !st.classList.contains('up'));
-  lastY = y;
+  if(scrollTick) return; scrollTick = true;
+  requestAnimationFrame(function(){
+    scrollTick = false;
+    var st = document.querySelector('.stack.has-sub'); if(!st) return;
+    var y = Math.max(0, window.pageYOffset||0), dy = y - lastY; lastY = y;
+    if(y<=72){ scrollAcc = 0; st.classList.remove('up'); }
+    else if(dy!==0){
+      if((dy>0)!==(scrollAcc>0)) scrollAcc = 0;
+      scrollAcc += dy;
+      if(scrollAcc<-12){ st.classList.add('up'); scrollAcc = 0; }
+      else if(scrollAcc>12){ st.classList.remove('up'); scrollAcc = 0; }
+    }
+    st.classList.toggle('sub-only', y>72 && !st.classList.contains('up'));
+  });
 },{passive:true});
 function closeMenu(){ setMenu(null); }
 var ptr = 'mouse';
