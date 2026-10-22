@@ -351,9 +351,9 @@ var MENU = {
 };
 
 var NAV = {
- cm:[{l:'Solutions',m:'solutions'},{l:'Industries',m:'industries'},{l:'Learning',m:'learning'},{l:'Customers',p:'/customers'},{l:'Company',p:'/company'},{l:'Partners',p:'/partners'}],
- bc:[{l:'Products',m:'bc-products'},{l:'Services',p:'/bigcommerce/services'},{l:'Integrations',p:'/bigcommerce/integrations'},{l:'Pricing',p:'/bigcommerce/pricing'},{l:'Resources',m:'bc-resources'}],
- fdx:[{l:'Products',m:'fdx-products'},{l:'Integrations',m:'fdx-integrations'},{l:'Services',p:'/feedonomics/services'},{l:'Pricing',p:'/feedonomics/pricing'},{l:'Resources',m:'fdx-resources'}],
+ cm:[{l:'Solutions',m:'solutions'},{l:'Learning',m:'learning'},{l:'Customers',p:'/customers'},{l:'Company',p:'/company'},{l:'Partners',p:'/partners'}],
+ bc:[{l:'Product Features',m:'bc-products'},{l:'Services',p:'/bigcommerce/services'},{l:'Integrations',p:'/bigcommerce/integrations'},{l:'Pricing',p:'/bigcommerce/pricing'},{l:'Resources',m:'bc-resources'}],
+ fdx:[{l:'Product Features',m:'fdx-products'},{l:'Integrations',m:'fdx-integrations'},{l:'Services',p:'/feedonomics/services'},{l:'Pricing',p:'/feedonomics/pricing'},{l:'Resources',m:'fdx-resources'}],
 };
 Object.keys(NAV).forEach(function(b){ NAV[b].forEach(function(n){ if(n.p) reg(n.p,n.l,b); }); });
 
@@ -394,7 +394,7 @@ reg('/solutions','Solutions','cm'); PAGES['/solutions'].section = true;
 /* sub-brand CTAs and log in */
 var CTA = {
  cm:{primary:{l:'Get started',p:'/get-started'},secondary:{l:'Contact sales',p:'/contact-sales'}},
- bc:{login:'/bigcommerce/log-in',primary:{l:'Try for free',p:'/bigcommerce/try-for-free'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
+ bc:{login:'/bigcommerce/log-in',primary:{l:'Free trial',p:'/bigcommerce/free-trial'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
  fdx:{login:'/feedonomics/log-in',primary:{l:'Get a demo',p:'/feedonomics/get-a-demo'},secondary:{l:'See how it works',p:'/feedonomics/how-it-works'},noHeaderSecondary:true},
 };
 reg('/contact-sales','Contact Sales','cm');
@@ -641,14 +641,20 @@ function panelHTML(id){
   var style = m.fixed ? 'grid-template-columns:repeat('+m.fixed+',minmax(0,1fr))' : m.single ? 'grid-template-columns:calc((100% - 24px) / 3)' : 'grid-template-columns:'+tpl;
   return '<div class="panel" data-menu="'+id+'" hidden><div class="slot"><div class="wrap"><div class="cols" style="'+style+'">'+m.cols.map(colHTML).join('')+'</div></div></div></div>';
 }
+var IND_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path style="fill:none" d="M3.5 17V3.5h8V17M11.5 8h5V17M6.5 7h2M6.5 10.5h2M6.5 14h2M2 17h16" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var TEAM_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path style="fill:none" d="M7.5 9a2.75 2.75 0 100-5.5 2.75 2.75 0 000 5.5zM2.5 16.5c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5M13.5 8.5a2.25 2.25 0 100-4.5M14.5 12.2c1.7.4 3 1.7 3 4.3" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+reg('/industries','Industries','cm'); reg('/teams','Teams','cm');
+var IND_SOL = {k:'ind',name:'Industries',desc:'Solutions by industry.',bg:'#e4e7ec',home:'/industries',ic:IND_ICON,hd:'Industries',items:IND[0].sub[0].concat(IND[0].sub[1])};
+var TEAM_SOL = {k:'teams',name:'Teams',desc:'Solutions by team.',bg:'#e4e7ec',home:'/teams',ic:TEAM_ICON,hd:'Teams',items:IND[1].items};
 function solutionsPanelHTML(){
-  var picker = SOL.map(function(s,i){
-    var ic = s.k==='bc'?SVG.bcMark:SVG.fdxMark;
+  var SOLX = SOL.concat([IND_SOL, TEAM_SOL]);
+  var picker = SOLX.map(function(s,i){
+    var ic = s.ic || (s.k==='bc'?SVG.bcMark:SVG.fdxMark);
     return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span><span class="pk-d" style="display:block">'+esc(s.desc)+'</span></span></a>';
   }).join('');
-  var rights = SOL.map(function(s,i){
+  var rights = SOLX.map(function(s,i){
     var half = s.items.length/2;
-    return '<div class="sol-r" data-k="'+s.k+'"'+(i===0?'':' hidden')+'><div class="sol-hd"><div class="sol-hd-r"><span class="sth-t">Products &amp; features</span><a class="explore" href="'+href(s.home)+'"><span>Explore</span>'+SVG.arrowRight+'</a></div><div class="sth-d"></div></div><div class="sol-grid">'+itemsHTML(s.items.slice(0,half))+itemsHTML(s.items.slice(half))+'</div></div>';
+    return '<div class="sol-r" data-k="'+s.k+'"'+(i===0?'':' hidden')+'><div class="sol-hd"><div class="sol-hd-r"><span class="sth-t">'+(s.hd?esc(s.hd):'Products &amp; features')+'</span><a class="explore" href="'+href(s.home)+'"><span>Explore</span>'+SVG.arrowRight+'</a></div><div class="sth-d"></div></div><div class="sol-grid">'+itemsHTML(s.items.slice(0,half))+itemsHTML(s.items.slice(half))+'</div></div>';
   }).join('');
   var ai = AI.map(itemHTML).join('');
   return '<div class="panel" data-menu="solutions" hidden><div class="slot"><div class="wrap"><div class="sol-row"><div class="picker">'+picker+'</div><div class="sol-right">'+rights+'</div></div><div class="sol-div"></div><div class="ai-row">'+ai+'</div></div></div></div>';
@@ -683,9 +689,9 @@ function ctasHTML(brand){
   return '<div class="btns"><a class="btn" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a><a class="tl" href="'+href(c.secondary.p)+'"><span>'+esc(c.secondary.l)+'</span>'+SVG.arrowRight+'</a></div>';
 }
 function rightHTML(brand){
-  if(brand==='cm') return '<div class="hdr-r"><button class="login" type="button" data-trigger="login" aria-haspopup="true" aria-expanded="false"><span>Log in</span>'+SVG.chev+'</button><a class="cta" href="#/get-started">Get started</a></div>';
+  if(brand==='cm') return '<div class="hdr-r"><a class="login" href="#/contact-sales">Contact sales</a><button class="login" type="button" data-trigger="login" aria-haspopup="true" aria-expanded="false"><span>Log in</span>'+SVG.chev+'</button><a class="cta" href="#/get-started">Get started</a></div>';
   var c = CTA[brand];
-  return '<div class="hdr-r"><a class="login" href="'+href(c.login)+'">Log in</a><a class="cta" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div>';
+  return '<div class="hdr-r">'+(brand==='bc'?'<a class="login" href="'+href(c.secondary.p)+'">'+esc(c.secondary.l)+'</a>':'')+'<a class="login" href="'+href(c.login)+'">Log in</a><a class="cta" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div>';
 }
 function switcherHTML(brand){
   var b = BRAND[brand], home = brand==='cm' ? '#/' : href(b.base);
@@ -695,7 +701,7 @@ function headerHTML(brand){
   var left, panels='';
   if(brand==='cm'){
     left = switcherHTML('cm')+'<span class="vdiv"></span><nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
-    panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+loginPanelHTML();
+    panels = solutionsPanelHTML()+panelHTML('learning')+loginPanelHTML();
   } else {
     var b = BRAND[brand];
     left = switcherHTML(brand)+'<span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav>';

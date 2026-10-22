@@ -399,9 +399,9 @@ var MENU = {
 };
 
 var NAV = {
- cm:[{l:'Solutions',m:'solutions'},{l:'Industries',m:'industries'},{l:'Learning',m:'learning'},{l:'Company',m:'company'}],
- bc:[{l:'Products',m:'bc-products'},{l:'Services',p:'/bigcommerce/services'},{l:'Integrations',p:'/bigcommerce/integrations'},{l:'Pricing',p:'/bigcommerce/pricing'},{l:'Resources',m:'bc-resources'}],
- fdx:[{l:'Products',m:'fdx-products'},{l:'Integrations',m:'fdx-integrations'},{l:'Services',p:'/feedonomics/services'},{l:'Pricing',p:'/feedonomics/pricing'},{l:'Resources',m:'fdx-resources'}],
+ cm:[{l:'Solutions',m:'solutions'},{l:'Learning',m:'learning'},{l:'Customers',p:'/customers'},{l:'Company',m:'company'},{l:'Partners',p:'/partners'}],
+ bc:[{l:'Product Features',m:'bc-products'},{l:'Services',p:'/bigcommerce/services'},{l:'Integrations',p:'/bigcommerce/integrations'},{l:'Pricing',p:'/bigcommerce/pricing'},{l:'Resources',m:'bc-resources'}],
+ fdx:[{l:'Product Features',m:'fdx-products'},{l:'Integrations',m:'fdx-integrations'},{l:'Services',p:'/feedonomics/services'},{l:'Pricing',p:'/feedonomics/pricing'},{l:'Resources',m:'fdx-resources'}],
 };
 Object.keys(NAV).forEach(function(b){ NAV[b].forEach(function(n){ if(n.p) reg(n.p,n.l,b); }); });
 /* these now live in the parent strip, not the main nav, so register their pages explicitly */
@@ -444,7 +444,7 @@ reg('/solutions','Solutions','cm'); PAGES['/solutions'].section = true;
 /* sub-brand CTAs and log in */
 var CTA = {
  cm:{primary:{l:'Get started',p:'/get-started'},secondary:{l:'Contact sales',p:'/contact-sales'}},
- bc:{login:'/bigcommerce/log-in',primary:{l:'Try for free',p:'/bigcommerce/try-for-free'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
+ bc:{login:'/bigcommerce/log-in',primary:{l:'Free trial',p:'/bigcommerce/free-trial'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
  fdx:{login:'/feedonomics/log-in',primary:{l:'Get a demo',p:'/feedonomics/get-a-demo'},secondary:{l:'See how it works',p:'/feedonomics/how-it-works'},noHeaderSecondary:true},
 };
 reg('/contact-sales','Contact Sales','cm');
@@ -691,15 +691,20 @@ function panelHTML(id){
   var style = m.fixed ? 'grid-template-columns:repeat('+m.fixed+',minmax(0,1fr))' : m.single ? 'grid-template-columns:calc((100% - 24px) / 3)' : 'grid-template-columns:'+tpl;
   return '<div class="panel" data-menu="'+id+'" hidden><div class="slot"><div class="wrap"><div class="cols" style="'+style+'">'+m.cols.map(colHTML).join('')+'</div></div></div></div>';
 }
+var IND_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path style="fill:none" d="M3.5 17V3.5h8V17M11.5 8h5V17M6.5 7h2M6.5 10.5h2M6.5 14h2M2 17h16" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var TEAM_ICON = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path style="fill:none" d="M7.5 9a2.75 2.75 0 100-5.5 2.75 2.75 0 000 5.5zM2.5 16.5c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5M13.5 8.5a2.25 2.25 0 100-4.5M14.5 12.2c1.7.4 3 1.7 3 4.3" stroke="#000" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+reg('/industries','Industries','cm'); reg('/teams','Teams','cm');
+var IND_SOL = {k:'ind',name:'Industries',desc:'Solutions by industry.',bg:'#e4e7ec',home:'/industries',ic:IND_ICON,hd:'Industries',items:IND[0].sub[0].concat(IND[0].sub[1])};
+var TEAM_SOL = {k:'teams',name:'Teams',desc:'Solutions by team.',bg:'#e4e7ec',home:'/teams',ic:TEAM_ICON,hd:'Teams',items:IND[1].items};
 function solutionsPanelHTML(){
-  var PANEL_SOL = SOL.concat([AILABS]);
+  var PANEL_SOL = SOL.concat([IND_SOL, TEAM_SOL, AILABS]);
   var picker = PANEL_SOL.map(function(s,i){
-    var ic = s.k==='bc'?SVG.bcMark:s.k==='fdx'?SVG.fdxMark:SVG.aiMark;
+    var ic = s.ic || (s.k==='bc'?SVG.bcMark:s.k==='fdx'?SVG.fdxMark:SVG.aiMark);
     return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span></span></a>';
   }).join('');
   var rights = PANEL_SOL.map(function(s,i){
     var half = s.items.length/2;
-    return '<div class="sol-r" data-k="'+s.k+'"'+(i===0?'':' hidden')+'><div class="sol-hd"><div class="sol-hd-r"><span class="sth-t">'+(s.k==='ai'?'':esc(s.name)+' ')+'Products &amp; features</span><a class="explore" href="'+href(s.home)+'"><span>Explore</span>'+SVG.arrowRight+'</a></div><div class="sth-d"></div></div><div class="sol-grid">'+itemsHTML(s.items.slice(0,half))+itemsHTML(s.items.slice(half))+'</div></div>';
+    return '<div class="sol-r" data-k="'+s.k+'"'+(i===0?'':' hidden')+'><div class="sol-hd"><div class="sol-hd-r"><span class="sth-t">'+(s.hd?esc(s.hd):(s.k==='ai'?'':esc(s.name)+' ')+'Products &amp; features')+'</span><a class="explore" href="'+href(s.home)+'"><span>Explore</span>'+SVG.arrowRight+'</a></div><div class="sth-d"></div></div><div class="sol-grid">'+itemsHTML(s.items.slice(0,half))+itemsHTML(s.items.slice(half))+'</div></div>';
   }).join('');
   return '<div class="panel" data-menu="solutions" hidden><div class="slot"><div class="wrap"><div class="sol-row"><div class="picker">'+picker+'</div><div class="sol-right">'+rights+'</div></div></div></div></div>';
 }
@@ -754,7 +759,7 @@ function subBarHTML(brand){
   var b = BRAND[brand], c = CTA[brand], panels = '';
   Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
   var id = '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+b.name+' overview"><span>'+b.name+'</span></a>';
-  return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="btn o" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
+  return '<div class="sub"><div class="wrap sub-in"><div class="sub-l">'+id+'<span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r">'+(brand==='bc'?'<a class="login" href="'+href(c.secondary.p)+'">'+esc(c.secondary.l)+'</a>':'')+'<a class="btn o" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
@@ -775,7 +780,7 @@ function startedModalHTML(){
 function headerHTML(brand){
   /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
   var left = switcherHTML('cm')+'<nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
-  var panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+panelHTML('company');
+  var panels = solutionsPanelHTML()+panelHTML('learning')+panelHTML('company');
   return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+rightHTML('cm')+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+loginModalHTML()+startedModalHTML();
 }
 /* ---------- get started page ---------- */
