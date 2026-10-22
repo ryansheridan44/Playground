@@ -516,6 +516,8 @@ body[data-nl="panel"] .menu__cols:has(>.feats)>.card{background:transparent;marg
 .feat__b{display:flex;flex-direction:column;gap:4px}
 .feat__t{font-weight:var(--w-medium);font-size:16px;line-height:22.4px}
 .feat__d{white-space:normal;color:var(--text-tertiary)}
+/* a redraw from the Controls panel should not replay any animation */
+body.no-anim *,body.no-anim *::before,body.no-anim *::after{transition:none!important;animation:none!important}
 /* ===== responsive: under 1140px the navigation collapses ===== */
 /* closed dropdowns are positioned for their trigger and can sit past the viewport edge; clip them so the page never scrolls sideways */
 #app{overflow-x:clip}
@@ -1342,7 +1344,7 @@ var app = document.getElementById('app');
 function brandOf(path){ return path.indexOf('/bigcommerce')===0?'bc':path.indexOf('/feedonomics')===0?'fdx':'cm'; }
 function norm(p){ p=(p||'/').split('?')[0]; if(p.charAt(0)!=='/') p='/'+p; return p.replace(/\/+$/,'')||'/'; }
 function readPath(){ var h=''; try{ h=location.hash; }catch(e){} return h.slice(1)||'/'; }
-function route(path){
+function route(path,keep){
   path = norm(path);
   /* sub-brands have no homepage: the brand root redirects to its product overview, which is the landing page */
   var root = brandOf(path); if(root!=='cm' && path===BRAND[root].base){ path = BRAND[root].home; try{ history.replaceState(null,'','#'+path); }catch(e){} }
@@ -1357,8 +1359,33 @@ function route(path){
   bindMenus();
   if(page && page.hub) initHub(brand,page.hub);
   document.title = (path==='/'?'Commerce':(page?page.label:'Not found'))+' · Commerce navigation prototype';
-  window.scrollTo(0,0); lastY = 0;
+  if(keep) restoreView(keep); else { window.scrollTo(0,0); lastY = 0; }
   try{ parent.postMessage({type:'consolidated-nav:path',path:path},'*'); }catch(e){}
+}
+/* A change in the Controls panel redraws the same page without losing your place: scroll position, the open dropdown,
+   the open mobile panel and its accordions, and an open dialog all stay as they were. */
+function snapshotView(){
+  var st = document.querySelector('.stack'), mp = mOpen && document.getElementById('mp-'+mOpen), md = document.querySelector('.mod-ov:not([hidden])');
+  return {
+    y: window.pageYOffset||0, menu: current, m: mOpen, modal: md ? md.id : null,
+    up: !!(st && st.classList.contains('up')), subOnly: !!(st && st.classList.contains('sub-only')),
+    accs: [].map.call(document.querySelectorAll('.macc__h[aria-expanded="true"]'),function(t){ return t.getAttribute('aria-controls'); }),
+    ps: mp ? mp.scrollTop : 0
+  };
+}
+function restoreView(k){
+  document.body.classList.add('no-anim');
+  window.scrollTo(0,k.y); lastY = k.y;
+  var st = document.querySelector('.stack.has-sub');
+  if(st){ st.classList.toggle('up',k.up); st.classList.toggle('sub-only',k.subOnly); }
+  if(k.menu) setMenu(k.menu);
+  if(k.m){
+    setMobile(k.m);
+    k.accs.forEach(function(id){ var b = document.getElementById(id), h = document.querySelector('.macc__h[aria-controls="'+id+'"]'); if(b && h){ b.hidden = false; h.setAttribute('aria-expanded','true'); } });
+    var p = document.getElementById('mp-'+k.m); if(p) p.scrollTop = k.ps;
+  }
+  if(k.modal){ var m = document.getElementById(k.modal); if(m) m.hidden = false; }
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ document.body.classList.remove('no-anim'); }); });
 }
 function navigate(path){ path = norm(path); try{ history.pushState(null,'','#'+path); }catch(e){} route(path); }
 document.addEventListener('click',function(e){
@@ -1367,7 +1394,7 @@ document.addEventListener('click',function(e){
   e.preventDefault(); navigate(a.getAttribute('href').slice(1));
 });
 window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:go' && typeof d.path==='string') navigate(d.path); });
-window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.sv==='string') CFG.sv=d.sv; if(typeof d.bt==='number') CFG.bt=d.bt; if(typeof d.sl==='boolean') CFG.sl=d.sl; if(typeof d.nl==='string') CFG.nl=d.nl; if(typeof d.open==='string') CFG.open=d.open; route(curPath); } });
+window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.sv==='string') CFG.sv=d.sv; if(typeof d.bt==='number') CFG.bt=d.bt; if(typeof d.sl==='boolean') CFG.sl=d.sl; if(typeof d.nl==='string') CFG.nl=d.nl; if(typeof d.open==='string') CFG.open=d.open; route(curPath,snapshotView()); } });
 window.addEventListener('popstate',function(){ route(readPath()); });
 window.addEventListener('hashchange',function(){ route(readPath()); });
 route(CFG.start && readPath()==='/' ? CFG.start : readPath());
