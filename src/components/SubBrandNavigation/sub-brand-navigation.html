@@ -488,17 +488,16 @@ body[data-sv="black"] .sub-bar__label{gap:8px}
 /* mark only: the tile alone, then a divider */
 body[data-sv="mark-only"] .stack .bar--sub{gap:14px}
 body[data-sv="mark-only"] .sub-bar__label{min-width:0;margin-right:10px}
-/* navigation style: body[data-nl="floating"] wraps both bars in one rounded container 24px from the page edges; dropdowns open as full-width extensions of it */
-body[data-nl="floating"] .stack{top:24px;margin:24px 24px 0;border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+/* navigation style: body[data-nl="floating"] wraps both bars in one rounded container 24px from the page edges. Dropdowns stay floating cards, 12px below the container.
+   The page content starts at the same height whether the sub-brand bar is there or not, so going to a sub-brand never moves it. */
+body[data-nl="floating"] .stack{top:24px;margin:24px 24px 0;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:0 8px 24px rgba(0,0,0,.08)}
 body[data-nl="floating"] .stack.has-sub{top:24px;transform:none!important;transition:none}
-body[data-nl="floating"].menu-open .stack{border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:none}
-body[data-nl="floating"] :is(.stack,.commerce-bar,.sub-bar) .bar,body[data-nl="floating"] .commerce-bar{background:transparent}
+body[data-nl="floating"] .commerce-bar,body[data-nl="floating"] .stack .bar{background:transparent}
 body[data-nl="floating"] .stack>:last-child .bar{border-bottom:0}
-body[data-nl="floating"] .nav-slot{position:static}
-body[data-nl="floating"] .menu{left:-1px;right:-1px;top:100%;width:auto;max-width:none;padding:32px var(--gutter);border:1px solid var(--border);border-top:0;border-radius:0 0 var(--r-xl) var(--r-xl);box-shadow:0 20px 24px -12px rgba(0,0,0,.16);transform:translateY(-8px)}
-body[data-nl="floating"] .menu.is-open{transform:none}
-body[data-nl="floating"] .stack.has-sub .menu--end{top:calc(100% + var(--sub-h))}
-body[data-nl="floating"] .menu__cols>.card{margin-right:calc(8px - var(--gutter))}
+body[data-nl="floating"] .stack:not(.has-sub)~main{margin-top:var(--sub-h)}
+body[data-nl="floating"] .menu--sub{top:calc(100% + 20px)}
+body[data-nl="floating"] .menu--end{top:calc(100% + 12px)}
+body[data-nl="floating"] .stack.has-sub .menu--end{top:calc(100% + var(--sub-h) + 12px)}
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* every visibility except Mark: no tree connectors or sub-lines, a divider under each header, four equal columns sized to their content (180px to 260px) */
