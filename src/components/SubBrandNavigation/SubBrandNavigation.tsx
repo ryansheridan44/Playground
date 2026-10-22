@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BUTTON_VARIATIONS, PAGES, VISIBILITY, buildDoc } from './variants'
-import type { SubBrandVisibility } from './variants'
+import { BUTTON_VARIATIONS, NAV_LAYOUTS, PAGES, VISIBILITY, buildDoc } from './variants'
+import type { NavLayout, SubBrandVisibility } from './variants'
 import './SubBrandNavigation.css'
 
 const brandOf = (path: string) =>
@@ -12,6 +12,7 @@ function SubBrandNavigation() {
   const [sv, setSv] = useState<SubBrandVisibility>('mark')
   const [bt, setBt] = useState(1)
   const [sl, setSl] = useState(true)
+  const [nl, setNl] = useState<NavLayout>('full')
   const [path, setPath] = useState('/bigcommerce')
   const [open, setOpen] = useState(true)
 
@@ -30,8 +31,8 @@ function SubBrandNavigation() {
   }, [])
 
   useEffect(() => {
-    post({ type: 'consolidated-nav:config', sv, bt, sl })
-  }, [sv, bt, sl])
+    post({ type: 'consolidated-nav:config', sv, bt, sl, nl })
+  }, [sv, bt, sl, nl])
 
   return (
     <div className="sbn">
@@ -58,6 +59,17 @@ function SubBrandNavigation() {
                   </button>
                 ))}
               </div>
+            </div>
+            <div className="sbn-row">
+              <span>Navigation</span>
+              <div className="sbn-seg" role="group" aria-label="Navigation">
+                {NAV_LAYOUTS.map((n) => (
+                  <button key={n.value} type="button" className={nl === n.value ? 'on' : ''} onClick={() => setNl(n.value)} title={n.summary}>
+                    {n.label}
+                  </button>
+                ))}
+              </div>
+              <p className="sbn-note">{NAV_LAYOUTS.find((n) => n.value === nl)?.summary}</p>
             </div>
             <div className="sbn-row">
               <span>Sub-brand visibility</span>

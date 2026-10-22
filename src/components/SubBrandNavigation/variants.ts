@@ -2,6 +2,8 @@ import raw from './sub-brand-navigation.html?raw'
 
 export type SubBrandVisibility = 'mark' | 'black' | 'shape' | 'text' | 'mark-only'
 
+export type NavLayout = 'full' | 'floating'
+
 export interface Config {
   sv?: SubBrandVisibility
   bt?: number
@@ -21,6 +23,11 @@ export const VISIBILITY: { value: SubBrandVisibility; label: string; summary: st
   { value: 'shape', label: 'Shape', summary: 'Just the shape of the mark: a triangle for BigCommerce, a diamond for Feedonomics.' },
   { value: 'text', label: 'Text', summary: 'No marks anywhere. Names only.' },
   { value: 'mark-only', label: 'Mark only', summary: 'The bare black mark, no name in the sub-brand bar, then a divider.' },
+]
+
+export const NAV_LAYOUTS: { value: NavLayout; label: string; summary: string }[] = [
+  { value: 'full', label: 'Full width', summary: 'Bars run edge to edge. Dropdowns float below as rounded cards.' },
+  { value: 'floating', label: 'Floating', summary: 'Both bars sit in one rounded container 24px from the page edges. Dropdowns open full width inside it.' },
 ]
 
 export const BUTTON_VARIATIONS = [

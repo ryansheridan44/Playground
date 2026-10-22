@@ -488,6 +488,17 @@ body[data-sv="black"] .sub-bar__label{gap:8px}
 /* mark only: the tile alone, then a divider */
 body[data-sv="mark-only"] .stack .bar--sub{gap:14px}
 body[data-sv="mark-only"] .sub-bar__label{min-width:0;margin-right:10px}
+/* navigation style: body[data-nl="floating"] wraps both bars in one rounded container 24px from the page edges; dropdowns open as full-width extensions of it */
+body[data-nl="floating"] .stack{top:24px;margin:24px 24px 0;border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+body[data-nl="floating"] .stack.has-sub{top:24px;transform:none!important;transition:none}
+body[data-nl="floating"].menu-open .stack{border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:none}
+body[data-nl="floating"] :is(.stack,.commerce-bar,.sub-bar) .bar,body[data-nl="floating"] .commerce-bar{background:transparent}
+body[data-nl="floating"] .stack>:last-child .bar{border-bottom:0}
+body[data-nl="floating"] .nav-slot{position:static}
+body[data-nl="floating"] .menu{left:-1px;right:-1px;top:100%;width:auto;max-width:none;padding:32px var(--gutter);border:1px solid var(--border);border-top:0;border-radius:0 0 var(--r-xl) var(--r-xl);box-shadow:0 20px 24px -12px rgba(0,0,0,.16);transform:translateY(-8px)}
+body[data-nl="floating"] .menu.is-open{transform:none}
+body[data-nl="floating"] .stack.has-sub .menu--end{top:calc(100% + var(--sub-h))}
+body[data-nl="floating"] .menu__cols>.card{margin-right:calc(8px - var(--gutter))}
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* every visibility except Mark: no tree connectors or sub-lines, a divider under each header, four equal columns sized to their content (180px to 260px) */
@@ -1164,7 +1175,7 @@ function route(path){
   if(path==='/') html = '<main class="home">'+heroHome('cm')+'</main>';
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'}, brand!=='cm' && path===BRAND[brand].home)+'</main>';
   document.body.classList.toggle('dark',brand!=='cm' && !(page && page.hub)); /* dark on every brand page except hubs */
-  document.body.dataset.sv = CFG.sv; document.body.dataset.bt = CFG.bt;
+  document.body.dataset.sv = CFG.sv; document.body.dataset.nl = CFG.nl||'full'; document.body.dataset.bt = CFG.bt;
   app.innerHTML = headerHTML(brand)+html;
   bindMenus();
   if(page && page.hub) initHub(brand,page.hub);
@@ -1179,7 +1190,7 @@ document.addEventListener('click',function(e){
   e.preventDefault(); navigate(a.getAttribute('href').slice(1));
 });
 window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:go' && typeof d.path==='string') navigate(d.path); });
-window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.sv==='string') CFG.sv=d.sv; if(typeof d.bt==='number') CFG.bt=d.bt; if(typeof d.sl==='boolean') CFG.sl=d.sl; if(typeof d.open==='string') CFG.open=d.open; route(curPath); } });
+window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.sv==='string') CFG.sv=d.sv; if(typeof d.bt==='number') CFG.bt=d.bt; if(typeof d.sl==='boolean') CFG.sl=d.sl; if(typeof d.nl==='string') CFG.nl=d.nl; if(typeof d.open==='string') CFG.open=d.open; route(curPath); } });
 window.addEventListener('popstate',function(){ route(readPath()); });
 window.addEventListener('hashchange',function(){ route(readPath()); });
 route(CFG.start && readPath()==='/' ? CFG.start : readPath());
