@@ -460,6 +460,9 @@ body[data-sv="text"] .tree{padding-top:12px}
 .strip__text{display:flex;align-items:center;gap:8px}
 .strip__title{font-weight:var(--w-medium);font-size:15px}
 .menu .card{display:block;background:var(--surface-2);border-radius:var(--r-xl);padding:20px}
+/* gray card sits 16px from the menu edges; the menu gains matching top and bottom padding so the card's type stays on the same lines as the columns beside it */
+.menu:has(.menu__cols>.card){padding-top:32px;padding-bottom:32px}
+.menu__cols>.card{align-self:stretch;margin:-16px -12px -16px 0;padding:16px 20px}
 .menu .promo{position:relative;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;align-self:stretch;width:260px;min-height:160px;gap:8px;padding:20px;background:var(--surface-2);border-radius:var(--r-xl)}
 .promo .btn{align-self:flex-start}
 .promo .btn--text::after,.strip__title::after{content:"";position:absolute;inset:0;border-radius:inherit}
