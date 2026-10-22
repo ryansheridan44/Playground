@@ -9,9 +9,16 @@ cd "$(dirname "$0")/.."
 git fetch --quiet origin
 BRANCH="${1:-$(git for-each-ref --sort=-committerdate refs/remotes/origin --format='%(refname:short)' | grep -v '^origin/HEAD$' | head -1 | sed 's#^origin/##')}"
 
-if [ -n "$(git status --porcelain)" ]; then
+# npm rewrites the lockfile on install; that is generated, so put it back rather than stopping
+git checkout -- package-lock.json 2>/dev/null || true
+
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
   echo "You have local edits in this folder, so I will not switch branches."
-  echo "Commit or discard them first, then run this again."
+  echo "These files are changed:"
+  git status --short --untracked-files=no
+  echo
+  echo "If you did not edit them on purpose, run:  git checkout -- <file>"
+  echo "Otherwise commit them first, then run this again."
   exit 1
 fi
 
