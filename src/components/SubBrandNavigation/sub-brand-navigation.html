@@ -239,12 +239,10 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .ov .visual{width:100%}
 
 /* breadcrumbs sit in the page, above the header, not as a bar under the navigation */
-.crumbs{background:transparent}
-.dark>.crumbs{background:#000}
-.crumbs-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:32px 0 0;font-size:14px;line-height:19.6px}
-.crumbs+.hero{padding-top:40px}
-.crumbs+.hb-top{padding-top:32px}
-.crumbs+.gs{padding-top:32px}
+.crumbs{margin:0}
+.crumbs-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;line-height:20px}
+.eb-group{display:flex;flex-direction:column;align-items:inherit;gap:16px}
+.gs .crumbs{margin-bottom:16px}
 .crumbs a{color:#fff}
 .crumbs a:hover{text-decoration:underline}
 .crumbs .cur{color:var(--g500)}
@@ -607,6 +605,14 @@ body[data-sv] .menu--lg :is(.product,.group){min-width:180px;max-width:260px}
 body[data-sv] .menu--lg .product-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
 body[data-sv] .menu--lg .group-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
 @media (prefers-reduced-motion:reduce){.menu,.menu *,.nav-item::before{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}}
+/* second section (placeholder) */
+.more{min-height:100vh;padding:96px 0;background:#fff;color:#000}
+.more .wrap{display:flex;flex-direction:column;gap:16px}
+.more h2{font-weight:500;font-size:40px;line-height:48px}
+.more .desc{color:#344054}
+.more-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:32px}
+.more-card{height:280px;border-radius:4px;background:conic-gradient(#ebebeb 25%,#fafafa 0 50%,#ebebeb 0 75%,#fafafa 0) 0 0/96px 96px}
+@media(max-width:820px){.more{padding:64px 0}.more-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1205,10 +1211,10 @@ var VIS = '<div class="visual" role="img" aria-label="Hero visual placeholder"><
 function crumbsHTML(brand,page){
   var mid = page.parent ? '<a href="'+href(page.parent.path)+'">'+esc(page.parent.label)+'</a>'+SVG.chevR : '';
   var start = brand==='cm' ? '<a href="#/">Home</a>' : '<a href="#/">Commerce</a>'+SVG.chevR+'<a href="'+href(BRAND[brand].home)+'">'+BRAND[brand].name+'</a>';
-  return '<div class="crumbs"><div class="wrap crumbs-in">'+start+SVG.chevR+mid+'<span class="cur">'+esc(page.label)+'</span></div></div>';
+  return '<nav class="crumbs" aria-label="Breadcrumb"><div class="crumbs-in">'+start+SVG.chevR+mid+'<span class="cur">'+esc(page.label)+'</span></div></nav>';
 }
-function heroHTML(brand,label,type){
-  var eb = '<span class="eyebrow">'+BRAND[brand].name+'</span>', h = '<h1>'+esc(label)+'</h1>', d = '<p class="desc">'+LOREM+'</p>', C = ctasHTML(brand);
+function heroHTML(brand,label,type,crumbs){
+  var eb = '<div class="eb-group">'+(crumbs||'')+'<span class="eyebrow">'+BRAND[brand].name+'</span></div>', h = '<h1>'+esc(label)+'</h1>', d = '<p class="desc">'+LOREM+'</p>', C = ctasHTML(brand);
   if(type==='overview') return '<section class="hero"><div class="wrap" style="display:flex;flex-direction:column;align-items:center;gap:64px"><div class="ov-left">'+eb+h+'</div><div class="visual" style="height:555px;width:100%" role="img" aria-label="Hero visual placeholder"></div></div></section>';
   if(type==='split') return '<section class="hero h-split"><div class="wrap"><div class="h-text">'+eb+h+d+C+'</div>'+VIS+'</div></section>';
   if(type==='left-below') return '<section class="hero h-below"><div class="wrap" style="display:flex;flex-direction:column;gap:64px"><div class="top-row"><div class="left">'+eb+h+'</div><div class="cta-col">'+d+C+'</div></div>'+VIS+'</div></section>';
@@ -1216,9 +1222,10 @@ function heroHTML(brand,label,type){
   return '<section class="hero h-center"><div class="wrap">'+eb+h+d+C+VIS+'</div></section>';
 }
 function pageHTML(brand,page,isHome){
-  if(page.hub){ var h=hubHTML(brand,page.hub); return '<div class="dark">'+crumbsHTML(brand,page)+h.hero+'</div><div class="light hb-body">'+h.body+'</div>'; }
-  if(page.gs) return '<div class="light">'+crumbsHTML(brand,page)+gsHTML()+'</div>';
-  return '<div class="'+BRAND[brand].cls+'">'+(isHome?'':crumbsHTML(brand,page))+heroHTML(brand,page.label,page.type||'center')+'</div>';
+  var crumbs = isHome ? '' : crumbsHTML(brand,page);
+  if(page.hub){ var h=hubHTML(brand,page.hub); return '<div class="dark">'+h.hero.replace('<div class="wrap">','<div class="wrap">'+crumbs)+'</div><div class="light hb-body">'+h.body+'</div>'; }
+  if(page.gs) return '<div class="light">'+gsHTML().replace('<div class="wrap">','<div class="wrap">'+crumbs)+'</div>';
+  return '<div class="'+BRAND[brand].cls+'">'+heroHTML(brand,page.label,page.type||'center',crumbs)+'</div>';
 }
 
 /* ---------- collapsed navigation (under 1140px): hamburger and accordion panels ---------- */
@@ -1361,6 +1368,8 @@ var app = document.getElementById('app');
 function brandOf(path){ return path.indexOf('/bigcommerce')===0?'bc':path.indexOf('/feedonomics')===0?'fdx':'cm'; }
 function norm(p){ p=(p||'/').split('?')[0]; if(p.charAt(0)!=='/') p='/'+p; return p.replace(/\/+$/,'')||'/'; }
 function readPath(){ var h=''; try{ h=location.hash; }catch(e){} return h.slice(1)||'/'; }
+/* second section: every page is two sections tall so scrolling can be judged */
+var MORE = '<section class="more"><div class="wrap"><span class="eyebrow">Section two</span><h2>More on this page</h2><p class="desc">Placeholder content to scroll through.</p><div class="more-grid"><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div></div></div></section>';
 function route(path,keep){
   path = norm(path);
   /* sub-brands have no homepage: the brand root redirects to its product overview, which is the landing page */
@@ -1370,6 +1379,7 @@ function route(path,keep){
   current = null; mOpen = null; document.body.classList.remove('menu-open','m-open'); clearTimeout(closeT);
   if(path==='/') html = '<main class="home">'+heroHome('cm')+'</main>';
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'}, brand!=='cm' && path===BRAND[brand].home)+'</main>';
+  if(!(page && page.hub)) html = html.replace(/<\/main>$/, MORE+'</main>');
   document.body.classList.toggle('dark',brand!=='cm' && !(page && page.hub)); /* dark on every brand page except hubs */
   document.body.dataset.sv = CFG.sv; document.body.dataset.nl = CFG.nl||'full'; document.body.dataset.bt = CFG.bt;
   app.innerHTML = headerHTML(brand)+html;

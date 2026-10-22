@@ -310,6 +310,14 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sub-r .btn{height:32px}
 .sub-r .btn.o:hover{background:var(--surface2)}
 .sub-r .btn.o:active{background:#e4e7ec;color:#000;border-color:#000}
+/* second section (placeholder) */
+.more{min-height:100vh;padding:96px 0;background:#fff;color:#000}
+.more .wrap{display:flex;flex-direction:column;gap:16px}
+.more h2{font-weight:500;font-size:40px;line-height:48px}
+.more .desc{color:#344054}
+.more-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:32px}
+.more-card{height:280px;border-radius:4px;background:conic-gradient(#ebebeb 25%,#fafafa 0 50%,#ebebeb 0 75%,#fafafa 0) 0 0/96px 96px}
+@media(max-width:820px){.more{padding:64px 0}.more-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -888,6 +896,8 @@ var app = document.getElementById('app');
 function brandOf(path){ return path.indexOf('/bigcommerce')===0?'bc':path.indexOf('/feedonomics')===0?'fdx':'cm'; }
 function norm(p){ p=(p||'/').split('?')[0]; if(p.charAt(0)!=='/') p='/'+p; return p.replace(/\/+$/,'')||'/'; }
 function readPath(){ var h=''; try{ h=location.hash; }catch(e){} return h.slice(1)||'/'; }
+/* second section: every page is two sections tall so scrolling can be judged */
+var MORE = '<section class="more"><div class="wrap"><span class="eyebrow">Section two</span><h2>More on this page</h2><p class="desc">Placeholder content to scroll through.</p><div class="more-grid"><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div><div class="more-card"></div></div></div></section>';
 function route(path){
   path = norm(path);
   var brand = brandOf(path), page = PAGES[path], html;
@@ -895,6 +905,7 @@ function route(path){
   if(path==='/') html = '<main class="home">'+heroHome('cm')+'</main>';
   else if(brand!=='cm' && path===BRAND[brand].base) html = '<main class="home">'+heroHome(brand)+'</main>';
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'})+'</main>';
+  if(!(page && page.hub)) html = html.replace(/<\/main>$/, MORE+'</main>');
   document.body.classList.toggle('dark',brand!=='cm' && path!==BRAND[brand].base && !(page && page.hub)); /* dark only on deeper brand pages */
   app.innerHTML = headerHTML(brand)+html;
   bindMenus();
