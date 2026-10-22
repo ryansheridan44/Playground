@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
-import { PAGES, VARIANTS, buildDoc, pad } from './variants'
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { MENU_LAYOUTS, PAGES, VARIANTS, buildDoc, pad } from './variants'
 import type { MenuMarks } from './variants'
 import './SubBrandNavigation.css'
 
@@ -25,13 +25,16 @@ function SubBrandNavigation() {
 function Explorer({ id }: { id: number }) {
   const navigate = useNavigate()
   const frame = useRef<HTMLIFrameElement>(null)
+  const [params] = useSearchParams()
+  const initialMl = Math.min(MENU_LAYOUTS.length, Math.max(1, Number(params.get('ml')) || 1))
   const [mm, setMm] = useState<MenuMarks>('tile')
+  const [ml, setMl] = useState(initialMl)
   const [path, setPath] = useState('/bigcommerce')
   const [open, setOpen] = useState(true)
   const v = VARIANTS[id - 1]
 
   // the document is built once; later changes reach the iframe by message so the page never reloads
-  const doc = useMemo(() => buildDoc(id, 'tile', '/bigcommerce'), []) // eslint-disable-line react-hooks/exhaustive-deps
+  const doc = useMemo(() => buildDoc({ v: id, ml: initialMl, start: '/bigcommerce' }), []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const post = (msg: object) => frame.current?.contentWindow?.postMessage(msg, '*')
 
@@ -45,8 +48,8 @@ function Explorer({ id }: { id: number }) {
   }, [])
 
   useEffect(() => {
-    post({ type: 'consolidated-nav:config', v: id, mm })
-  }, [id, mm])
+    post({ type: 'consolidated-nav:config', v: id, mm, ml })
+  }, [id, mm, ml])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -71,7 +74,8 @@ function Explorer({ id }: { id: number }) {
       <aside className={`sbn-dock${open ? '' : ' closed'}`} aria-label="Variant controls">
         <div className="sbn-top">
           <Link to="/navigation" className="sbn-link">← All</Link>
-          <Link to="/prototypes/sub-brand-navigation/compare" className="sbn-link">Compare</Link>
+          <Link to="/prototypes/sub-brand-navigation/compare" className="sbn-link">Compare bars</Link>
+          <Link to="/prototypes/sub-brand-navigation/menus" className="sbn-link">Compare menus</Link>
           <button type="button" className="sbn-link sbn-fold" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
             {open ? 'Hide' : `${pad(id)} ${v.name}`}
           </button>
@@ -101,6 +105,16 @@ function Explorer({ id }: { id: number }) {
                 {PAGES.map((p) => (
                   <button key={p.path} type="button" className={brandOf(path) === p.path ? 'on' : ''} onClick={() => post({ type: 'consolidated-nav:go', path: p.path })}>
                     {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="sbn-row">
+              <span>Menu layout</span>
+              <div className="sbn-seg" role="group" aria-label="Menu layout">
+                {MENU_LAYOUTS.map((m) => (
+                  <button key={m.id} type="button" className={ml === m.id ? 'on' : ''} onClick={() => setMl(m.id)} title={m.summary}>
+                    {m.name}
                   </button>
                 ))}
               </div>

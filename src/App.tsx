@@ -4,6 +4,7 @@ import ButtonPage from './pages/ButtonPage'
 import ConsolidatedNavigation from './components/ConsolidatedNavigation/ConsolidatedNavigation'
 import Home from './pages/Home'
 import NavigationPage from './pages/NavigationPage'
+import SubBrandMenus from './components/SubBrandNavigation/SubBrandMenus'
 import SubBrandCompare from './components/SubBrandNavigation/SubBrandCompare'
 import SubBrandNavigation from './components/SubBrandNavigation/SubBrandNavigation'
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="navigation" element={<NavigationPage />} />
       </Route>
       <Route path="prototypes/sub-brand-navigation/compare" element={<SubBrandCompare />} />
+      <Route path="prototypes/sub-brand-navigation/menus" element={<SubBrandMenus />} />
       <Route path="prototypes/sub-brand-navigation/:variant" element={<SubBrandNavigation />} />
       <Route
         path="prototypes/consolidated-navigation-1"

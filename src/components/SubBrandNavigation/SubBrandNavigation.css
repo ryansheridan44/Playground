@@ -323,3 +323,31 @@
 .cmp-frame:hover {
   border-color: #888;
 }
+
+.cmp-select {
+  height: 34px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.cmp-frame-menu,
+.cmp-frame-menu iframe {
+  height: 720px;
+}
+
+.cmp-frame-menu iframe {
+  pointer-events: auto;
+}
+
+.sbn-dock {
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+}
+
+.sbn-seg button {
+  padding: 0 4px;
+}

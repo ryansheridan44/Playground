@@ -310,37 +310,108 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sub-r .btn{height:32px}
 .sub-r .btn.o:hover{background:var(--surface2)}
 .sub-r .btn.o:active{background:#e4e7ec;color:#000;border-color:#000}
-/* sub-brand identity explorations: body[data-v] picks the treatment, body[data-mm] picks the marks in menus */
-.hdr-id{display:flex;align-items:center;gap:12px}
+/* sub-brand identity explorations: body[data-v] picks the treatment, body[data-mm] the marks in menus, body[data-ml] the menu layout */
 .sub-id .sid-m,.sub-id .sid-l{display:inline-flex}
 .sub-id .sid-m svg{display:block;width:18px;height:18px}
 .sub-id .sid-l svg{display:block;height:22px!important;width:auto!important}
 body[data-v="4"] .sub-id .sid-m svg{width:22px;height:22px}
 body[data-v="5"] .sub-id .sid-l svg{filter:brightness(0)}
-.crumb-sep{color:#98a2b3;font-size:22px;line-height:1;font-weight:300}
-.crumb{font-size:16px;line-height:22px;font-weight:500;color:#000;white-space:nowrap}
-.crumb:hover{text-decoration:underline;text-underline-offset:3px}
-.chip{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px 0 4px;border:1px solid var(--border);border-radius:16px;font-size:14px;line-height:19.6px;font-weight:500;white-space:nowrap}
-.chip .pk-ic{width:24px;height:24px;margin:0;border-radius:50%}
-.chip .pk-ic svg{width:13px;height:13px}
-.chip:hover{background:var(--surface2)}
-body[data-v="9"] .sub{background:#000;border-bottom-color:#000}
-body[data-v="9"] .sub-id{color:#fff}
-body[data-v="9"] .sub-id .sid-m svg{filter:brightness(0) invert(1)}
-body[data-v="9"] .sub .vdiv{background:#344054}
-body[data-v="9"] .sub .ni{color:#fff}
-body[data-v="9"] .sub .ni:hover{border-bottom-color:#667085}
-body[data-v="9"] .sub .ni.active,body[data-v="9"] .sub .ni.active:hover{border-bottom-color:#fff}
-body[data-v="9"] .sub .ni svg path{stroke:#d0d5dd}
-body[data-v="9"] .sub-r .btn.o{color:#fff;border-color:#fff}
-body[data-v="9"] .sub-r .btn.o:hover,body[data-v="9"] .sub-r .btn.o:active{background:#344054;color:#fff;border-color:#fff}
-body[data-v="10"] .sub-bc{background:#f2f4f7}
-body[data-v="10"] .sub-fdx{background:#eef3ff;border-bottom-color:#c7d6fb}
-body[data-v="10"] .sub-fdx .vdiv{background:#c7d6fb}
-body[data-v="10"] .sub-r .btn.o:hover{background:rgba(0,0,0,.06)}
+.sub-sw{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px 0 8px;border:1px solid var(--border);border-radius:6px;font-size:14px;line-height:19.6px;font-weight:500;color:#000;white-space:nowrap}
+.sub-sw .sid-m{display:inline-flex}
+.sub-sw .sid-m svg{display:block;width:16px;height:16px}
+.sub-sw>svg{width:7px;height:5px;flex:none}
+.sub-sw:hover,.sub-sw.active{background:var(--surface2)}
+.sub-sw.active>svg{transform:rotate(180deg)}
+.panel.pop.fl{top:calc(100% + 8px);width:280px;padding:8px;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.16)}
+.sub-id.tag{height:28px;padding:0 10px 0 8px;border-radius:6px;background:#000;color:#fff}
+.sub-id.tag .sid-m svg{width:16px;height:16px;filter:brightness(0) invert(1)}
+.sub-id.tag:hover{background:#161c26}
+.sub-id.tag:hover span:last-child{text-decoration:none}
+body[data-v="8"] .sub{border-bottom-color:transparent}
+body[data-v="8"] .sub-in{height:37px;margin:4px auto 0;padding:0 12px;background:var(--surface2);border-radius:10px}
+body[data-v="8"] .sub-r .btn{height:28px}
+body[data-v="8"] .sub-r .btn.o:hover{background:#e4e7ec}
+.sid-d{margin-left:4px;font-size:13px;line-height:18px;font-weight:400;color:var(--t3)}
+.sub-id:hover span.sid-d:last-child{text-decoration:none}
+.bt-nav{display:flex;align-items:stretch;height:44px}
+.bt{display:inline-flex;align-items:center;gap:8px;padding:0 14px;font-size:14px;line-height:19.6px;color:var(--t3);white-space:nowrap;box-shadow:inset 0 -2px transparent}
+.bt:first-child{padding-left:0}
+.bt:hover{color:#000}
+.bt.on{color:#000;font-weight:500;box-shadow:inset 0 -2px #000}
+.bt .sid-m{display:inline-flex}
+.bt .sid-m svg{display:block;width:16px;height:16px}
+.sub-r .login{font-size:14px}
 body[data-mm="black"] .panel .pk-ic,body[data-mm="black"] .mod .pk-ic{background:transparent!important}
 body[data-mm="black"] .panel .pk-ic svg,body[data-mm="black"] .mod .pk-ic svg{filter:brightness(0)}
 body[data-mm="none"] .panel .pk-ic,body[data-mm="none"] .mod .pk-ic{display:none}
+
+/* menu content: no descriptions, links only */
+.mni{align-items:center;gap:6px;padding:6px 8px;font-size:14px;line-height:19.6px}
+.mni svg{width:14px;height:14px;flex:none}
+.mni-tag{display:inline-flex;align-items:center;height:20px;padding:0 6px;margin-left:4px;border-radius:2px;background:#e4e7ec;color:#344054;font-size:12px;line-height:16px}
+.spk{font-size:12px;line-height:1;color:var(--t3)}
+.items.n2,.items.g2,.items.g3,.items.g4{display:grid;column-gap:12px}
+.items.n2,.items.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.items.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.items.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.items.inline{flex-direction:row;flex-wrap:wrap;gap:4px}
+.sec{grid-row:1;display:flex;flex-direction:column;gap:8px;padding:0 8px 4px}
+.gt{display:flex;align-items:center;min-height:32px;padding:0 8px;font-size:14px;line-height:19.6px;font-weight:500;color:#000}
+.gh{display:flex;align-items:center;gap:10px;min-height:32px;padding:4px 8px;border-radius:4px;font-size:14px;line-height:19.6px;font-weight:500;color:#000}
+.gh:hover{background:var(--surface2)}
+.gh .pk-ic{width:24px;height:24px;margin:0;border-radius:4px}
+.gh .pk-ic svg{width:14px;height:14px}
+.gh>svg{width:14px;height:14px;margin-left:auto;opacity:0}
+.gh:hover>svg{opacity:1}
+.ai-strip{display:flex;align-items:center;gap:12px;margin-top:24px;padding:12px 16px;border-radius:8px;background:var(--surface2);font-size:14px;line-height:19.6px;color:#000}
+.ai-t{font-weight:500;white-space:nowrap}
+.ai-d{flex:1;min-width:0;color:var(--t2)}
+.ai-c{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);white-space:nowrap}
+.ai-c svg{width:16px;height:16px}
+.ai-strip:hover .ai-c{color:#000}
+.ai-strip.c{flex-direction:column;align-items:flex-start;gap:6px;margin-top:0}
+.ai-strip.c .ai-d{font-size:12px;line-height:18px}
+.card.dark{background:#000;color:#fff}
+.card.dark .card-k{color:#98a2b3}
+.card.dark .card-l,.card.dark .card-l:hover{color:#fff}
+.card-h{font-size:18px}
+/* 2: cards */
+.cards{display:grid;gap:12px;align-items:stretch}
+.gcard{display:flex;flex-direction:column;gap:6px;padding:16px 12px 12px;border-radius:8px;background:var(--surface2)}
+.gcard .mni:hover,.gcard .gh:hover{background:#e4e7ec}
+.gc-k{padding:0 8px 4px;font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;line-height:16px;letter-spacing:.39px;text-transform:uppercase;color:var(--t3)}
+.cards .card{height:100%}
+/* 3: rail */
+.rail{display:grid;grid-template-columns:260px minmax(0,1fr);gap:32px;align-items:start}
+.rl-side{display:flex;flex-direction:column;gap:16px}
+.rl-tabs{display:flex;flex-direction:column;gap:4px}
+.rl-tab{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border-radius:6px;font-size:14px;line-height:19.6px;color:#000}
+.rl-tab .pk-ic{width:24px;height:24px;margin:0;border-radius:4px}
+.rl-tab .pk-ic svg{width:14px;height:14px}
+.rl-tab>svg{width:5px;height:7px;margin-left:auto;flex:none}
+.rl-tab:hover,.rl-tab.on{background:var(--surface2)}
+.rl-tab.on{font-weight:500}
+.rl-panes{min-width:0;min-height:280px;padding-left:32px;border-left:1px solid var(--divider)}
+.rl-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 8px 8px}
+.rl-pane .sth-d{margin-bottom:8px}
+/* 4: rows */
+.rows{display:flex;flex-direction:column}
+.rw{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:start;padding:12px 0;border-top:1px solid var(--divider)}
+.rw:first-child{padding-top:0;border-top:0}
+.rw-t{padding-top:0}
+.rw-sec{padding:0 0 8px}
+.rw-sec:not(:first-child){margin-top:12px;padding-top:20px;border-top:1px solid var(--divider)}
+.rw-sec+.rw{padding-top:4px;border-top:0}
+.rw-card{display:block;padding:16px 0 0}
+.rw-card .card{flex-direction:row;align-items:center;gap:24px;padding:16px 20px}
+.rw-card .card-h{flex:1}
+/* 5: columns with a footer band */
+.band{display:flex;align-items:center;flex-wrap:wrap;gap:8px 24px;margin-top:24px;padding:10px 16px;border-radius:8px;background:var(--surface2)}
+.band .items{flex:1;min-width:0}
+.band .mni:hover{background:#e4e7ec}
+.band-ai{display:inline-flex;align-items:center;gap:8px;margin-left:auto;font-size:14px;line-height:19.6px;font-weight:500;color:#000;white-space:nowrap}
+.band-ai svg{width:16px;height:16px}
+.band-ai:hover{text-decoration:underline;text-underline-offset:3px}
 </style>
 </head>
 <body>
@@ -370,11 +441,11 @@ SVG.caret='<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidd
 var esc = function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')};
 var slug = function(s){return s.toLowerCase().replace(/&/g,'and').replace(/™/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')};
 /* the host page swaps this line to pick the variant, menu marks and starting page */
-var CFG = {v:1,mm:'tile',start:''};
+var CFG = {v:1,mm:'tile',ml:1,start:'',open:''};
 var curPath = '/';
 var BRAND = {
-  bc:{name:'BigCommerce',base:'/bigcommerce',logo:SVG.bcLogo,mark:SVG.bcMark,cls:'dark'},
-  fdx:{name:'Feedonomics',base:'/feedonomics',logo:SVG.fdxLogo,mark:SVG.fdxMark,cls:'dark'},
+  bc:{name:'BigCommerce',tag:'Ecommerce platform for B2C and B2B',base:'/bigcommerce',logo:SVG.bcLogo,mark:SVG.bcMark,cls:'dark'},
+  fdx:{name:'Feedonomics',tag:'Product feed management',base:'/feedonomics',logo:SVG.fdxLogo,mark:SVG.fdxMark,cls:'dark'},
   cm:{name:'Commerce',base:'',logo:SVG.commerceLogo,cls:'light'}
 };
 var PAGES = {};
@@ -393,67 +464,67 @@ var SOL = [
 reg('/ai-labs','AI Labs','cm'); reg('/lorem-ipsum','Lorem Ipsum','cm');
 var AILABS = {k:'ai',name:'AI Labs',desc:'Experiments & early access in agentic commerce',bg:'#e3d9fb',home:'/ai-labs',items:[1,2,3,4,5,6,7,8].map(function(){ return {l:'Lorem Ipsum',p:'/lorem-ipsum'}; })};
 
-var GL = function(pre,l){ var p='/'+pre+'/'+slug(l); reg(p,l,'cm'); return {l:l,p:p}; };
-var IND = [
- {title:'Industries',w:2,sub:[['Automotive','B2B & Wholesale','Health & Beauty','Home & Garden'].map(function(l){return GL('industries',l)}),['Sports & Outdoors','Fashion & Apparel','Food & Beverage','Manufacturing'].map(function(l){return GL('industries',l)})]},
- {title:'Teams',w:1,items:['Marketing','Developers','Ecommerce','IT & Security'].map(function(l){return GL('teams',l)})}
-];
-var LRN = [
- {title:'Browse by type',w:2,sub:[['All Resources','Articles','Blog','Guides'].map(function(l){return GL('learning',l)}),['Podcasts','Reports','Webinars','Events'].map(function(l){return GL('learning',l)})]},
- {title:'Learning resources',w:2,sub:[['Commerce Growth','Agentic Commerce','Commerce Trends','Developer Blog'].map(function(l){return GL('learning',l)}),['B2B Ecommerce','Channels & Marketplaces','Holiday Commerce'].map(function(l){return GL('learning',l)})]},
- {card:true,w:1,kicker:'Press',headline:'Commerce in the news',body:'Announcements, releases and coverage.',links:['Press Releases','News'].map(function(l){return GL('press',l)})}
-];
+var GL = function(pre,l,o){ o=o||{}; var p='/'+pre+'/'+slug(l); reg(p,l,'cm'); var it={l:l,p:p}; for(var k in o) it[k]=o[k]; return it; };
+var gl = function(pre,arr){ return arr.map(function(x){ return typeof x==='string' ? GL(pre,x) : GL(pre,x.l,x); }); };
 ['Customers','Company','Partners'].forEach(function(l){reg('/'+slug(l),l,'cm')});
 reg('/get-started','Get started','cm');
 
+/* group: {title, items, head (brand link), section (label above a run of groups), n (inner columns)}; card = promo */
 var MENU = {
+ 'solutions':{brand:'cm',cols:[
+  {title:'BigCommerce',section:'Products',head:{k:'bc',l:'BigCommerce',p:'/bigcommerce'},items:LB('bc',['B2B Commerce','Headless Commerce','Payments',{l:'Agentic Commerce',ai:true},'Multi-Storefront','Checkout','Apps & Integrations'])},
+  {title:'Feedonomics',section:'Products',head:{k:'fdx',l:'Feedonomics',p:'/feedonomics'},items:LB('fdx',[{l:'AI Data Enrichment',ai:true},{l:'Agentic Commerce',ai:true},'Ecommerce Platform Sync','Advertising','Marketplaces','Order Orchestration','Integrations'])},
+  {title:'Industries',section:'Capabilities',n:2,items:gl('industries',['Automotive','B2B & Wholesale','Health & Beauty','Home & Garden','Sports & Outdoors','Fashion & Apparel','Food & Beverage','Manufacturing'])},
+  {title:'Teams',section:'Capabilities',items:gl('teams',['Marketing','Developers','Ecommerce','IT & Security'])}],
+  footer:{l:'Visit our AI Labs',text:'Experiments and early access to what we’re building in agentic commerce.',cta:'Learn more',p:'/ai-labs'}},
+ 'learning':{brand:'cm',cols:[
+  {title:'Learning Resources',items:gl('learning',['Commerce Growth','B2B Ecommerce',{l:'Agentic Commerce',tag:'New'},'Channels & Marketplaces','Commerce Trends','Holiday Commerce','Developer Blog'])},
+  {title:'Browse by Type',items:gl('learning',['All Resources','Articles','Blog','Guides','Podcasts','Reports','Webinars','Events'])},
+  {title:'Press',items:gl('press',['Press Releases','News'])}]},
  'bc-products':{brand:'bc',cols:[
-  {title:'Start & build',w:1,items:LB('bc',[{l:'Product Overview',d:'What you can do with BigCommerce.'},{l:'Agentic Commerce',d:'AI-powered solutions for growth.'},{l:'Design Your Store',d:'Build your store with or without code.'},{l:'Apps & Integrations',d:'Over 1,200 apps to help you grow.'},{l:'Migrate to BigCommerce',d:'Switch from Shopify, WooCommerce, Salesforce, Magento, and more.'}])},
-  {title:'Sell your way',w:1,items:LB('bc',['B2B Commerce','Channels & Advertising','Product Feed Management','Multi-Storefront','Headless Commerce','International Commerce','Data & Analytics'])},
-  {title:'Run your business',w:1,items:LB('bc',['Checkout','Payments','Inventory','Shipping','Promotions',{l:'Companion',d:'Your personal AI chat assistant to help you run your store more efficiently.',feature:true}])},
-  {title:'Developers',w:1,items:LB('bc',[{l:'Developer Docs',ext:true},{l:'MCP Toolkit',ext:true},{l:'Security & Compliance',ext:true},'Hosting & Performance','Staging Pro'])}]},
- 'bc-resources':{brand:'bc',fixed:3,cols:[
-  {title:'Product info',w:1,items:LB('bc',[{l:'Basics of BigCommerce',d:'A quick video tour of the platform.'},{l:'Product Releases',d:'What’s new and what just shipped.'},{l:'Help Center',ext:true,d:'Docs, how-tos, and support.'},{l:'BigCommerce University',d:'Courses and certifications.'}])},
-  {title:'Community',w:1,items:LB('bc',[{l:'Community Q&A',ext:true,d:'Ask questions, share answers.'}])},
-  {title:'Build',w:1,items:LB('bc',[{l:'Developer Docs',ext:true},{l:'API Reference',ext:true},{l:'MCP Toolkit',ext:true},{l:'Apps Marketplace',ext:true},{l:'Partner Directory',ext:true}])}]},
+  {title:'Start & Build',items:LB('bc',['Product Overview',{l:'Agentic Commerce',ai:true},'Design Your Store','Apps & Integrations','Migrate to BigCommerce'])},
+  {title:'Sell Your Way',items:LB('bc',['B2B Commerce','Channels & Advertising','Product Feed Management','Multi-Storefront','Headless Commerce','International Commerce','Data & Analytics'])},
+  {title:'Run Your Business',items:LB('bc',['Checkout','Payments','Inventory','Shipping','Promotions',{l:'Companion',ai:true}])},
+  {title:'Developers',items:LB('bc',['Developer Docs',{l:'MCP Toolkit',ai:true},'Security & Compliance','Hosting & Performance','Staging Pro'])}]},
+ 'bc-resources':{brand:'bc',cols:[
+  {title:'Product Info',items:LB('bc',['Basics of BigCommerce','Product Releases','Help Center','BigCommerce University'])},
+  {title:'Community',items:LB('bc',['Case Studies','Customer Showcase','Community Q&A'])},
+  {title:'Build',items:LB('bc',['Developer Docs','API Reference',{l:'MCP Toolkit',ai:true},'Apps Marketplace','Partner Directory'])}]},
  'fdx-products':{brand:'fdx',cols:[
-  {title:'Overview',w:276,items:LB('fdx',[{l:'Product Overview',d:'Explore our core product capabilities.'},{l:'How It Works',d:'See how we optimize and sync data.'}])},
-  {title:'Products',w:564,sub:[LB('fdx',['Advertising','Marketplaces','Order Orchestration']),LB('fdx',['AI Data Enrichment','Agentic Commerce','Ecommerce Platform Sync'])]},
-  {card:true,w:276,kicker:'Feedonomics Surface',headline:'Install on BigCommerce — free and ready in minutes.',body:'Cross-brand link: Surface lives under BigCommerce products.',link:L('fdx','Explore Surface')}]},
+  {title:'Overview',items:LB('fdx',['Product Overview','How It Works'])},
+  {title:'Products',n:2,items:LB('fdx',['Advertising',{l:'AI Data Enrichment',ai:true},'Marketplaces',{l:'Agentic Commerce',ai:true},'Order Orchestration','Ecommerce Platform Sync'])},
+  {card:true,kicker:'Feedonomics Surface',headline:'Install on BigCommerce. Free and ready in minutes.',links:[L('fdx','Explore Surface')]}]},
  'fdx-integrations':{brand:'fdx',cols:[
-  {title:'Overview',w:276,items:LB('fdx',['View All Integrations','Supported Channels','Supported Platforms'])},
-  {title:'Supported platforms',w:564,sub:[LB('fdx',['Shopify','Oracle NetSuite','Salesforce Commerce Cloud','WooCommerce']),LB('fdx',['BigCommerce','Oracle Commerce','Adobe Commerce / Magento','Custom'])]},
-  {card:true,w:276,kicker:'Integrations',headline:'Your stack, upgraded.',body:'Connect the dots so your systems move like one engine.',link:L('fdx','Get my plan')}]},
- 'fdx-resources':{brand:'fdx',fixed:4,cols:[
-  {title:'Get help',w:1,items:LB('fdx',[{l:'FeedSupport™',ext:true,d:'24/7 support from feed specialists.'},'Help Center','Contact'])},
-  {title:'Build',w:1,items:LB('fdx',['Developer Docs','API Reference','Supported Integrations'])}]},
- 'company':{brand:'cm',single:true,cols:[{title:'Company',w:1,items:[{l:'Customers',p:'/customers',d:'Customer stories and case studies.'},{l:'About us',p:'/company',d:'Who we are and what we stand for.'},{l:'Partners',p:'/partners',d:'Agency, technology and solution partners.'}]}]},
- 'industries':{brand:'cm',cols:IND},
- 'learning':{brand:'cm',cols:LRN}
+  {title:'Overview',items:LB('fdx',['Supported Channels','Supported Platforms',{l:'View all integrations',cta:true}])},
+  {title:'Supported Platforms',n:2,items:LB('fdx',['Shopify','BigCommerce','Oracle NetSuite','Oracle Commerce','Salesforce Commerce Cloud','Adobe Commerce / Magento','WooCommerce','Custom'])},
+  {card:true,kicker:'Integrations',headline:'Your stack, upgraded. Connect the dots so your systems move like one engine.',links:[L('fdx','Get my plan')]}]},
+ 'fdx-resources':{brand:'fdx',cols:[
+  {title:'Learn',items:LB('fdx',['Feed Management Guides','Case Studies','Webinars'])},
+  {title:'Get Help',items:LB('fdx',['FeedSupport™','Help Center','Contact'])},
+  {title:'Build',items:LB('fdx',['Developer Docs','API Reference','Supported Integrations'])}]}
 };
 
 var NAV = {
- cm:[{l:'Solutions',m:'solutions'},{l:'Industries',m:'industries'},{l:'Learning',m:'learning'},{l:'Company',m:'company'}],
- bc:[{l:'Products',m:'bc-products'},{l:'Services',p:'/bigcommerce/services'},{l:'Integrations',p:'/bigcommerce/integrations'},{l:'Pricing',p:'/bigcommerce/pricing'},{l:'Resources',m:'bc-resources'}],
- fdx:[{l:'Products',m:'fdx-products'},{l:'Integrations',m:'fdx-integrations'},{l:'Services',p:'/feedonomics/services'},{l:'Pricing',p:'/feedonomics/pricing'},{l:'Resources',m:'fdx-resources'}],
+ cm:[{l:'Solutions',m:'solutions'},{l:'Learning',m:'learning'},{l:'Customers',p:'/customers'},{l:'Company',p:'/company'},{l:'Partners',p:'/partners'}],
+ bc:[{l:'Product Features',m:'bc-products'},{l:'Services',p:'/bigcommerce/services'},{l:'Integrations',p:'/bigcommerce/integrations'},{l:'Pricing',p:'/bigcommerce/pricing'},{l:'Resources',m:'bc-resources'}],
+ fdx:[{l:'Product Features',m:'fdx-products'},{l:'Integrations',m:'fdx-integrations'},{l:'Services',p:'/feedonomics/services'},{l:'Pricing',p:'/feedonomics/pricing'},{l:'Resources',m:'fdx-resources'}],
 };
 Object.keys(NAV).forEach(function(b){ NAV[b].forEach(function(n){ if(n.p) reg(n.p,n.l,b); }); });
-/* these now live in the parent strip, not the main nav, so register their pages explicitly */
 reg('/customers','Customers','cm'); reg('/company','Company','cm'); reg('/partners','Partners','cm');
 
 /* hero style per nav section: center, split, split, left-below, text, overview (Figma template) */
 var HERO = {
- 'bc-products':{'Start & build':'split','Sell your way':'split','Run your business':'split','Developers':'text'},
- 'bc-resources':{'Product info':'left-below','Community':'split','Build':'text'},
+ 'solutions':{'BigCommerce':'split','Feedonomics':'split','Industries':'split','Teams':'split'},
+ 'bc-products':{'Start & Build':'split','Sell Your Way':'split','Run Your Business':'split','Developers':'text'},
+ 'bc-resources':{'Product Info':'left-below','Community':'split','Build':'text'},
  'fdx-products':{'Overview':'center','Products':'split'},
- 'fdx-integrations':{'Overview':'center','Supported platforms':'split'},
- 'fdx-resources':{'Learn':'left-below','Get help':'split','Build':'text'},
- 'industries':{'Industries':'split','Teams':'split'},
- 'learning':{'Learning resources':'left-below','Browse by type':'text','Press':'center'}
+ 'fdx-integrations':{'Overview':'center','Supported Platforms':'split'},
+ 'fdx-resources':{'Learn':'left-below','Get Help':'split','Build':'text'},
+ 'learning':{'Learning Resources':'left-below','Browse by Type':'text','Press':'center'}
 };
 Object.keys(HERO).forEach(function(m){ MENU[m].cols.forEach(function(c){
   var t = HERO[m][c.title]; if(!t) return;
-  (c.sub ? [].concat.apply([],c.sub) : (c.items||[])).forEach(function(it){ if(PAGES[it.p]) PAGES[it.p].type = t; });
+  (c.items||[]).forEach(function(it){ if(PAGES[it.p]) PAGES[it.p].type = t; });
 }); });
 var setType = function(p,t){ if(PAGES[p]) PAGES[p].type = t; };
 setType('/customers','split'); setType('/company','split'); setType('/partners','center');
@@ -461,24 +532,24 @@ setType('/customers','split'); setType('/company','split'); setType('/partners',
 
 /* breadcrumb parents: Home > nav section > page */
 var SECTIONS = {
- 'bc-products':['Products','/bigcommerce/products','bc'],'bc-resources':['Resources','/bigcommerce/resources','bc'],
- 'fdx-products':['Products','/feedonomics/products','fdx'],'fdx-integrations':['Integrations','/feedonomics/integrations','fdx'],'fdx-resources':['Resources','/feedonomics/resources','fdx'],
- 'industries':['Industries','/industries','cm'],'learning':['Learning','/learning','cm']
+ 'solutions':['Solutions','/solutions','cm'],
+ 'bc-products':['Product Features','/bigcommerce/product-features','bc'],'bc-resources':['Resources','/bigcommerce/resources','bc'],
+ 'fdx-products':['Product Features','/feedonomics/product-features','fdx'],'fdx-integrations':['Integrations','/feedonomics/integrations','fdx'],'fdx-resources':['Resources','/feedonomics/resources','fdx'],
+ 'learning':['Learning','/learning','cm']
 };
 Object.keys(SECTIONS).forEach(function(id){
   var sc = SECTIONS[id]; reg(sc[1],sc[0],sc[2]); PAGES[sc[1]].section = true;
   MENU[id].cols.forEach(function(c){
-    var its = c.card ? (c.links||[c.link]) : (c.sub ? [].concat.apply([],c.sub) : c.items);
+    var its = c.card ? c.links : c.items;
     its.forEach(function(it){ var pg = PAGES[it.p]; if(pg && !pg.section && !pg.parent) pg.parent = {label:sc[0],path:sc[1]}; });
   });
 });
-reg('/solutions','Solutions','cm'); PAGES['/solutions'].section = true;
 ['/ai-labs','/lorem-ipsum'].forEach(function(p){ PAGES[p].parent = {label:'Solutions',path:'/solutions'}; });
 
 /* sub-brand CTAs and log in */
 var CTA = {
  cm:{primary:{l:'Get started',p:'/get-started'},secondary:{l:'Contact sales',p:'/contact-sales'}},
- bc:{login:'/bigcommerce/log-in',primary:{l:'Try for free',p:'/bigcommerce/try-for-free'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
+ bc:{login:'/bigcommerce/log-in',primary:{l:'Free trial',p:'/bigcommerce/free-trial'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
  fdx:{login:'/feedonomics/log-in',primary:{l:'Get a demo',p:'/feedonomics/get-a-demo'},secondary:{l:'See how it works',p:'/feedonomics/how-it-works'},noHeaderSecondary:true},
 };
 reg('/contact-sales','Contact Sales','cm');
@@ -707,35 +778,87 @@ function initHub(brand,key){
 
 /* ---------- markup builders ---------- */
 var href = function(p){ return '#'+(p||'/'); };
+var SOLBG = {bc:'#e4e7ec',fdx:'#cfdcff'};
 function itemHTML(it){
-  return '<a class="mni'+(it.feature?' feature':'')+'" href="'+href(it.p)+'"><span class="mni-b"><span class="mni-h"><span class="mni-t">'+esc(it.l)+'</span>'+(it.ext?SVG.ext:'')+'</span></span></a>';
+  return '<a class="mni" href="'+href(it.p)+'"><span class="mni-t">'+esc(it.l)+'</span>'+(it.tag?'<span class="mni-tag">'+esc(it.tag)+'</span>':'')+(it.ai?'<span class="spk" role="img" aria-label="AI">✦</span>':'')+(it.cta?SVG.arrowRight:'')+'</a>';
 }
-function itemsHTML(items){ return '<div class="items">'+items.map(itemHTML).join('')+'</div>'; }
-function cardHTML(c){
-  return '<div class="card"><span class="card-k">'+esc(c.kicker)+'</span><span class="card-h">'+esc(c.headline)+'</span><span class="card-b">'+esc(c.body)+'</span>'+(c.links||[c.link]).map(function(k){ return '<a class="card-l" href="'+href(k.p)+'"><span>'+esc(k.l)+'</span>'+SVG.arrowRight+'</a>'; }).join('')+'</div>';
+function itemsHTML(items,cls){ return '<div class="items'+(cls?' '+cls:'')+'">'+items.map(itemHTML).join('')+'</div>'; }
+function headHTML(g){
+  if(g.head) return '<a class="gh" href="'+href(g.head.p)+'"><span class="pk-ic" style="background:'+SOLBG[g.head.k]+'">'+markOf(g.head.k)+'</span><span>'+esc(g.head.l)+'</span>'+SVG.arrowRight+'</a>';
+  return '<span class="gt">'+esc(g.title)+'</span>';
 }
-function colHTML(c){
-  if(c.card) return cardHTML(c);
-  var body = c.sub ? '<div class="subcols">'+c.sub.map(itemsHTML).join('')+'</div>' : itemsHTML(c.items);
-  return '<div class="col"><div class="sth"><div class="sth-t">'+esc(c.title)+'</div><div class="sth-d"></div></div>'+body+'</div>';
+function titleRow(g){
+  return g.head ? headHTML(g) : '<div class="sth"><div class="sth-t">'+esc(g.title)+'</div><div class="sth-d"></div></div>';
+}
+function cardHTML(c,dark){
+  return '<div class="card'+(dark?' dark':'')+'"><span class="card-k">'+esc(c.kicker)+'</span><span class="card-h">'+esc(c.headline)+'</span>'+c.links.map(function(k){ return '<a class="card-l" href="'+href(k.p)+'"><span>'+esc(k.l)+'</span>'+SVG.arrowRight+'</a>'; }).join('')+'</div>';
+}
+function aiStripHTML(f,compact){
+  return '<a class="ai-strip'+(compact?' c':'')+'" href="'+href(f.p)+'"><span class="ai-t"><span class="spk" aria-hidden="true">✦</span> '+esc(f.l)+'</span><span class="ai-d">'+esc(f.text)+'</span><span class="ai-c"><span>'+esc(f.cta)+'</span>'+SVG.arrowRight+'</span></a>';
+}
+var groupsOf = function(m){ return m.cols.filter(function(c){ return !c.card; }); };
+var cardOf = function(m){ return m.cols.filter(function(c){ return c.card; })[0]; };
+var tplOf = function(gs,card){ return gs.map(function(g){ return (g.n||1)+'fr'; }).concat(card?['1fr']:[]).join(' '); };
+/* 1: columns, one per group, with section labels over runs of groups */
+function mlColumns(m){
+  var gs = groupsOf(m), card = cardOf(m), hasSec = gs.some(function(g){ return g.section; }), secs = '', i = 0, row = hasSec?2:1;
+  if(hasSec){ while(i<gs.length){ var s0 = gs[i].section, j = i; while(j<gs.length && gs[j].section===s0) j++; secs += '<div class="sec" style="grid-column:'+(i+1)+' / '+(j+1)+'"><div class="sth-t">'+esc(s0)+'</div><div class="sth-d"></div></div>'; i = j; } }
+  var cols = gs.map(function(g,k){ return '<div class="col" style="grid-column:'+(k+1)+';grid-row:'+row+'">'+(hasSec?headHTML(g):titleRow(g))+itemsHTML(g.items,g.n>1?'n'+g.n:'')+'</div>'; }).join('');
+  var cd = card ? '<div class="col" style="grid-column:'+(gs.length+1)+';grid-row:'+row+'">'+cardHTML(card)+'</div>' : '';
+  return '<div class="cols" style="grid-template-columns:'+tplOf(gs,card)+'">'+secs+cols+cd+'</div>'+(m.footer?aiStripHTML(m.footer):'');
+}
+/* 2: each group on its own tinted card, promo on a black card */
+function mlCards(m){
+  var gs = groupsOf(m), card = cardOf(m);
+  return '<div class="cards" style="grid-template-columns:'+tplOf(gs,card)+'">'+gs.map(function(g){ return '<div class="gcard">'+headHTML(g)+itemsHTML(g.items,g.n>1?'n'+g.n:'')+'</div>'; }).join('')+(card?cardHTML(card,true):'')+'</div>'+(m.footer?aiStripHTML(m.footer):'');
+}
+/* 3: groups on a left rail, links of the active group on the right */
+function mlRail(m){
+  var gs = groupsOf(m), card = cardOf(m);
+  var tabs = gs.map(function(g,i){
+    var ic = g.head ? '<span class="pk-ic" style="background:'+SOLBG[g.head.k]+'">'+markOf(g.head.k)+'</span>' : '';
+    return '<button type="button" class="rl-tab'+(i?'':' on')+'" data-i="'+i+'" role="tab" aria-selected="'+(i?'false':'true')+'">'+ic+'<span>'+esc(g.title)+'</span>'+SVG.chevR+'</button>';
+  }).join('');
+  var panes = gs.map(function(g,i){
+    return '<div class="rl-pane" data-i="'+i+'" role="tabpanel"'+(i?' hidden':'')+'><div class="rl-hd"><span class="sth-t">'+(g.section?esc(g.section)+' / ':'')+esc(g.title)+'</span>'+(g.head?'<a class="explore" href="'+href(g.head.p)+'"><span>Explore</span>'+SVG.arrowRight+'</a>':'')+'</div><div class="sth-d"></div>'+itemsHTML(g.items,g.items.length>4?'g3':'g2')+'</div>';
+  }).join('');
+  return '<div class="rail"><div class="rl-side"><div class="rl-tabs" role="tablist">'+tabs+'</div>'+(card?cardHTML(card):'')+(m.footer?aiStripHTML(m.footer,true):'')+'</div><div class="rl-panes">'+panes+'</div></div>';
+}
+/* 4: one row per group, links flowing across */
+function mlRows(m){
+  var gs = groupsOf(m), card = cardOf(m), last = '';
+  var rows = gs.map(function(g){
+    var sec = ''; if(g.section && g.section!==last){ sec = '<div class="rw-sec sth-t">'+esc(g.section)+'</div>'; last = g.section; }
+    return sec+'<div class="rw"><div class="rw-t">'+headHTML(g)+'</div>'+itemsHTML(g.items,'g4')+'</div>';
+  }).join('');
+  return '<div class="rows">'+rows+(card?'<div class="rw rw-card">'+cardHTML(card)+'</div>':'')+'</div>'+(m.footer?aiStripHTML(m.footer):'');
+}
+/* 5: columns plus a footer band that holds the lightest group */
+function mlBand(m){
+  var gs = groupsOf(m), card = cardOf(m);
+  var bandG = (gs.length<=2 && !m.footer) ? gs[0] : gs[gs.length-1];
+  var main = gs.filter(function(g){ return g!==bandG; });
+  var cols = main.map(function(g){ return '<div class="col">'+(g.head?headHTML(g):titleRow(g))+itemsHTML(g.items,g.n>1?'n'+g.n:'')+'</div>'; }).join('');
+  var band = '<div class="band"><span class="sth-t">'+esc(bandG.title)+'</span>'+itemsHTML(bandG.items,'inline')+(m.footer?'<a class="band-ai" href="'+href(m.footer.p)+'"><span class="spk" aria-hidden="true">✦</span><span>'+esc(m.footer.l)+'</span>'+SVG.arrowRight+'</a>':'')+'</div>';
+  return '<div class="cols" style="grid-template-columns:'+tplOf(main,card)+'">'+cols+(card?'<div class="col">'+cardHTML(card)+'</div>':'')+'</div>'+band;
 }
 function panelHTML(id){
-  var m = MENU[id];
-  var tpl = m.cols.map(function(c){return (c.w||1)+'fr'}).join(' ');
-  var style = m.fixed ? 'grid-template-columns:repeat('+m.fixed+',minmax(0,1fr))' : m.single ? 'grid-template-columns:calc((100% - 24px) / 3)' : 'grid-template-columns:'+tpl;
-  return '<div class="panel" data-menu="'+id+'" hidden><div class="slot"><div class="wrap"><div class="cols" style="'+style+'">'+m.cols.map(colHTML).join('')+'</div></div></div></div>';
+  var m = MENU[id], ml = CFG.ml||1;
+  var body = ml===2?mlCards(m):ml===3?mlRail(m):ml===4?mlRows(m):ml===5?mlBand(m):mlColumns(m);
+  return '<div class="panel ml'+ml+'" data-menu="'+id+'" hidden><div class="slot"><div class="wrap">'+body+'</div></div></div>';
 }
-function solutionsPanelHTML(){
-  var PANEL_SOL = SOL.concat([AILABS]);
-  var picker = PANEL_SOL.map(function(s,i){
-    var ic = s.k==='bc'?SVG.bcMark:s.k==='fdx'?SVG.fdxMark:SVG.aiMark;
-    return '<a class="pk'+(i===0?' on':'')+'" data-k="'+s.k+'" href="'+href(s.home)+'"><span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span><span><span class="pk-n" style="display:block">'+esc(s.name)+'</span></span></a>';
-  }).join('');
-  var rights = PANEL_SOL.map(function(s,i){
-    var half = s.items.length/2;
-    return '<div class="sol-r" data-k="'+s.k+'"'+(i===0?'':' hidden')+'><div class="sol-hd"><div class="sol-hd-r"><span class="sth-t">'+(s.k==='ai'?'':esc(s.name)+' ')+'Products &amp; features</span><a class="explore" href="'+href(s.home)+'"><span>Explore</span>'+SVG.arrowRight+'</a></div><div class="sth-d"></div></div><div class="sol-grid">'+itemsHTML(s.items.slice(0,half))+itemsHTML(s.items.slice(half))+'</div></div>';
-  }).join('');
-  return '<div class="panel" data-menu="solutions" hidden><div class="slot"><div class="wrap"><div class="sol-row"><div class="picker">'+picker+'</div><div class="sol-right">'+rights+'</div></div></div></div></div>';
+function railPick(panel,i){
+  panel.querySelectorAll('.rl-tab').forEach(function(t){ var on = +t.dataset.i===i; t.classList.toggle('on',on); t.setAttribute('aria-selected',on?'true':'false'); });
+  panel.querySelectorAll('.rl-pane').forEach(function(p){ p.hidden = +p.dataset.i!==i; });
+}
+function railReset(id){ var p = document.querySelector('.stack .panel[data-menu="'+id+'"]'); if(p && p.querySelector('.rl-tab')) railPick(p,0); }
+function bindRails(root){
+  root.querySelectorAll('.rl-tab').forEach(function(t){
+    var panel = t.closest('.panel'), i = +t.dataset.i;
+    t.addEventListener('pointerenter',function(e){ if(e.pointerType!=='touch') railPick(panel,i); });
+    t.addEventListener('focus',function(){ railPick(panel,i); });
+    t.addEventListener('click',function(){ railPick(panel,i); });
+  });
 }
 
 var CHECK = '<svg class="ck" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="#000" stroke-width="1.5"/></svg>';
@@ -746,9 +869,9 @@ function brandsPanelHTML(brand){
   var items = [{k:'cm',name:'Commerce',desc:'AI-driven solutions for next-generation commerce',home:'/',ic:cmTile}].concat(SOL.map(function(s){ return {k:s.k,name:s.name,desc:s.desc,home:s.home,ic:tile(s,markOf(s.k))}; }));
   var rows = items.map(function(it){
     var here = it.k===brand;
-    return '<a class="pk'+(here?' on':'')+'" href="'+href(it.home)+'"'+(here?' aria-current="true"':'')+'>'+it.ic+'<span><span class="pk-n" style="display:block">'+esc(it.name)+'</span><span class="pk-d" style="display:block">'+esc(it.desc)+'</span></span>'+(here?CHECK:'')+'</a>';
+    return '<a class="pk'+(here?' on':'')+'" href="'+href(it.home)+'"'+(here?' aria-current="true"':'')+'>'+it.ic+'<span class="pk-n">'+esc(it.name)+'</span>'+(here?CHECK:'')+'</a>';
   });
-  return '<div class="panel pop w" data-menu="brands" hidden><div class="pop-list">'+rows[0]+'</div><div class="sth-d sol-div"></div><div class="pop-list">'+rows.slice(1).join('')+'</div></div>';
+  return '<div class="panel pop fl" data-menu="brands" hidden><div class="pop-list">'+rows[0]+'</div><div class="sth-d sol-div"></div><div class="pop-list">'+rows.slice(1).join('')+'</div></div>';
 }
 function loginPanelHTML(){
   var rows = SOL.map(function(s){
@@ -784,30 +907,38 @@ function stripHTML(brand){
   var right = [['Customers','/customers'],['Company','/company'],['Partners','/partners'],['Contact sales','/contact-sales']].map(function(x){ return item(x[0],x[1],here===x[1]); }).join('');
   return '<div class="strip"><div class="wrap strip-in"><nav class="strip-l" aria-label="Commerce brands">'+left+'</nav><nav class="strip-r" aria-label="Commerce">'+right+'</nav></div></div>';
 }
-/* where and how the sub-brand shows up: variants 1-6, 9 and 10 live in the sub bar, 7 and 8 in the Commerce header */
-function subIdHTML(brand){
-  var b = BRAND[brand], v = CFG.v, nm = '<span>'+esc(b.name)+'</span>', inner;
-  var sol = SOL.filter(function(x){ return x.k===brand; })[0];
-  if(v===1) inner = nm;
-  else if(v===2||v===9||v===10) inner = '<span class="sid-m">'+b.mark+'</span>'+nm;
-  else if(v===3) inner = tile(sol,b.mark)+nm;
-  else if(v===4) inner = '<span class="sid-m">'+b.mark+'</span><span class="sr">'+esc(b.name)+'</span>';
-  else if(v===5||v===6) inner = '<span class="sid-l">'+b.logo+'</span><span class="sr">'+esc(b.name)+'</span>';
-  else return '';
-  return '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview"'+(v===4?' title="'+esc(b.name)+'"':'')+'>'+inner+'</a>';
+/* where and how the sub-brand shows up in the sub bar, one treatment per CFG.v */
+function brandTabsHTML(brand){
+  var items = [{k:'cm',name:'Commerce',p:'#/'},{k:'bc',name:BRAND.bc.name,p:href(BRAND.bc.base)},{k:'fdx',name:BRAND.fdx.name,p:href(BRAND.fdx.base)}];
+  return '<nav class="bt-nav" aria-label="Commerce brands">'+items.map(function(it){
+    var on = it.k===brand;
+    return '<a class="bt'+(on?' on':'')+'" href="'+it.p+'"'+(on?' aria-current="true"':'')+'>'+(on?'<span class="sid-m">'+BRAND[it.k].mark+'</span>':'')+'<span>'+esc(it.name)+'</span></a>';
+  }).join('')+'</nav>';
 }
-function hdrCrumbHTML(brand){
-  var b = BRAND[brand], v = CFG.v;
-  if(brand==='cm') return '';
-  if(v===7) return '<span class="crumb-sep" aria-hidden="true">/</span><a class="crumb" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+esc(b.name)+'</a>';
-  if(v===8) return '<a class="chip" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+tile(SOL.filter(function(x){ return x.k===brand; })[0],b.mark)+'<span>'+esc(b.name)+'</span></a>';
-  return '';
+function subIdHTML(brand){
+  var b = BRAND[brand], v = CFG.v, nm = '<span>'+esc(b.name)+'</span>', inner, cls = 'sub-id', extra = '';
+  var sol = SOL.filter(function(x){ return x.k===brand; })[0];
+  var mk = '<span class="sid-m">'+b.mark+'</span>';
+  if(v===1) inner = nm;
+  else if(v===2) inner = mk+nm;
+  else if(v===3) inner = tile(sol,b.mark)+nm;
+  else if(v===4){ inner = mk+'<span class="sr">'+esc(b.name)+'</span>'; extra = ' title="'+esc(b.name)+'"'; }
+  else if(v===5) inner = '<span class="sid-l">'+b.logo+'</span><span class="sr">'+esc(b.name)+'</span>';
+  else if(v===6) return '<button class="sub-sw" type="button" data-trigger="brands" aria-haspopup="true" aria-expanded="false" aria-label="'+esc(b.name)+', switch brand">'+mk+nm+SVG.chev+'</button>';
+  else if(v===7){ cls += ' tag'; inner = mk+nm; }
+  else if(v===8) inner = mk+nm;
+  else if(v===9) inner = mk+nm+'<span class="sid-d">'+esc(b.tag)+'</span>';
+  else if(v===10) return brandTabsHTML(brand);
+  else inner = nm;
+  return '<a class="'+cls+'" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview"'+extra+'>'+inner+'</a>';
 }
 function subBarHTML(brand){
   var b = BRAND[brand], c = CTA[brand], panels = '';
   Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
-  var id = subIdHTML(brand);
-  return '<div class="sub sub-'+brand+'"><div class="wrap sub-in"><div class="sub-l">'+id+(id?'<span class="vdiv"></span>':'')+'<nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r"><a class="btn o" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
+  if(CFG.v===6) panels += brandsPanelHTML(brand);
+  var id = subIdHTML(brand), noDiv = CFG.v===7 || CFG.v===8;
+  var demo = brand==='bc' ? '<a class="login" href="'+href(c.secondary.p)+'">'+esc(c.secondary.l)+'</a>' : '';
+  return '<div class="sub sub-'+brand+'"><div class="wrap sub-in"><div class="sub-l">'+id+(id&&!noDiv?'<span class="vdiv"></span>':'')+'<nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r">'+demo+'<a class="btn o" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
@@ -827,8 +958,8 @@ function startedModalHTML(){
 }
 function headerHTML(brand){
   /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
-  var left = '<span class="hdr-id">'+switcherHTML('cm')+hdrCrumbHTML(brand)+'</span><nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
-  var panels = solutionsPanelHTML()+panelHTML('industries')+panelHTML('learning')+panelHTML('company');
+  var left = switcherHTML('cm')+'<nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
+  var panels = panelHTML('solutions')+panelHTML('learning');
   return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+rightHTML('cm')+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+loginModalHTML()+startedModalHTML();
 }
 /* ---------- get started page ---------- */
@@ -887,7 +1018,7 @@ function setMenu(id,by){
   hdr.querySelectorAll('[data-trigger]').forEach(function(t){ var on = t.dataset.trigger===id; t.classList.toggle('active',on); t.setAttribute('aria-expanded',on?'true':'false'); });
   scrim.hidden = !id;
   placeScrim();
-  if(id==='solutions') pick('bc');
+  if(id) railReset(id);
 }
 function placeScrim(){ if(!current) return; var h=document.querySelector('.stack'); if(h) scrim.style.top = Math.max(0,h.getBoundingClientRect().bottom)+'px'; }
 window.addEventListener('scroll',placeScrim,{passive:true});
@@ -914,12 +1045,7 @@ function bindMenus(){
     t.addEventListener('click',function(){ if(current===id) closeMenu(); else setMenu(id,'click'); });
     t.addEventListener('keydown',function(e){ if(e.key==='ArrowDown'){ e.preventDefault(); setMenu(id,'click'); var a = hdr.querySelector('.panel[data-menu="'+id+'"] a'); if(a) a.focus(); } });
   });
-  hdr.querySelectorAll('.panel[data-menu="solutions"] .pk').forEach(function(p){
-    p.addEventListener('pointerenter',function(e){ if(e.pointerType!=='touch') pick(p.dataset.k); });
-    p.addEventListener('focus',function(){ if(p.matches(':focus-visible')) pick(p.dataset.k); });
-    /* touch has no hover: first tap previews the brand, second tap (or Explore) goes to its home */
-    p.addEventListener('click',function(e){ if(ptr==='touch' && !p.classList.contains('on')){ e.preventDefault(); pick(p.dataset.k); } });
-  });
+  bindRails(hdr);
 }
 scrim.addEventListener('click',closeMenu);
 var modalOpener = null;
@@ -944,9 +1070,10 @@ function route(path){
   else if(brand!=='cm' && path===BRAND[brand].base) html = '<main class="home">'+heroHome(brand)+'</main>';
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'})+'</main>';
   document.body.classList.toggle('dark',brand!=='cm' && path!==BRAND[brand].base && !(page && page.hub)); /* dark only on deeper brand pages */
-  document.body.dataset.v = String(CFG.v); document.body.dataset.mm = CFG.mm;
+  document.body.dataset.v = String(CFG.v); document.body.dataset.mm = CFG.mm; document.body.dataset.ml = String(CFG.ml);
   app.innerHTML = headerHTML(brand)+html;
   bindMenus();
+  if(CFG.open && document.querySelector('.stack [data-trigger="'+CFG.open+'"]')) setMenu(CFG.open,'click');
   if(page && page.hub) initHub(brand,page.hub);
   document.title = (path==='/'?'Commerce':(page?page.label:'Not found'))+' · Commerce navigation prototype';
   window.scrollTo(0,0); lastY = 0;
@@ -959,7 +1086,7 @@ document.addEventListener('click',function(e){
   e.preventDefault(); navigate(a.getAttribute('href').slice(1));
 });
 window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:go' && typeof d.path==='string') navigate(d.path); });
-window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.v==='number') CFG.v=d.v; if(typeof d.mm==='string') CFG.mm=d.mm; route(curPath); } });
+window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.v==='number') CFG.v=d.v; if(typeof d.mm==='string') CFG.mm=d.mm; if(typeof d.ml==='number') CFG.ml=d.ml; if(typeof d.open==='string') CFG.open=d.open; route(curPath); } });
 window.addEventListener('popstate',function(){ route(readPath()); });
 window.addEventListener('hashchange',function(){ route(readPath()); });
 route(CFG.start && readPath()==='/' ? CFG.start : readPath());

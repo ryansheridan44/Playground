@@ -10,7 +10,7 @@ const BRANDS = [
 
 function SubBrandCompare() {
   const [start, setStart] = useState(BRANDS[0].path)
-  const docs = useMemo(() => VARIANTS.map((v) => buildDoc(v.id, 'tile', start)), [start])
+  const docs = useMemo(() => VARIANTS.map((v) => buildDoc({ v: v.id, start })), [start])
 
   return (
     <div className="cmp">
