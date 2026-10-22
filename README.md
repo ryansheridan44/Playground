@@ -30,3 +30,9 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
+## Previewing locally
+
+Double-click `Preview.command` in Finder, or run `npm run preview:latest`. It pulls the most recently pushed branch, frees port 5173, starts the dev server and opens the sub-brand navigation prototype. The prototype's Controls panel shows `Build <commit>` so you can tell which version you are looking at.
+
+Pushing to `main` deploys to GitHub Pages: https://ryansheridan44.github.io/Playground/

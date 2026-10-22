@@ -93,6 +93,7 @@ function SubBrandNavigation() {
               </div>
               <p className="sbn-note"><strong>{BUTTON_VARIATIONS[bt - 1].name}.</strong> {BUTTON_VARIATIONS[bt - 1].summary}</p>
             </div>
+            <p className="sbn-build">Build {__BUILD__}</p>
           </>
         )}
       </aside>
