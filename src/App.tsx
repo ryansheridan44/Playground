@@ -3,6 +3,9 @@ import Layout from './components/Layout'
 import ButtonPage from './pages/ButtonPage'
 import ConsolidatedNavigation from './components/ConsolidatedNavigation/ConsolidatedNavigation'
 import Home from './pages/Home'
+import NavigationPage from './pages/NavigationPage'
+import SubBrandCompare from './components/SubBrandNavigation/SubBrandCompare'
+import SubBrandNavigation from './components/SubBrandNavigation/SubBrandNavigation'
 
 function App() {
   return (
@@ -10,7 +13,10 @@ function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="button" element={<ButtonPage />} />
+        <Route path="navigation" element={<NavigationPage />} />
       </Route>
+      <Route path="prototypes/sub-brand-navigation/compare" element={<SubBrandCompare />} />
+      <Route path="prototypes/sub-brand-navigation/:variant" element={<SubBrandNavigation />} />
       <Route
         path="prototypes/consolidated-navigation-1"
         element={<ConsolidatedNavigation version={1} />}

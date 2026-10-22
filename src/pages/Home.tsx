@@ -4,58 +4,49 @@ function Home() {
   return (
     <section className="section">
       <div className="container">
-        <h1 className="page-title">Components</h1>
-        <div className="list">
-          <Link to="/button" className="row">
-            <div className="row-icon">B</div>
-            <div className="row-body">
-              <div className="row-name">Button</div>
-              <div className="row-desc">A simple, reusable button.</div>
+        <p className="eyebrow">Playground</p>
+        <h1 className="hero-title">Things to click through.</h1>
+        <p className="hero-sub">
+          Prototypes and small components, built to be tried rather than described.
+        </p>
+
+        <div className="tiles">
+          <Link to="/navigation" className="tile tile-feature">
+            <div className="tile-art" aria-hidden="true">
+              <div className="art-bar">
+                <span className="art-logo" />
+                <span className="art-link" />
+                <span className="art-link" />
+                <span className="art-link" />
+                <span className="art-cta" />
+              </div>
+              <div className="art-bar art-sub">
+                <span className="art-mark" />
+                <span className="art-name" />
+                <span className="art-div" />
+                <span className="art-link" />
+                <span className="art-link" />
+              </div>
+              <div className="art-menu" />
             </div>
-            <span className="row-action">View ↗</span>
+            <div className="tile-body">
+              <div className="tile-title">Navigation prototypes</div>
+              <div className="tile-desc">
+                Ten sub-brand treatments for the consolidated Commerce navigation, plus five earlier rounds.
+              </div>
+            </div>
+            <span className="tile-count">15 prototypes</span>
           </Link>
-        </div>
-        <h1 className="page-title group-title">Prototypes</h1>
-        <div className="list">
-          <Link to="/prototypes/consolidated-navigation-1" className="row">
-            <div className="row-icon">1</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 1</div>
-              <div className="row-desc">Logo switcher; header without the tertiary CTA.</div>
+
+          <Link to="/button" className="tile">
+            <div className="tile-art tile-art-small" aria-hidden="true">
+              <span className="art-button" />
             </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-2" className="row">
-            <div className="row-icon">2</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 2</div>
-              <div className="row-desc">Parent strip navigation prototype.</div>
+            <div className="tile-body">
+              <div className="tile-title">Components</div>
+              <div className="tile-desc">A simple, reusable button.</div>
             </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-3" className="row">
-            <div className="row-icon">3</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 3</div>
-              <div className="row-desc">Commerce global header with a sub-brand secondary bar.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-4" className="row">
-            <div className="row-icon">4</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 4</div>
-              <div className="row-desc">Two tiers: Commerce header plus sub-brand bar, no parent strip.</div>
-            </div>
-            <span className="row-action">View ↗</span>
-          </Link>
-          <Link to="/prototypes/consolidated-navigation-5" className="row">
-            <div className="row-icon">5</div>
-            <div className="row-body">
-              <div className="row-name">Consolidated Navigation 5</div>
-              <div className="row-desc">Navigation 4 with floating, rounded dropdown menus.</div>
-            </div>
-            <span className="row-action">View ↗</span>
+            <span className="tile-count">1 component</span>
           </Link>
         </div>
       </div>

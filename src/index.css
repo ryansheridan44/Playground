@@ -163,3 +163,235 @@ a {
 .group-title {
   margin-top: 96px;
 }
+
+/* Home */
+.eyebrow {
+  font: 13px 'Geist Mono', ui-monospace, monospace;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-title {
+  margin-top: 12px;
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.hero-sub {
+  max-width: 620px;
+  margin-top: 16px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.tile:hover {
+  border-color: #b5b5b5;
+  transform: translateY(-2px);
+}
+
+.tile-art {
+  position: relative;
+  flex: 1;
+  min-height: 220px;
+  padding: 24px 24px 0;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: 10px;
+}
+
+.tile-art-small {
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.tile-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.tile-desc {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.tile-count {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  padding: 4px 10px;
+  font-size: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.art-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+}
+
+.art-bar:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+.art-sub {
+  height: 34px;
+  border-bottom: 1px solid var(--border);
+}
+
+.art-logo {
+  width: 64px;
+  height: 10px;
+  margin-right: 8px;
+  background: #111;
+  border-radius: 2px;
+}
+
+.art-link {
+  width: 36px;
+  height: 6px;
+  background: #d0d0d0;
+  border-radius: 3px;
+}
+
+.art-cta {
+  width: 56px;
+  height: 22px;
+  margin-left: auto;
+  background: #111;
+  border-radius: 2px;
+}
+
+.art-mark {
+  width: 12px;
+  height: 12px;
+  background: #111;
+  border-radius: 3px;
+}
+
+.art-name {
+  width: 52px;
+  height: 7px;
+  background: #111;
+  border-radius: 3px;
+}
+
+.art-div {
+  width: 1px;
+  height: 100%;
+  background: var(--border);
+}
+
+.art-menu {
+  height: 80px;
+  margin: 14px 24px 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.art-button {
+  width: 96px;
+  height: 36px;
+  background: #111;
+  border-radius: 8px;
+}
+
+/* Navigation page */
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  font-weight: 500;
+  border: 1px solid var(--fg);
+  border-radius: 8px;
+}
+
+.action:hover {
+  background: var(--surface);
+}
+
+.action-primary {
+  color: var(--bg);
+  background: var(--fg);
+}
+
+.action-primary:hover {
+  background: #333;
+}
+
+.group-heading {
+  margin-top: 96px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.group-heading + .list {
+  margin-top: 24px;
+}
+
+.row-meta {
+  flex: none;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.row-icon-quiet {
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.page-title + .list,
+.hero-sub + .actions + .list {
+  margin-top: 48px;
+}
+
+@media (max-width: 800px) {
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .row-meta {
+    display: none;
+  }
+}
