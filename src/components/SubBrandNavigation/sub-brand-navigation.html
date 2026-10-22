@@ -310,7 +310,7 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sub-r .btn{height:32px}
 .sub-r .btn.o:hover{background:var(--surface2)}
 .sub-r .btn.o:active{background:#e4e7ec;color:#000;border-color:#000}
-/* sub-brand visibility: body[data-sv] is mark, black, shape or text; marks show in the sub bar, the Solutions menu and the login pickers */
+/* sub-brand visibility: body[data-sv] is mark, black, shape, text or mark-only; marks show in the sub bar, the Solutions menu and the login pickers */
 .bi{display:inline-flex;align-items:center;justify-content:center;flex:none;width:24px;height:24px;margin:0}
 .bi svg{display:block;width:16px;height:16px}
 .bi svg path{fill:#000}
@@ -453,16 +453,19 @@ body.menu-open #scrim{opacity:1;pointer-events:auto}
 .tree li:last-child::before{bottom:auto;height:calc(50% - 12px)}
 .tree li:first-child:last-child::before{height:calc(50% - 12px + 18px)}
 .tree li::after{top:calc(50% - 12px);width:12px;height:12px;border-left:1.5px solid var(--border);border-bottom:1.5px solid var(--border);border-bottom-left-radius:12px}
-body[data-sv="text"] .tree li{padding-left:0}
+body[data-sv="text"] .tree li{padding:6px 0}
 body[data-sv="text"] .tree li::before,body[data-sv="text"] .tree li::after{display:none}
-body[data-sv="text"] .tree{padding-top:12px}
+body[data-sv="text"] .tree{padding-top:10px}
+body[data-sv="text"] .product__tag{display:none}
 .menu .strip{border:0;box-shadow:none;position:relative;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;height:auto;margin-top:28px;padding:14px 20px;background:var(--surface-2);border-radius:14px;font-size:inherit}
 .strip__text{display:flex;align-items:center;gap:8px}
 .strip__title{font-weight:var(--w-medium);font-size:15px}
 .menu .card{display:block;background:var(--surface-2);border-radius:var(--r-xl);padding:20px}
-/* gray card sits 16px from the menu edges; the menu gains matching top and bottom padding so the card's type stays on the same lines as the columns beside it */
+/* menus without a promo: every column the same width (the widest one) */
+.menu:not(.menu--lg):not(:has(.promo)) .menu__cols{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr)}
+/* gray card sits 8px from the menu edges; the menu gains matching top and bottom padding so the card's type stays on the same lines as the columns beside it */
 .menu:has(.menu__cols>.card){padding-top:32px;padding-bottom:32px}
-.menu__cols>.card{align-self:stretch;margin:-16px -12px -16px 0;padding:16px 20px}
+.menu__cols>.card{align-self:stretch;margin:-24px -20px -24px 0;padding:24px 20px;border-radius:calc(var(--r-xl) - 9px)}
 .menu .promo{position:relative;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;align-self:stretch;width:260px;min-height:160px;gap:8px;padding:20px;background:var(--surface-2);border-radius:var(--r-xl)}
 .promo .btn{align-self:flex-start}
 .promo .btn--text::after,.strip__title::after{content:"";position:absolute;inset:0;border-radius:inherit}
@@ -476,17 +479,26 @@ body[data-sv="text"] .tree{padding-top:12px}
 body[data-sv="text"] .stack .bar--sub{gap:14px}
 body[data-sv="text"] .sub-bar__label{min-width:0;margin-left:-10px;font-weight:var(--w-regular)}
 .sub-bar__div{flex:none;width:1px;height:20px;background:var(--border)}
+/* mark: 2px corners on the tile that holds the mark */
+body[data-sv^="mark"] :is(.pk-ic,.tile--mark,.sub-bar__label .pk-ic,.sub-id .pk-ic){border-radius:2px}
+/* black mark: a little larger and closer to the name */
+body[data-sv="black"] .sub-bar__label{gap:8px}
+body[data-sv="black"] .sub-bar__label .bi{width:18px;height:18px}
+body[data-sv="black"] .sub-bar__label .bi svg{width:18px;height:18px}
+/* mark only: the tile alone, then a divider */
+body[data-sv="mark-only"] .stack .bar--sub{gap:14px}
+body[data-sv="mark-only"] .sub-bar__label{min-width:0;margin-right:10px}
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* black mark and shape: no tree connectors or sub-lines, a divider under each header, three equal columns */
-:is(body[data-sv="black"],body[data-sv="shape"]) .tree{padding-top:9px}
-:is(body[data-sv="black"],body[data-sv="shape"]) .tree li{padding-left:0}
+:is(body[data-sv="black"],body[data-sv="shape"]) .tree{padding-top:6px}
+:is(body[data-sv="black"],body[data-sv="shape"]) .tree li{padding:6px 0}
 :is(body[data-sv="black"],body[data-sv="shape"]) .tree li::before,:is(body[data-sv="black"],body[data-sv="shape"]) .tree li::after{display:none}
 :is(body[data-sv="black"],body[data-sv="shape"]) .product__tag{display:none}
-:is(body[data-sv="black"],body[data-sv="shape"]) .menu .tile--bare{width:20px;height:40px}
-:is(body[data-sv="black"],body[data-sv="shape"]) .product__head,:is(body[data-sv="black"],body[data-sv="shape"]) .menu .group__title{display:flex;align-items:center;min-height:40px;padding-bottom:16px;margin-bottom:0;border-bottom:1px solid var(--border)}
+:is(body[data-sv="black"],body[data-sv="shape"]) .menu .tile--bare{width:20px;height:24px}
+:is(body[data-sv="black"],body[data-sv="shape"]) .product__head,:is(body[data-sv="black"],body[data-sv="shape"]) .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid #eaecf0}
 :is(body[data-sv="black"],body[data-sv="shape"]) .menu .group__title{box-sizing:content-box}
-:is(body[data-sv="black"],body[data-sv="shape"]) .menu .group .list{margin-top:16px}
+:is(body[data-sv="black"],body[data-sv="shape"]) .menu .group .list{margin-top:12px}
 :is(body[data-sv="black"],body[data-sv="shape"]) .menu--lg{width:min(1120px,calc(100vw - 2 * var(--gutter)))}
 :is(body[data-sv="black"],body[data-sv="shape"]) .menu--lg .menu__cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gap)}
 :is(body[data-sv="black"],body[data-sv="shape"]) .menu--lg .menu__cols>section{min-width:0}
@@ -999,7 +1011,7 @@ function hdrRightHTML(ctx){
 }
 function subBarHTML(brand){
   var b = BRAND[brand];
-  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span></a>'+(CFG.sv==='text'?'<span class="sub-bar__div" aria-hidden="true"></span>':'')+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
+  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+(CFG.sv==='text'||CFG.sv==='mark-only'?'<span class="sub-bar__div" aria-hidden="true"></span>':'')+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){

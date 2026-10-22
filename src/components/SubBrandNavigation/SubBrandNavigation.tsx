@@ -67,7 +67,7 @@ function SubBrandNavigation() {
               <p className="sbn-note">{VISIBILITY.find((v) => v.value === sv)?.summary}</p>
             </div>
             <label className="sbn-check">
-              <input type="checkbox" checked={sl} onChange={(e) => setSl(e.target.checked)} />
+              <input type="checkbox" checked={sl} disabled={sv === 'mark-only'} onChange={(e) => setSl(e.target.checked)} />
               <span>Show “Solution /” before the sub-brand name</span>
             </label>
             <div className="sbn-row">
