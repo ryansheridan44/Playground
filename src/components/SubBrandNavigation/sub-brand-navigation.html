@@ -472,6 +472,10 @@ body[data-sv="text"] .tree{padding-top:12px}
 .menu .promo:has(:focus-visible),.menu .strip:has(:focus-visible){outline:2px solid var(--text);outline-offset:2px}
 .promo__eyebrow{color:var(--text-tertiary)}
 .promo__text{font-weight:var(--w-medium);white-space:normal!important}
+/* text only: the sub-brand name is a nav item, and a light divider sits 24px (the nav item spacing) from the name and from the first link */
+body[data-sv="text"] .stack .bar--sub{gap:14px}
+body[data-sv="text"] .sub-bar__label{min-width:0;margin-left:-10px;font-weight:var(--w-regular)}
+.sub-bar__div{flex:none;width:1px;height:20px;background:var(--border)}
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* black mark and shape: no tree connectors or sub-lines, a divider under each header, three equal columns */
@@ -995,7 +999,7 @@ function hdrRightHTML(ctx){
 }
 function subBarHTML(brand){
   var b = BRAND[brand];
-  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+'<span>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span></a><ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
+  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span></a>'+(CFG.sv==='text'?'<span class="sub-bar__div" aria-hidden="true"></span>':'')+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
