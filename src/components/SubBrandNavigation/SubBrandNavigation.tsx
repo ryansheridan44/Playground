@@ -38,7 +38,7 @@ function SubBrandNavigation() {
       <iframe ref={frame} className="sbn-frame" title="Sub-brand navigation prototype" srcDoc={doc} />
       <aside className={`sbn-dock${open ? '' : ' closed'}`} aria-label="Prototype controls">
         <div className="sbn-top">
-          <Link to="/navigation" className="sbn-link">← All</Link>
+          <Link to="/" className="sbn-link">← Playground</Link>
           <button type="button" className="sbn-link sbn-fold" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
             {open ? 'Hide' : 'Controls'}
           </button>

@@ -3,7 +3,6 @@ import Layout from './components/Layout'
 import ButtonPage from './pages/ButtonPage'
 import ConsolidatedNavigation from './components/ConsolidatedNavigation/ConsolidatedNavigation'
 import Home from './pages/Home'
-import NavigationPage from './pages/NavigationPage'
 import SubBrandNavigation from './components/SubBrandNavigation/SubBrandNavigation'
 
 function App() {
@@ -12,7 +11,6 @@ function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="button" element={<ButtonPage />} />
-        <Route path="navigation" element={<NavigationPage />} />
       </Route>
       <Route path="prototypes/sub-brand-navigation" element={<SubBrandNavigation />} />
       <Route path="prototypes/sub-brand-navigation/*" element={<Navigate to="/prototypes/sub-brand-navigation" replace />} />
