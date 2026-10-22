@@ -119,13 +119,24 @@
   background: #fff;
 }
 
+.sbn-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .sbn-check {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: #d0d5dd;
   font-size: 12px;
   cursor: pointer;
+}
+
+.sbn-check:has(input:disabled) {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .sbn-check input {
