@@ -1,85 +1,60 @@
 import raw from './sub-brand-navigation.html?raw'
 
-export type MenuMarks = 'tile' | 'black' | 'none'
+export type SubBrandVisibility = 'mark' | 'black' | 'shape' | 'text'
 
-export interface Variant {
-  id: number
-  name: string
-  where: 'Sub bar' | 'Commerce header'
-  summary: string
-  tests: string
+export interface Config {
+  ml?: number
+  sv?: SubBrandVisibility
+  bt?: number
+  start?: string
+  open?: string
 }
 
-export const VARIANTS: Variant[] = [
+const DEFAULT_CFG = "var CFG = {ml:1,sv:'mark',bt:1,start:'',open:''};"
+
+export function buildDoc(cfg: Config) {
+  const full = { ml: 1, sv: 'mark', bt: 1, start: '', open: '', ...cfg }
+  return raw.replace(DEFAULT_CFG, `var CFG = ${JSON.stringify(full)};`)
+}
+
+export const MENU_LAYOUTS = [
+  { id: 1, name: 'A', title: 'Columns', summary: 'One column per group, with section labels over related groups.' },
+  { id: 2, name: 'B', title: 'Columns + card', summary: 'Columns, with one card: the promo, or the lightest group.' },
+  { id: 3, name: 'C', title: 'Columns + card + band', summary: 'Columns, one card, and a footer band for the lightest group.' },
+]
+
+export const VISIBILITY: { value: SubBrandVisibility; label: string; summary: string }[] = [
+  { value: 'mark', label: 'Mark', summary: 'The logo mark in its brand color, on a soft tile.' },
+  { value: 'black', label: 'Black mark', summary: 'The logo mark in black, no tile.' },
+  { value: 'shape', label: 'Shape', summary: 'Just the shape of the mark: a triangle for BigCommerce, a diamond for Feedonomics.' },
+  { value: 'text', label: 'Text', summary: 'No marks anywhere. Names only.' },
+]
+
+export const BUTTON_VARIATIONS = [
   {
     id: 1,
-    name: 'Text label',
-    where: 'Sub bar',
-    summary: 'The sub-brand name in plain text. No mark.',
-    tests: 'Baseline. Is a name alone enough to tell someone they are on BigCommerce?',
+    name: 'Global primary',
+    summary: 'Commerce: two links and a solid Get started. Sub-brand: a link and an outlined button.',
   },
   {
     id: 2,
-    name: 'Black mark + name',
-    where: 'Sub bar',
-    summary: 'The monochrome logo mark beside the name.',
-    tests: 'Does a small mark add recognition without adding color?',
+    name: 'Links up top',
+    summary: 'Commerce bar is all plain links. The sub-brand bar carries the buttons: demo outlined, trial solid.',
   },
   {
     id: 3,
-    name: 'Color tile + name',
-    where: 'Sub bar',
-    summary: 'The mark sits in the same pastel tile used in the Solutions menu.',
-    tests: 'Does matching the menu tile help people connect the bar to the picker?',
+    name: 'One button',
+    summary: 'Get started is the only button. Sub-brand CTAs are plain links.',
   },
   {
     id: 4,
-    name: 'Mark only',
-    where: 'Sub bar',
-    summary: 'A black mark with no name. The name shows on hover.',
-    tests: 'The most subdued option. Do BigCommerce regulars recognize the mark on its own?',
+    name: 'Context swap',
+    summary: 'On sub-brand pages the header button becomes the brand’s primary CTA (Free trial, Get a demo).',
   },
   {
     id: 5,
-    name: 'Black wordmark',
-    where: 'Sub bar',
-    summary: 'The full sub-brand logo in black, in place of the name.',
-    tests: 'Does a recognizable wordmark reassure people enough to offset losing their own header?',
-  },
-  {
-    id: 6,
-    name: 'Brand switcher',
-    where: 'Sub bar',
-    summary: 'The name sits in a bordered control with a chevron. Selecting it lists Commerce, BigCommerce and Feedonomics.',
-    tests: 'Do people discover they can move between brands from here, and does it feel like a switcher or a menu?',
-  },
-  {
-    id: 7,
-    name: 'Solid tag',
-    where: 'Sub bar',
-    summary: 'A compact black tag with a white mark and name, like a product label.',
-    tests: 'Does a small contained block say “you are in a product” without a mark or color carrying it?',
-  },
-  {
-    id: 8,
-    name: 'Island bar',
-    where: 'Sub bar',
-    summary: 'The sub bar becomes a rounded tinted island inside the page width instead of a full-bleed bar.',
-    tests: 'Does a contained, floating bar read as part of Commerce, in line with the floating menus?',
-  },
-  {
-    id: 9,
-    name: 'Name + descriptor',
-    where: 'Sub bar',
-    summary: 'The mark and name followed by a muted line saying what the brand is.',
-    tests: 'Does saying what the brand is do more for clarity than how the brand looks?',
-  },
-  {
-    id: 10,
-    name: 'Brand tabs',
-    where: 'Sub bar',
-    summary: 'Commerce, BigCommerce and Feedonomics as tabs, with the current one marked and underlined.',
-    tests: 'Can people move between the brands, and does showing all three weaken the parent brand?',
+    name: 'Two-button header',
+    summary: 'Contact sales becomes an outlined button beside a solid Get started, sized to match the sub-brand bar.',
   },
 ]
 
@@ -87,28 +62,6 @@ export const PAGES = [
   { label: 'Commerce', path: '/' },
   { label: 'BigCommerce', path: '/bigcommerce' },
   { label: 'Feedonomics', path: '/feedonomics' },
-]
-
-export interface Config {
-  v: number
-  mm?: MenuMarks
-  ml?: number
-  start?: string
-  open?: string
-}
-
-const DEFAULT_CFG = "var CFG = {v:1,mm:'tile',ml:1,start:'',open:''};"
-
-export function buildDoc({ v, mm = 'tile', ml = 1, start = '', open = '' }: Config) {
-  return raw.replace(DEFAULT_CFG, `var CFG = ${JSON.stringify({ v, mm, ml, start, open })};`)
-}
-
-export const MENU_LAYOUTS = [
-  { id: 1, name: 'Columns', summary: 'One column per group, with section labels over related groups. A footer strip carries AI Labs.' },
-  { id: 2, name: 'Cards', summary: 'Each group sits on its own tinted card. Promos become a black card.' },
-  { id: 3, name: 'Rail', summary: 'Groups on a left rail. Hover one to see its links on the right.' },
-  { id: 4, name: 'Rows', summary: 'One row per group with its links flowing across. The shortest, most scannable option for long lists.' },
-  { id: 5, name: 'Band', summary: 'Columns for the main groups, with the lightest group moved into a footer band.' },
 ]
 
 export const MENUS = [
@@ -120,5 +73,3 @@ export const MENUS = [
   { id: 'fdx-integrations', label: 'Feedonomics: Integrations', start: '/feedonomics' },
   { id: 'fdx-resources', label: 'Feedonomics: Resources', start: '/feedonomics' },
 ]
-
-export const pad = (n: number) => String(n).padStart(2, '0')

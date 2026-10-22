@@ -310,41 +310,27 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .sub-r .btn{height:32px}
 .sub-r .btn.o:hover{background:var(--surface2)}
 .sub-r .btn.o:active{background:#e4e7ec;color:#000;border-color:#000}
-/* sub-brand identity explorations: body[data-v] picks the treatment, body[data-mm] the marks in menus, body[data-ml] the menu layout */
-.sub-id .sid-m,.sub-id .sid-l{display:inline-flex}
-.sub-id .sid-m svg{display:block;width:18px;height:18px}
-.sub-id .sid-l svg{display:block;height:22px!important;width:auto!important}
-body[data-v="4"] .sub-id .sid-m svg{width:22px;height:22px}
-body[data-v="5"] .sub-id .sid-l svg{filter:brightness(0)}
-.sub-sw{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 10px 0 8px;border:1px solid var(--border);border-radius:6px;font-size:14px;line-height:19.6px;font-weight:500;color:#000;white-space:nowrap}
-.sub-sw .sid-m{display:inline-flex}
-.sub-sw .sid-m svg{display:block;width:16px;height:16px}
-.sub-sw>svg{width:7px;height:5px;flex:none}
-.sub-sw:hover,.sub-sw.active{background:var(--surface2)}
-.sub-sw.active>svg{transform:rotate(180deg)}
-.panel.pop.fl{top:calc(100% + 8px);width:280px;padding:8px;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.16)}
-.sub-id.tag{height:28px;padding:0 10px 0 8px;border-radius:6px;background:#000;color:#fff}
-.sub-id.tag .sid-m svg{width:16px;height:16px;filter:brightness(0) invert(1)}
-.sub-id.tag:hover{background:#161c26}
-.sub-id.tag:hover span:last-child{text-decoration:none}
-body[data-v="8"] .sub{border-bottom-color:transparent}
-body[data-v="8"] .sub-in{height:37px;margin:4px auto 0;padding:0 12px;background:var(--surface2);border-radius:10px}
-body[data-v="8"] .sub-r .btn{height:28px}
-body[data-v="8"] .sub-r .btn.o:hover{background:#e4e7ec}
-.sid-d{margin-left:4px;font-size:13px;line-height:18px;font-weight:400;color:var(--t3)}
-.sub-id:hover span.sid-d:last-child{text-decoration:none}
-.bt-nav{display:flex;align-items:stretch;height:44px}
-.bt{display:inline-flex;align-items:center;gap:8px;padding:0 14px;font-size:14px;line-height:19.6px;color:var(--t3);white-space:nowrap;box-shadow:inset 0 -2px transparent}
-.bt:first-child{padding-left:0}
-.bt:hover{color:#000}
-.bt.on{color:#000;font-weight:500;box-shadow:inset 0 -2px #000}
-.bt .sid-m{display:inline-flex}
-.bt .sid-m svg{display:block;width:16px;height:16px}
+/* sub-brand visibility: body[data-sv] is mark, black, shape or text; marks show in the sub bar, the Solutions menu and the login pickers */
+.bi{display:inline-flex;align-items:center;justify-content:center;flex:none;width:24px;height:24px;margin:0}
+.bi svg{display:block;width:16px;height:16px}
+.bi svg path{fill:#000}
+.pk-ic.bi-bc svg path{fill:#121118}
+.pk-ic.bi-fdx svg path{fill:#274CFF}
+.pk .bi{width:32px;height:32px;margin:3px 0}
+.pk .bi svg{width:20px;height:20px}
+.sub-id{gap:10px}
+.sub-id .pk-ic{width:24px;height:24px;margin:0;border-radius:4px}
+.sub-id .pk-ic svg{width:14px;height:14px}
+.gh .bi svg{width:14px;height:14px}
+/* button variations */
+.hbtn{display:inline-flex;align-items:center;height:36px;padding:0 14px;font-size:14px;line-height:19.6px;border:1px solid #000;border-radius:2px;white-space:nowrap}
+.hbtn.s{background:#000;color:#fff}
+.hbtn.s:active{background:#161c26}
+.hbtn.o{background:transparent;color:#000}
+.hbtn.o:hover{background:var(--surface2)}
+.hdr-r .hbtn.s{margin-left:-8px}
 .sub-r .login{font-size:14px}
-body[data-mm="black"] .panel .pk-ic,body[data-mm="black"] .mod .pk-ic{background:transparent!important}
-body[data-mm="black"] .panel .pk-ic svg,body[data-mm="black"] .mod .pk-ic svg{filter:brightness(0)}
-body[data-mm="none"] .panel .pk-ic,body[data-mm="none"] .mod .pk-ic{display:none}
-
+.sub-r .btn:not(.o):hover{background:#161c26}
 /* menu content: no descriptions, links only */
 .mni{align-items:center;gap:6px;padding:6px 8px;font-size:14px;line-height:19.6px}
 .mni svg{width:14px;height:14px;flex:none}
@@ -375,43 +361,13 @@ body[data-mm="none"] .panel .pk-ic,body[data-mm="none"] .mod .pk-ic{display:none
 .card.dark .card-k{color:#98a2b3}
 .card.dark .card-l,.card.dark .card-l:hover{color:#fff}
 .card-h{font-size:18px}
-/* 2: cards */
-.cards{display:grid;gap:12px;align-items:stretch}
+/* menu layouts B and C: one card, and in C a footer band */
 .gcard{display:flex;flex-direction:column;gap:6px;padding:16px 12px 12px;border-radius:8px;background:var(--surface2)}
-.gcard .mni:hover,.gcard .gh:hover{background:#e4e7ec}
-.gc-k{padding:0 8px 4px;font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;line-height:16px;letter-spacing:.39px;text-transform:uppercase;color:var(--t3)}
-.cards .card{height:100%}
-/* 3: rail */
-.rail{display:grid;grid-template-columns:260px minmax(0,1fr);gap:32px;align-items:start}
-.rl-side{display:flex;flex-direction:column;gap:16px}
-.rl-tabs{display:flex;flex-direction:column;gap:4px}
-.rl-tab{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border-radius:6px;font-size:14px;line-height:19.6px;color:#000}
-.rl-tab .pk-ic{width:24px;height:24px;margin:0;border-radius:4px}
-.rl-tab .pk-ic svg{width:14px;height:14px}
-.rl-tab>svg{width:5px;height:7px;margin-left:auto;flex:none}
-.rl-tab:hover,.rl-tab.on{background:var(--surface2)}
-.rl-tab.on{font-weight:500}
-.rl-panes{min-width:0;min-height:280px;padding-left:32px;border-left:1px solid var(--divider)}
-.rl-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 8px 8px}
-.rl-pane .sth-d{margin-bottom:8px}
-/* 4: rows */
-.rows{display:flex;flex-direction:column}
-.rw{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;align-items:start;padding:12px 0;border-top:1px solid var(--divider)}
-.rw:first-child{padding-top:0;border-top:0}
-.rw-t{padding-top:0}
-.rw-sec{padding:0 0 8px}
-.rw-sec:not(:first-child){margin-top:12px;padding-top:20px;border-top:1px solid var(--divider)}
-.rw-sec+.rw{padding-top:4px;border-top:0}
-.rw-card{display:block;padding:16px 0 0}
-.rw-card .card{flex-direction:row;align-items:center;gap:24px;padding:16px 20px}
-.rw-card .card-h{flex:1}
-/* 5: columns with a footer band */
-.band{display:flex;align-items:center;flex-wrap:wrap;gap:8px 24px;margin-top:24px;padding:10px 16px;border-radius:8px;background:var(--surface2)}
+.gcard .mni:hover{background:#e4e7ec}
+.col.cd{align-self:stretch}
+.col.cd>.card,.col.cd>.gcard{height:100%}
+.band{display:flex;align-items:center;flex-wrap:wrap;gap:8px 24px;margin-top:24px;padding:10px 16px;border:1px solid var(--border);border-radius:8px}
 .band .items{flex:1;min-width:0}
-.band .mni:hover{background:#e4e7ec}
-.band-ai{display:inline-flex;align-items:center;gap:8px;margin-left:auto;font-size:14px;line-height:19.6px;font-weight:500;color:#000;white-space:nowrap}
-.band-ai svg{width:16px;height:16px}
-.band-ai:hover{text-decoration:underline;text-underline-offset:3px}
 </style>
 </head>
 <body>
@@ -441,7 +397,7 @@ SVG.caret='<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidd
 var esc = function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')};
 var slug = function(s){return s.toLowerCase().replace(/&/g,'and').replace(/™/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')};
 /* the host page swaps this line to pick the variant, menu marks and starting page */
-var CFG = {v:1,mm:'tile',ml:1,start:'',open:''};
+var CFG = {ml:1,sv:'mark',bt:1,start:'',open:''};
 var curPath = '/';
 var BRAND = {
   bc:{name:'BigCommerce',tag:'Ecommerce platform for B2C and B2B',base:'/bigcommerce',logo:SVG.bcLogo,mark:SVG.bcMark,cls:'dark'},
@@ -779,19 +735,31 @@ function initHub(brand,key){
 /* ---------- markup builders ---------- */
 var href = function(p){ return '#'+(p||'/'); };
 var SOLBG = {bc:'#e4e7ec',fdx:'#cfdcff'};
+var SHAPE = {
+ bc:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M20 0V20H0Z"/></svg>',
+ fdx:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 0L20 10L10 20L0 10Z"/></svg>'
+};
+/* the sub-brand icon for the current visibility setting: mark (in a tile), black mark, bare shape, or nothing */
+function brandIcon(k){
+  var sv = CFG.sv, b = BRAND[k];
+  if(sv==='text' || !b || !b.mark) return '';
+  if(sv==='shape') return '<span class="bi">'+SHAPE[k]+'</span>';
+  if(sv==='black') return '<span class="bi">'+b.mark+'</span>';
+  return '<span class="pk-ic bi-'+k+'" style="background:'+SOLBG[k]+'">'+b.mark+'</span>';
+}
 function itemHTML(it){
   return '<a class="mni" href="'+href(it.p)+'"><span class="mni-t">'+esc(it.l)+'</span>'+(it.tag?'<span class="mni-tag">'+esc(it.tag)+'</span>':'')+(it.ai?'<span class="spk" role="img" aria-label="AI">✦</span>':'')+(it.cta?SVG.arrowRight:'')+'</a>';
 }
 function itemsHTML(items,cls){ return '<div class="items'+(cls?' '+cls:'')+'">'+items.map(itemHTML).join('')+'</div>'; }
 function headHTML(g){
-  if(g.head) return '<a class="gh" href="'+href(g.head.p)+'"><span class="pk-ic" style="background:'+SOLBG[g.head.k]+'">'+markOf(g.head.k)+'</span><span>'+esc(g.head.l)+'</span>'+SVG.arrowRight+'</a>';
+  if(g.head) return '<a class="gh" href="'+href(g.head.p)+'">'+brandIcon(g.head.k)+'<span>'+esc(g.head.l)+'</span>'+SVG.arrowRight+'</a>';
   return '<span class="gt">'+esc(g.title)+'</span>';
 }
 function titleRow(g){
   return g.head ? headHTML(g) : '<div class="sth"><div class="sth-t">'+esc(g.title)+'</div><div class="sth-d"></div></div>';
 }
 function cardHTML(c,dark){
-  return '<div class="card'+(dark?' dark':'')+'"><span class="card-k">'+esc(c.kicker)+'</span><span class="card-h">'+esc(c.headline)+'</span>'+c.links.map(function(k){ return '<a class="card-l" href="'+href(k.p)+'"><span>'+esc(k.l)+'</span>'+SVG.arrowRight+'</a>'; }).join('')+'</div>';
+  return '<div class="card'+(dark?' dark':'')+'"><span class="card-k">'+esc(c.kicker)+'</span><span class="card-h">'+esc(c.headline)+'</span>'+(c.body?'<span class="card-b">'+esc(c.body)+'</span>':'')+c.links.map(function(k){ return '<a class="card-l" href="'+href(k.p)+'"><span>'+esc(k.l)+'</span>'+SVG.arrowRight+'</a>'; }).join('')+'</div>';
 }
 function aiStripHTML(f,compact){
   return '<a class="ai-strip'+(compact?' c':'')+'" href="'+href(f.p)+'"><span class="ai-t"><span class="spk" aria-hidden="true">✦</span> '+esc(f.l)+'</span><span class="ai-d">'+esc(f.text)+'</span><span class="ai-c"><span>'+esc(f.cta)+'</span>'+SVG.arrowRight+'</span></a>';
@@ -807,62 +775,34 @@ function mlColumns(m){
   var cd = card ? '<div class="col" style="grid-column:'+(gs.length+1)+';grid-row:'+row+'">'+cardHTML(card)+'</div>' : '';
   return '<div class="cols" style="grid-template-columns:'+tplOf(gs,card)+'">'+secs+cols+cd+'</div>'+(m.footer?aiStripHTML(m.footer):'');
 }
-/* 2: each group on its own tinted card, promo on a black card */
-function mlCards(m){
-  var gs = groupsOf(m), card = cardOf(m);
-  return '<div class="cards" style="grid-template-columns:'+tplOf(gs,card)+'">'+gs.map(function(g){ return '<div class="gcard">'+headHTML(g)+itemsHTML(g.items,g.n>1?'n'+g.n:'')+'</div>'; }).join('')+(card?cardHTML(card,true):'')+'</div>'+(m.footer?aiStripHTML(m.footer):'');
+/* B and C: columns plus one card, and in C a footer band. The card is the promo if the menu has one,
+   otherwise AI Labs (C) or the last group. The band is the lightest remaining group. */
+function mlPlan(m,full){
+  var gs = groupsOf(m), card = cardOf(m), cardG = null, band = null, strip = m.footer;
+  if(!card){
+    if(full && m.footer){ card = {kicker:'AI Labs',headline:m.footer.l,body:m.footer.text,links:[{l:m.footer.cta,p:m.footer.p}]}; strip = null; band = gs[gs.length-1]; }
+    else cardG = gs[gs.length-1];
+  }
+  var rest = gs.filter(function(g){ return g!==cardG && g!==band; });
+  if(full && !band && rest.length>1){ band = rest.reduce(function(a,b){ return b.items.length<=a.items.length ? b : a; }); rest = rest.filter(function(g){ return g!==band; }); }
+  return {cols:rest,cardG:cardG,card:card,band:band,strip:strip};
 }
-/* 3: groups on a left rail, links of the active group on the right */
-function mlRail(m){
-  var gs = groupsOf(m), card = cardOf(m);
-  var tabs = gs.map(function(g,i){
-    var ic = g.head ? '<span class="pk-ic" style="background:'+SOLBG[g.head.k]+'">'+markOf(g.head.k)+'</span>' : '';
-    return '<button type="button" class="rl-tab'+(i?'':' on')+'" data-i="'+i+'" role="tab" aria-selected="'+(i?'false':'true')+'">'+ic+'<span>'+esc(g.title)+'</span>'+SVG.chevR+'</button>';
-  }).join('');
-  var panes = gs.map(function(g,i){
-    return '<div class="rl-pane" data-i="'+i+'" role="tabpanel"'+(i?' hidden':'')+'><div class="rl-hd"><span class="sth-t">'+(g.section?esc(g.section)+' / ':'')+esc(g.title)+'</span>'+(g.head?'<a class="explore" href="'+href(g.head.p)+'"><span>Explore</span>'+SVG.arrowRight+'</a>':'')+'</div><div class="sth-d"></div>'+itemsHTML(g.items,g.items.length>4?'g3':'g2')+'</div>';
-  }).join('');
-  return '<div class="rail"><div class="rl-side"><div class="rl-tabs" role="tablist">'+tabs+'</div>'+(card?cardHTML(card):'')+(m.footer?aiStripHTML(m.footer,true):'')+'</div><div class="rl-panes">'+panes+'</div></div>';
-}
-/* 4: one row per group, links flowing across */
-function mlRows(m){
-  var gs = groupsOf(m), card = cardOf(m), last = '';
-  var rows = gs.map(function(g){
-    var sec = ''; if(g.section && g.section!==last){ sec = '<div class="rw-sec sth-t">'+esc(g.section)+'</div>'; last = g.section; }
-    return sec+'<div class="rw"><div class="rw-t">'+headHTML(g)+'</div>'+itemsHTML(g.items,'g4')+'</div>';
-  }).join('');
-  return '<div class="rows">'+rows+(card?'<div class="rw rw-card">'+cardHTML(card)+'</div>':'')+'</div>'+(m.footer?aiStripHTML(m.footer):'');
-}
-/* 5: columns plus a footer band that holds the lightest group */
-function mlBand(m){
-  var gs = groupsOf(m), card = cardOf(m);
-  var bandG = (gs.length<=2 && !m.footer) ? gs[0] : gs[gs.length-1];
-  var main = gs.filter(function(g){ return g!==bandG; });
-  var cols = main.map(function(g){ return '<div class="col">'+(g.head?headHTML(g):titleRow(g))+itemsHTML(g.items,g.n>1?'n'+g.n:'')+'</div>'; }).join('');
-  var band = '<div class="band"><span class="sth-t">'+esc(bandG.title)+'</span>'+itemsHTML(bandG.items,'inline')+(m.footer?'<a class="band-ai" href="'+href(m.footer.p)+'"><span class="spk" aria-hidden="true">✦</span><span>'+esc(m.footer.l)+'</span>'+SVG.arrowRight+'</a>':'')+'</div>';
-  return '<div class="cols" style="grid-template-columns:'+tplOf(main,card)+'">'+cols+(card?'<div class="col">'+cardHTML(card)+'</div>':'')+'</div>'+band;
+function mlMixed(m,full){
+  var p = mlPlan(m,full), hasCd = !!(p.card || p.cardG);
+  var tpl = p.cols.map(function(g){ return (g.n||1)+'fr'; }).concat(hasCd?['1fr']:[]).join(' ');
+  var cols = p.cols.map(function(g){ return '<div class="col">'+(g.head?headHTML(g):titleRow(g))+itemsHTML(g.items,g.n>1?'n'+g.n:'')+'</div>'; }).join('');
+  var cd = p.card ? '<div class="col cd">'+cardHTML(p.card)+'</div>' : p.cardG ? '<div class="col cd"><div class="gcard">'+titleRow(p.cardG)+itemsHTML(p.cardG.items)+'</div></div>' : '';
+  var band = p.band ? '<div class="band"><span class="sth-t">'+esc(p.band.title)+'</span>'+itemsHTML(p.band.items,'inline')+'</div>' : '';
+  return '<div class="cols" style="grid-template-columns:'+tpl+'">'+cols+cd+'</div>'+band+(p.strip?aiStripHTML(p.strip):'');
 }
 function panelHTML(id){
   var m = MENU[id], ml = CFG.ml||1;
-  var body = ml===2?mlCards(m):ml===3?mlRail(m):ml===4?mlRows(m):ml===5?mlBand(m):mlColumns(m);
+  var body = ml===2 ? mlMixed(m,false) : ml===3 ? mlMixed(m,true) : mlColumns(m);
   return '<div class="panel ml'+ml+'" data-menu="'+id+'" hidden><div class="slot"><div class="wrap">'+body+'</div></div></div>';
-}
-function railPick(panel,i){
-  panel.querySelectorAll('.rl-tab').forEach(function(t){ var on = +t.dataset.i===i; t.classList.toggle('on',on); t.setAttribute('aria-selected',on?'true':'false'); });
-  panel.querySelectorAll('.rl-pane').forEach(function(p){ p.hidden = +p.dataset.i!==i; });
-}
-function railReset(id){ var p = document.querySelector('.stack .panel[data-menu="'+id+'"]'); if(p && p.querySelector('.rl-tab')) railPick(p,0); }
-function bindRails(root){
-  root.querySelectorAll('.rl-tab').forEach(function(t){
-    var panel = t.closest('.panel'), i = +t.dataset.i;
-    t.addEventListener('pointerenter',function(e){ if(e.pointerType!=='touch') railPick(panel,i); });
-    t.addEventListener('focus',function(){ railPick(panel,i); });
-    t.addEventListener('click',function(){ railPick(panel,i); });
-  });
 }
 
 var CHECK = '<svg class="ck" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="#000" stroke-width="1.5"/></svg>';
-var tile = function(s,ic){ return '<span class="pk-ic" style="background:'+s.bg+'">'+ic+'</span>'; };
+var tile = function(s){ return brandIcon(s.k); };
 var markOf = function(k){ return k==='bc'?SVG.bcMark:SVG.fdxMark; };
 var cmTile = '<span class="pk-ic cm" style="background:#dfdfff">'+SVG.commerceMark+'</span>';
 function brandsPanelHTML(brand){
@@ -907,38 +847,39 @@ function stripHTML(brand){
   var right = [['Customers','/customers'],['Company','/company'],['Partners','/partners'],['Contact sales','/contact-sales']].map(function(x){ return item(x[0],x[1],here===x[1]); }).join('');
   return '<div class="strip"><div class="wrap strip-in"><nav class="strip-l" aria-label="Commerce brands">'+left+'</nav><nav class="strip-r" aria-label="Commerce">'+right+'</nav></div></div>';
 }
-/* where and how the sub-brand shows up in the sub bar, one treatment per CFG.v */
-function brandTabsHTML(brand){
-  var items = [{k:'cm',name:'Commerce',p:'#/'},{k:'bc',name:BRAND.bc.name,p:href(BRAND.bc.base)},{k:'fdx',name:BRAND.fdx.name,p:href(BRAND.fdx.base)}];
-  return '<nav class="bt-nav" aria-label="Commerce brands">'+items.map(function(it){
-    var on = it.k===brand;
-    return '<a class="bt'+(on?' on':'')+'" href="'+it.p+'"'+(on?' aria-current="true"':'')+'>'+(on?'<span class="sid-m">'+BRAND[it.k].mark+'</span>':'')+'<span>'+esc(it.name)+'</span></a>';
-  }).join('')+'</nav>';
-}
+/* sub bar: sub-brand name with its icon (see brandIcon), then the sub-brand nav, then CTAs for the current button variation */
 function subIdHTML(brand){
-  var b = BRAND[brand], v = CFG.v, nm = '<span>'+esc(b.name)+'</span>', inner, cls = 'sub-id', extra = '';
-  var sol = SOL.filter(function(x){ return x.k===brand; })[0];
-  var mk = '<span class="sid-m">'+b.mark+'</span>';
-  if(v===1) inner = nm;
-  else if(v===2) inner = mk+nm;
-  else if(v===3) inner = tile(sol,b.mark)+nm;
-  else if(v===4){ inner = mk+'<span class="sr">'+esc(b.name)+'</span>'; extra = ' title="'+esc(b.name)+'"'; }
-  else if(v===5) inner = '<span class="sid-l">'+b.logo+'</span><span class="sr">'+esc(b.name)+'</span>';
-  else if(v===6) return '<button class="sub-sw" type="button" data-trigger="brands" aria-haspopup="true" aria-expanded="false" aria-label="'+esc(b.name)+', switch brand">'+mk+nm+SVG.chev+'</button>';
-  else if(v===7){ cls += ' tag'; inner = mk+nm; }
-  else if(v===8) inner = mk+nm;
-  else if(v===9) inner = mk+nm+'<span class="sid-d">'+esc(b.tag)+'</span>';
-  else if(v===10) return brandTabsHTML(brand);
-  else inner = nm;
-  return '<a class="'+cls+'" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview"'+extra+'>'+inner+'</a>';
+  var b = BRAND[brand];
+  return '<a class="sub-id" href="'+href(b.base)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+'<span>'+esc(b.name)+'</span></a>';
+}
+/* Button variations (right side of both bars). BigCommerce: demo + free trial. Feedonomics: demo.
+   1 global primary, 2 links on top and buttons below, 3 one button on the page,
+   4 the header button swaps to the brand's primary CTA, 5 two-button header. */
+function subRightHTML(brand){
+  var c = CTA[brand], bt = CFG.bt;
+  var A = function(cls,x){ return '<a class="'+cls+'" href="'+href(x.p)+'">'+esc(x.l)+'</a>'; };
+  var demo = brand==='bc' ? c.secondary : c.primary, trial = brand==='bc' ? c.primary : null;
+  if(bt===2) return brand==='bc' ? A('btn o',demo)+A('btn',trial) : A('btn',demo);
+  if(bt===3) return A('login',demo)+(trial?A('login',trial):'');
+  if(bt===4) return brand==='bc' ? A('login',demo) : '';
+  return brand==='bc' ? A('login',demo)+A('btn o',trial) : A('btn o',demo);
+}
+function hdrRightHTML(ctx){
+  var bt = CFG.bt;
+  var contact = '<a class="login" href="#/contact-sales">Contact sales</a>';
+  var login = '<button class="login" type="button" data-modal="login" aria-haspopup="dialog">Log in</button>';
+  var started = '<button class="cta" type="button" data-modal="started" aria-haspopup="dialog">Get started</button>';
+  var inner;
+  if(bt===2) inner = contact+login+'<button class="login" type="button" data-modal="started" aria-haspopup="dialog">Get started</button>';
+  else if(bt===4 && ctx!=='cm') inner = contact+login+'<a class="cta" href="'+href(CTA[ctx].primary.p)+'">'+esc(CTA[ctx].primary.l)+'</a>';
+  else if(bt===5) inner = '<a class="hbtn o" href="#/contact-sales">Contact sales</a>'+login+'<button class="hbtn s" type="button" data-modal="started" aria-haspopup="dialog">Get started</button>';
+  else inner = contact+login+started;
+  return '<div class="hdr-r">'+inner+'</div>';
 }
 function subBarHTML(brand){
-  var b = BRAND[brand], c = CTA[brand], panels = '';
+  var b = BRAND[brand], panels = '';
   Object.keys(MENU).forEach(function(id){ if(MENU[id].brand===brand) panels += panelHTML(id); });
-  if(CFG.v===6) panels += brandsPanelHTML(brand);
-  var id = subIdHTML(brand), noDiv = CFG.v===7 || CFG.v===8;
-  var demo = brand==='bc' ? '<a class="login" href="'+href(c.secondary.p)+'">'+esc(c.secondary.l)+'</a>' : '';
-  return '<div class="sub sub-'+brand+'"><div class="wrap sub-in"><div class="sub-l">'+id+(id&&!noDiv?'<span class="vdiv"></span>':'')+'<nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r">'+demo+'<a class="btn o" href="'+href(c.primary.p)+'">'+esc(c.primary.l)+'</a></div></div>'+panels+'</div>';
+  return '<div class="sub sub-'+brand+'"><div class="wrap sub-in"><div class="sub-l">'+subIdHTML(brand)+'<span class="vdiv"></span><nav class="links" aria-label="'+b.name+'">'+navHTML(brand)+'</nav></div><div class="sub-r">'+subRightHTML(brand)+'</div></div>'+panels+'</div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
@@ -960,7 +901,7 @@ function headerHTML(brand){
   /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
   var left = switcherHTML('cm')+'<nav class="links" aria-label="Primary">'+navHTML('cm')+'</nav>';
   var panels = panelHTML('solutions')+panelHTML('learning');
-  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+rightHTML('cm')+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+loginModalHTML()+startedModalHTML();
+  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="hdr"><div class="wrap hdr-in"><div class="hdr-l">'+left+'</div>'+hdrRightHTML(brand)+'</div>'+panels+'</header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+loginModalHTML()+startedModalHTML();
 }
 /* ---------- get started page ---------- */
 var GS=[
@@ -1018,7 +959,6 @@ function setMenu(id,by){
   hdr.querySelectorAll('[data-trigger]').forEach(function(t){ var on = t.dataset.trigger===id; t.classList.toggle('active',on); t.setAttribute('aria-expanded',on?'true':'false'); });
   scrim.hidden = !id;
   placeScrim();
-  if(id) railReset(id);
 }
 function placeScrim(){ if(!current) return; var h=document.querySelector('.stack'); if(h) scrim.style.top = Math.max(0,h.getBoundingClientRect().bottom)+'px'; }
 window.addEventListener('scroll',placeScrim,{passive:true});
@@ -1045,7 +985,6 @@ function bindMenus(){
     t.addEventListener('click',function(){ if(current===id) closeMenu(); else setMenu(id,'click'); });
     t.addEventListener('keydown',function(e){ if(e.key==='ArrowDown'){ e.preventDefault(); setMenu(id,'click'); var a = hdr.querySelector('.panel[data-menu="'+id+'"] a'); if(a) a.focus(); } });
   });
-  bindRails(hdr);
 }
 scrim.addEventListener('click',closeMenu);
 var modalOpener = null;
@@ -1070,7 +1009,7 @@ function route(path){
   else if(brand!=='cm' && path===BRAND[brand].base) html = '<main class="home">'+heroHome(brand)+'</main>';
   else html = '<main class="pg">'+pageHTML(brand, page || {label:'Page not found',type:'center'})+'</main>';
   document.body.classList.toggle('dark',brand!=='cm' && path!==BRAND[brand].base && !(page && page.hub)); /* dark only on deeper brand pages */
-  document.body.dataset.v = String(CFG.v); document.body.dataset.mm = CFG.mm; document.body.dataset.ml = String(CFG.ml);
+  document.body.dataset.sv = CFG.sv;
   app.innerHTML = headerHTML(brand)+html;
   bindMenus();
   if(CFG.open && document.querySelector('.stack [data-trigger="'+CFG.open+'"]')) setMenu(CFG.open,'click');
@@ -1086,7 +1025,7 @@ document.addEventListener('click',function(e){
   e.preventDefault(); navigate(a.getAttribute('href').slice(1));
 });
 window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:go' && typeof d.path==='string') navigate(d.path); });
-window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.v==='number') CFG.v=d.v; if(typeof d.mm==='string') CFG.mm=d.mm; if(typeof d.ml==='number') CFG.ml=d.ml; if(typeof d.open==='string') CFG.open=d.open; route(curPath); } });
+window.addEventListener('message',function(e){ var d=e.data; if(d && d.type==='consolidated-nav:config'){ if(typeof d.sv==='string') CFG.sv=d.sv; if(typeof d.ml==='number') CFG.ml=d.ml; if(typeof d.bt==='number') CFG.bt=d.bt; if(typeof d.open==='string') CFG.open=d.open; route(curPath); } });
 window.addEventListener('popstate',function(){ route(readPath()); });
 window.addEventListener('hashchange',function(){ route(readPath()); });
 route(CFG.start && readPath()==='/' ? CFG.start : readPath());
