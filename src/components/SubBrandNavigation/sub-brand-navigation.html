@@ -383,8 +383,8 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .bar__right>.nav{margin-left:var(--nav-gap)}
 .stack .nav{display:flex;align-items:center;gap:4px}
 .bar-cta{display:flex;align-items:center;gap:8px;margin-left:auto}
-.stack .bar--sub{height:var(--sub-h);padding:8px var(--gutter);gap:28px;font-size:var(--type-s);line-height:var(--lh-s)}
-.sub-bar__label{flex:none;display:flex;align-items:center;gap:10px;min-width:calc(var(--logo-w) + var(--nav-gap) - 28px);font-weight:var(--w-medium);white-space:nowrap}
+.stack .bar--sub{height:var(--sub-h);padding:8px var(--gutter);gap:14px;font-size:var(--type-s);line-height:var(--lh-s)}
+.sub-bar__label{flex:none;display:flex;align-items:center;gap:10px;min-width:0;margin-right:10px;font-weight:var(--w-medium);white-space:nowrap}
 .sub-bar__label .pk-ic,.sub-bar__label .bi{width:24px;height:24px;margin:0;border-radius:6px}
 .sub-bar__label .pk-ic svg,.sub-bar__label .bi svg{width:14px;height:14px}
 .sub-bar__right{margin-left:auto;display:flex;align-items:center;gap:16px}
@@ -476,9 +476,8 @@ body[data-sv="text"] .product__tag{display:none}
 .menu .promo:has(:focus-visible),.menu .strip:has(:focus-visible){outline:2px solid var(--text);outline-offset:2px}
 .promo__eyebrow{color:var(--text-tertiary)}
 .promo__text{font-weight:var(--w-medium);white-space:normal!important}
-/* text only: the sub-brand name is a nav item, and a light divider sits 24px (the nav item spacing) from the name and from the first link */
-body[data-sv="text"] .stack .bar--sub{gap:14px}
-body[data-sv="text"] .sub-bar__label{min-width:0;margin-left:-10px;font-weight:var(--w-regular)}
+/* every visibility: name, divider and first link are 24px apart (the nav item spacing). Text only also styles the name as a nav item. */
+body[data-sv="text"] .sub-bar__label{margin-left:-10px;margin-right:0;font-weight:var(--w-regular)}
 .sub-bar__div{flex:none;width:1px;height:20px;background:var(--border)}
 /* mark: 2px corners on the tile that holds the mark */
 body[data-sv^="mark"] :is(.pk-ic,.tile--mark,.sub-bar__label .pk-ic,.sub-id .pk-ic){border-radius:2px}
@@ -487,10 +486,8 @@ body:is([data-sv="black"],[data-sv="mark-only"]) .sub-bar__label .bi{width:18px;
 body:is([data-sv="black"],[data-sv="mark-only"]) .sub-bar__label .bi svg{width:18px;height:18px}
 body[data-sv="black"] .sub-bar__label{gap:8px}
 /* mark only: the tile alone, then a divider */
-body[data-sv="mark-only"] .stack .bar--sub{gap:14px}
-body[data-sv="mark-only"] .sub-bar__label{min-width:0;margin-right:10px}
 /* navigation styles. Full width: bars edge to edge. Floating cards: both bars in rounded cards 16px from the page edges, dropdowns float as cards 16px below.
-   Floating panel: the same at 3/4 of the screen (at least 1180px), 120px minimum between the main links and the actions, and the dropdown is an attached full-width panel under a divider.
+   Floating panel: the same at 3/4 of the screen (at least 1260px), 120px minimum between the main links and the actions, and the dropdown is an attached full-width panel under a divider.
    The page content starts at the same height with or without the sub-brand bar. */
 body:is([data-nl="floating"],[data-nl="panel"]) .stack{top:16px;margin:16px 16px 0;background:transparent}
 body:is([data-nl="floating"],[data-nl="panel"]) .stack.has-sub{top:calc(16px - var(--bar-h) - 1px)}
@@ -505,7 +502,7 @@ body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .commerce-bar{vi
 body:is([data-nl="floating"],[data-nl="panel"]) .stack.sub-only .sub-bar{border-radius:var(--r-lg)}
 body:is([data-nl="floating"],[data-nl="panel"]) .stack:not(.has-sub)~main{margin-top:calc(var(--sub-h) + 1px)}
 body[data-nl="panel"]{--menu-gap:0px}
-body[data-nl="panel"] .stack{width:min(max(75vw,1180px),calc(100vw - 32px));margin-left:auto;margin-right:auto}
+body[data-nl="panel"] .stack{width:min(max(75vw,1260px),calc(100vw - 32px));margin-left:auto;margin-right:auto}
 body[data-nl="panel"] .bar__right>.nav,body[data-nl="panel"] .nav--sub{margin-right:120px}
 body[data-nl="panel"] .nav-slot{position:static}
 body[data-nl="panel"] .menu{left:-1px;right:-1px;width:auto;max-width:none;padding:32px var(--gutter);border:1px solid var(--border);border-top:0;border-radius:0 0 var(--r-lg) var(--r-lg);box-shadow:0 20px 24px -12px rgba(0,0,0,.16);transform:translateY(-8px)}
@@ -1035,7 +1032,7 @@ function hdrRightHTML(ctx){
 }
 function subBarHTML(brand){
   var b = BRAND[brand];
-  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+(CFG.sv==='text'||CFG.sv==='mark-only'?'<span class="sub-bar__div" aria-hidden="true"></span>':'')+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
+  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+'<span class="sub-bar__div" aria-hidden="true"></span>'+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div></nav></div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
