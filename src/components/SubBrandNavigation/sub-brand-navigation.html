@@ -238,8 +238,13 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .ov-left h1{max-width:592px}
 .ov .visual{width:100%}
 
-.crumbs{border-bottom:1px solid var(--t2);background:#000}
-.crumbs-in{display:flex;align-items:center;gap:8px;padding:12px 0;font-size:14px;line-height:19.6px}
+/* breadcrumbs sit in the page, above the header, not as a bar under the navigation */
+.crumbs{background:transparent}
+.dark>.crumbs{background:#000}
+.crumbs-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:32px 0 0;font-size:14px;line-height:19.6px}
+.crumbs+.hero{padding-top:40px}
+.crumbs+.hb-top{padding-top:32px}
+.crumbs+.gs{padding-top:32px}
 .crumbs a{color:#fff}
 .crumbs a:hover{text-decoration:underline}
 .crumbs .cur{color:var(--g500)}
@@ -250,7 +255,6 @@ h1{font-weight:500;font-size:56px;line-height:67.2px;letter-spacing:0}
 .dark .desc{color:var(--inv2)}
 .dark .btn{background:#fff;color:#000;border-color:#fff}
 .dark .btn.o{background:transparent;color:#fff}
-.light .crumbs{background:#fff;border-bottom-color:var(--border)}
 .light .crumbs a{color:#000}
 .light .crumbs .cur{color:var(--t3)}
 .h-center .wrap{display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
