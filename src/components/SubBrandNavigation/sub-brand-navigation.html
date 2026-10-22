@@ -509,6 +509,22 @@ body[data-nl="panel"] .menu{left:-1px;right:-1px;width:auto;max-width:none;paddi
 body[data-nl="panel"] .menu.is-open{transform:none}
 body[data-nl="panel"] .menu__cols>.card{margin-right:calc(8px - var(--gutter))}
 body.menu-open[data-nl="panel"] :is(.sub-bar,.stack:not(.has-sub) .commerce-bar){border-bottom-left-radius:0;border-bottom-right-radius:0;box-shadow:none}
+/* floating panel feature cards */
+body[data-nl="panel"] .menu .promo{display:none}
+.menu__cols>.feats{flex:1 1 0;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-self:stretch}
+.menu__cols>.feats--stack{grid-template-columns:minmax(0,1fr)}
+/* with cards beside it, a gray column card would crowd them, so it becomes a plain column */
+body[data-nl="panel"] .menu__cols:has(>.feats)>.card{background:transparent;margin:0;padding:0;border-radius:0}
+.feat{display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-height:150px;padding:20px 24px;border-radius:var(--r-lg);background:var(--surface-2);color:var(--text);transition:background-color .3s var(--ease)}
+.feat:hover{background:#e8ecf2}
+.feat__top{display:flex;align-items:flex-start;justify-content:space-between}
+.feat__i{width:24px;height:24px;color:#344054}
+.feat__go{opacity:0;transform:translateX(-4px);transition:opacity .25s var(--ease),transform .4s var(--ease-out)}
+.feat__go svg{width:16px;height:16px}
+.feat:hover .feat__go{opacity:1;transform:none}
+.feat__b{display:flex;flex-direction:column;gap:4px}
+.feat__t{font-weight:var(--w-medium);font-size:16px;line-height:22.4px}
+.feat__d{white-space:normal;color:var(--text-tertiary)}
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* every visibility except Mark: no tree connectors or sub-lines, a divider under each header, four equal columns sized to their content (180px to 260px) */
@@ -617,6 +633,35 @@ var MENU = {
   {title:'Learn',items:LB('fdx',['Feed Management Guides','Case Studies','Webinars'])},
   {title:'Get Help',items:LB('fdx',['FeedSupport™','Help Center','Contact'])},
   {title:'Build',items:LB('fdx',['Developer Docs','API Reference','Supported Integrations'])}]}
+};
+/* Floating panel only: dropdowns with a lot of empty width get a few feature cards (icon, title, one line), not one per link */
+var FICON = {
+ trend:'<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+ book:'<path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4zM5 17a3 3 0 013-3h11"/>',
+ plug:'<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 01-12 0V8zM12 17v4"/>',
+ layers:'<path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5"/>',
+ building:'<path d="M5 21V4h9v17M14 9h5v12M8 8h3M8 12h3M8 16h3M3 21h18"/>',
+ spark:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/>',
+ chat:'<path d="M4 5h16v11H9l-5 4V5z"/>',
+ code:'<path d="M9 8l-4 4 4 4M15 8l4 4-4 4M13 6l-2 12"/>',
+ box:'<path d="M3 8l9-5 9 5v8l-9 5-9-5V8zM3 8l9 5 9-5M12 13v8"/>'
+};
+var FEATS = {
+ 'learning':{stack:true,cards:[
+  {i:'trend',t:'Commerce Trends',d:'The shifts shaping how the world buys and sells.',p:GL('learning','Commerce Trends').p},
+  {i:'spark',t:'Agentic Commerce',d:'How AI agents are changing discovery and checkout.',p:GL('learning','Agentic Commerce').p}]},
+ 'bc-resources':{cards:[
+  {i:'book',t:'BigCommerce University',d:'Courses and certifications for merchants and developers.',p:L('bc','BigCommerce University').p},
+  {i:'chat',t:'Community Q&A',d:'Ask questions and share what works with other merchants.',p:L('bc','Community Q&A').p}]},
+ 'fdx-products':{cards:[
+  {i:'box',t:'Feedonomics Surface',d:'Install on BigCommerce. Free and ready in minutes.',p:L('fdx','Explore Surface').p},
+  {i:'layers',t:'How it works',d:'See how one feed reaches every channel.',p:L('fdx','How It Works').p}]},
+ 'fdx-integrations':{stack:true,cards:[
+  {i:'plug',t:'Get my plan',d:'Your stack, upgraded. Connect the dots so your systems move like one engine.',p:L('fdx','Get my plan').p},
+  {i:'building',t:'Supported Channels',d:'Browse the marketplaces and ad channels your feed syncs to.',p:L('fdx','Supported Channels').p}]},
+ 'fdx-resources':{cards:[
+  {i:'book',t:'Feed Management Guides',d:'Playbooks for cleaner, higher performing feeds.',p:L('fdx','Feed Management Guides').p},
+  {i:'code',t:'Developer Docs',d:'APIs and tools for building on Feedonomics.',p:L('fdx','Developer Docs').p}]}
 };
 
 /* assets from the reference prototype */
@@ -947,14 +992,25 @@ function solutionsInner(m){
    + '<div class="strip reveal" style="--d:2"><div class="strip__text"><a class="strip__title" href="'+href(f.p)+'">✦ '+esc(f.l)+'</a><span class="strip__dot" aria-hidden="true">•</span><span>'+esc(f.text)+'</span></div><a class="btn btn--text btn--sm" href="'+href(f.p)+'" tabindex="-1" aria-hidden="true" data-in-card><span>'+esc(f.cta)+'</span>'+ARR+'</a></div>';
 }
 var groupsOf = function(m){ return m.cols.filter(function(c){ return !c.card; }); };
+/* menus laid out as equal columns give the cards area 2.4 columns' worth of width; menus with a promo are flex and need nothing */
+function featCols(id,m){
+  if(CFG.nl!=='panel' || !FEATS[id] || m.cols.some(function(c){ return c.card; })) return '';
+  return ';grid-template-columns:repeat('+m.cols.length+',minmax(0,1fr)) minmax(0,2.4fr)';
+}
+function featsHTML(id){
+  var f = FEATS[id]; if(CFG.nl!=='panel' || !f) return '';
+  return '<div class="feats'+(f.stack?' feats--stack':'')+'">'+f.cards.map(function(c,k){
+    return '<a class="feat reveal" style="--d:'+(k+3)+'" href="'+href(c.p)+'"><span class="feat__top"><svg class="feat__i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+FICON[c.i]+'</svg><span class="feat__go" aria-hidden="true">'+ARR+'</span></span><span class="feat__b"><span class="feat__t">'+esc(c.t)+'</span><span class="feat__d">'+esc(c.d)+'</span></span></a>';
+  }).join('')+'</div>';
+}
 function menuHTML(id){
   var m = MENU[id], inner, d = 0;
   if(id==='solutions') inner = solutionsInner(m);
-  else inner = '<div class="menu__cols" style="--gap:'+m.gap+'px">'+m.cols.map(function(c){
+  else inner = '<div class="menu__cols" style="--gap:'+m.gap+'px'+featCols(id,m)+'">'+m.cols.map(function(c){
     if(c.card) return promoHTML(c,d++);
     if(c.inCard) return '<div class="card reveal" style="--d:'+(d++)+'">'+groupHTML(c)+'</div>';
     return groupHTML(c,d++);
-  }).join('')+'</div>';
+  }).join('')+featsHTML(id)+'</div>';
   return '<div class="menu '+(m.brand==='cm'?'menu--end':'menu--sub')+(id==='solutions'?' menu--lg':'')+'" id="menu-'+id+'" role="region" aria-label="'+esc(m.label)+'">'+inner+'</div>';
 }
 function navItemHTML(n,nested){
