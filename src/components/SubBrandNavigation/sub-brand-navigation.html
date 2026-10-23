@@ -436,8 +436,8 @@ body.menu-open #scrim{opacity:1;pointer-events:auto}
 .link--logo img{flex:none;transition:transform .55s var(--ease-out)}
 .link--logo:hover img{transform:translateX(4px)}
 .menu .link,.menu .product__head,.menu .btn--text:not([data-in-card]),.menu .promo,.menu .strip,.menu .group__title{transition:opacity var(--focus-return-time) var(--ease-soft) var(--focus-return-delay),background-color .45s var(--ease),color .35s var(--ease)}
-.menu:has(:is(.link,.product__head,.btn--text:not([data-in-card]),.promo,.strip):is(:hover,:focus-visible,:has(:focus-visible))) :is(.link,.product__head,.btn--text:not([data-in-card]),.promo,.strip,.group__title):not(:is(:hover,:focus-visible,:has(:focus-visible))){opacity:var(--focus-dim);transition:opacity .15s var(--ease) 0s,background-color .45s var(--ease),color .35s var(--ease)}
-.menu.menu.menu .product:has(:is(:hover,:focus-visible))>.product__head,.menu.menu.menu .group:has(:is(:hover,:focus-visible))>.group__title{opacity:1!important;transition:opacity var(--focus-active-time) var(--ease) 0s!important}
+/* hovering a link dims only the other links in the same column; titles, product heads and other columns stay lit */
+.menu :is(.group,.product):has(:is(.link,.btn--text:not([data-in-card]),.product__head):is(:hover,:focus-visible,:has(:focus-visible))) :is(.link,.btn--text:not([data-in-card])):not(:is(:hover,:focus-visible,:has(:focus-visible))){opacity:var(--focus-dim);transition:opacity .15s var(--ease) 0s,background-color .45s var(--ease),color .35s var(--ease)}
 .menu :is(.link,.product__head,.btn--text:not([data-in-card]),.promo,.strip):is(:hover,:focus-visible,:has(:focus-visible)){transition:opacity var(--focus-active-time) var(--ease) 0s,background-color .45s var(--ease),color .35s var(--ease)}
 .menu .tag{padding:1px 6px;border-radius:4px;background:var(--surface-2);color:var(--text-tertiary)}
 .product-row{display:flex;gap:48px}
