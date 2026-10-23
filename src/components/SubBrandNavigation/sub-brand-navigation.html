@@ -397,6 +397,9 @@ body:not([data-nl="floating"]):not([data-nl="panel"]){--bar-x:max(var(--gutter),
 .nav-item{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:0;background:none;border-radius:var(--r-md);cursor:pointer;white-space:nowrap;font-size:inherit;line-height:inherit}
 .nav-item::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--surface-2);opacity:0;transform:scale(.94);transition:opacity var(--t-fill) var(--ease),transform .45s var(--ease-out)}
 .nav-item:hover::before,.nav-item:focus-visible::before,.nav-item[aria-expanded="true"]::before{opacity:1;transform:scale(1)}
+.nav-item.is-active::before{opacity:1;transform:scale(1)}
+.sub-bar__label{position:relative;isolation:isolate}
+.sub-bar__label:not(.nav-item).is-active::before{content:"";position:absolute;inset:-8px -10px;z-index:-1;border-radius:var(--r-md);background:var(--surface-2)}
 .nav-item__label{transition:font-weight .3s var(--ease)}
 .nav-item[aria-expanded="true"] .nav-item__label{font-weight:var(--w-medium)}
 .chev{width:12px;height:12px;opacity:.5;transition:transform .5s var(--ease-out),opacity var(--t-fill) var(--ease)}
@@ -630,7 +633,7 @@ body[data-nl="none"] .menu{color:var(--text)}
 body[data-nl="none"].dark .stack{color:#fff}
 body[data-nl="none"].dark .stack .logo img{filter:invert(1)}
 body[data-nl="none"].dark .stack .sub-bar__label :is(.pk-ic,.bi){filter:invert(1)}
-body[data-nl="none"].dark .stack .nav-item::before{background:rgba(255,255,255,.16)}
+body[data-nl="none"].dark .stack :is(.nav-item,.sub-bar__label)::before{background:rgba(255,255,255,.16)}
 body[data-nl="none"].dark :is(.bar-cta,.sub-bar__right) .btn--primary{background:#fff;color:#000}
 body[data-nl="none"].dark :is(.bar-cta,.sub-bar__right) .btn--primary:hover{background:#e4e7ec}
 body[data-nl="none"].dark :is(.bar-cta,.sub-bar__right) .btn--secondary{border-color:#fff;color:#fff}
@@ -1132,9 +1135,26 @@ function menuHTML(id){
   }).join('')+featsHTML(id)+'</div>';
   return '<div class="menu '+(m.brand==='cm'?'menu--end':'menu--sub')+(id==='solutions'?' menu--lg':'')+'" id="menu-'+id+'" role="region" aria-label="'+esc(m.label)+'">'+inner+'</div>';
 }
+/* Active state: the top-level item (or sub-brand item) whose page, or whose menu's page, you are on.
+   Commerce's own row is active only on Commerce pages; inside a sub-brand the sub-brand row owns it, so only one item is active at a time.
+   A sub-brand's landing page activates the sub-brand name and icon instead of a nav item. */
+function menuPaths(id){
+  var m = MENU[id], out = [];
+  m.cols.forEach(function(c){ if(c.head) out.push(c.head.p); (c.items||[]).forEach(function(it){ out.push(it.p); }); });
+  if(m.footer) out.push(m.footer.p);
+  return out;
+}
+function navActive(brand,n){
+  var pg = PAGES[curPath], paths = [curPath];
+  if(brand!=='cm' && curPath===BRAND[brand].home) return false;
+  if(pg && pg.parent) paths.push(pg.parent.path);
+  if(n.p) return n.p===curPath;
+  return menuPaths(n.m).some(function(x){ return paths.indexOf(x)>-1; });
+}
 function navItemHTML(n,nested){
-  if(n.m) return '<li class="nav-slot"><button class="nav-item" type="button" aria-expanded="false" aria-controls="menu-'+n.m+'" data-menu="'+n.m+'"><span class="nav-item__label">'+esc(n.l)+'</span>'+CHEV+'</button>'+(nested?menuHTML(n.m):'')+'</li>';
-  return '<li><a class="nav-item" href="'+href(n.p)+'"><span class="nav-item__label">'+esc(n.l)+'</span></a></li>';
+  var b = brandOf(curPath), on = nested ? navActive(b,n) : (b==='cm' && navActive('cm',n)), cur = on ? ' is-active' : '';
+  if(n.m) return '<li class="nav-slot"><button class="nav-item'+cur+'" type="button"'+(on?' aria-current="true"':'')+' aria-expanded="false" aria-controls="menu-'+n.m+'" data-menu="'+n.m+'"><span class="nav-item__label">'+esc(n.l)+'</span>'+CHEV+'</button>'+(nested?menuHTML(n.m):'')+'</li>';
+  return '<li><a class="nav-item'+cur+'" href="'+href(n.p)+'"'+(on?' aria-current="page"':'')+'><span class="nav-item__label">'+esc(n.l)+'</span></a></li>';
 }
 var CHECK = '<svg class="ck" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="#000" stroke-width="1.5"/></svg>';
 var tile = function(s){ return brandIcon(s.k); };
@@ -1207,7 +1227,7 @@ function hdrRightHTML(ctx){
 }
 function subBarHTML(brand){
   var b = BRAND[brand];
-  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+'" href="'+href(b.home)+'" aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+'<span class="sub-bar__div" aria-hidden="true"></span>'+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+'</nav></div>';
+  return '<div class="sub-bar"><nav class="bar bar--sub" aria-label="'+esc(b.name)+'"><a class="sub-bar__label'+(CFG.sv==='text'?' nav-item':'')+(curPath===b.home?' is-active':'')+'" href="'+href(b.home)+'"'+(curPath===b.home?' aria-current="page"':'')+' aria-label="'+esc(b.name)+' overview">'+brandIcon(brand)+(CFG.sv==='mark-only'?'':'<span'+(CFG.sv==='text'?' class="nav-item__label"':'')+'>'+(CFG.sl===false?'':'Solution / ')+esc(b.name)+'</span>')+'</a>'+'<span class="sub-bar__div" aria-hidden="true"></span>'+'<ul class="nav nav--sub">'+NAV[brand].map(function(n){ return navItemHTML(n,true); }).join('')+'</ul><div class="sub-bar__right">'+subRightHTML(brand)+'</div>'+mToggle('sub')+'</nav></div>';
 }
 var LOGIN_DESC = {bc:'Manage your store, orders and apps.',fdx:'Open your feed dashboard and channels.'};
 function modalHTML(id,title,body,wide){
