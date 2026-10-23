@@ -14,7 +14,8 @@ function SubBrandNavigation() {
   const [sl, setSl] = useState(true)
   const [nl, setNl] = useState<NavLayout>('full')
   const [path, setPath] = useState('/bigcommerce')
-  const [open, setOpen] = useState(() => window.innerWidth > 760)
+  // the dock collapses to a chip and grows on hover or keyboard focus; clicking the chip pins it open (the only way on touch)
+  const [pinned, setPinned] = useState(false)
 
   // the document is built once; later changes reach the iframe by message so the page never reloads
   const doc = useMemo(() => buildDoc({ start: '/bigcommerce' }), []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -37,68 +38,66 @@ function SubBrandNavigation() {
   return (
     <div className="sbn">
       <iframe ref={frame} className="sbn-frame" title="Sub-brand navigation prototype" srcDoc={doc} />
-      <aside className={`sbn-dock${open ? '' : ' closed'}`} aria-label="Prototype controls">
-        <div className="sbn-top">
-          <Link to="/" className="sbn-link">← Playground</Link>
-          <button type="button" className="sbn-link sbn-fold" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
-            {open ? 'Hide' : 'Controls'}
-          </button>
-        </div>
-        {open && (
-          <>
-            <div className="sbn-row">
-              <span>Page</span>
-              <div className="sbn-seg" role="group" aria-label="Page">
-                {PAGES.map((p) => (
-                  <button key={p.path} type="button" className={brandOf(path) === p.path ? 'on' : ''} onClick={() => post({ type: 'consolidated-nav:go', path: p.path })}>
-                    {p.label}
-                  </button>
-                ))}
-              </div>
+      <div className={`sbn-wrap${pinned ? ' pinned' : ''}`}>
+        <button type="button" className="sbn-chip" onClick={() => setPinned((o) => !o)} aria-pressed={pinned} title="Keep the controls open">
+          Controls
+        </button>
+        <aside className="sbn-dock" aria-label="Prototype controls">
+          <div className="sbn-top">
+            <Link to="/" className="sbn-link">← Playground</Link>
+          </div>
+          <div className="sbn-row">
+            <span>Page</span>
+            <div className="sbn-seg" role="group" aria-label="Page">
+              {PAGES.map((p) => (
+                <button key={p.path} type="button" className={brandOf(path) === p.path ? 'on' : ''} onClick={() => post({ type: 'consolidated-nav:go', path: p.path })}>
+                  {p.label}
+                </button>
+              ))}
             </div>
-            <div className="sbn-row">
-              <span>Nav style</span>
-              <div className="sbn-seg" role="group" aria-label="Nav style">
-                {NAV_LAYOUTS.map((n) => (
-                  <button key={n.value} type="button" className={nl === n.value ? 'on' : ''} onClick={() => setNl(n.value)} title={n.summary}>
-                    {n.label}
-                  </button>
-                ))}
-              </div>
-              <p className="sbn-note">{NAV_LAYOUTS.find((n) => n.value === nl)?.summary}</p>
+          </div>
+          <div className="sbn-row">
+            <span>Nav style</span>
+            <div className="sbn-seg" role="group" aria-label="Nav style">
+              {NAV_LAYOUTS.map((n) => (
+                <button key={n.value} type="button" className={nl === n.value ? 'on' : ''} onClick={() => setNl(n.value)} title={n.summary}>
+                  {n.label}
+                </button>
+              ))}
             </div>
-            <div className="sbn-row">
-              <div className="sbn-head">
-                <span>Sub-brand visibility</span>
-                <label className="sbn-check" title="Show “Solution /” before the sub-brand name">
-                  <input type="checkbox" checked={sl} disabled={sv === 'mark-only'} onChange={(e) => setSl(e.target.checked)} />
-                  <span>Solution</span>
-                </label>
-              </div>
-              <div className="sbn-seg" role="group" aria-label="Sub-brand visibility">
-                {VISIBILITY.map((v) => (
-                  <button key={v.value} type="button" className={sv === v.value ? 'on' : ''} onClick={() => setSv(v.value)} title={v.summary}>
-                    {v.label}
-                  </button>
-                ))}
-              </div>
-              <p className="sbn-note">{VISIBILITY.find((v) => v.value === sv)?.summary}</p>
+            <p className="sbn-note">{NAV_LAYOUTS.find((n) => n.value === nl)?.summary}</p>
+          </div>
+          <div className="sbn-row">
+            <div className="sbn-head">
+              <span>Sub-brand visibility</span>
+              <label className="sbn-check" title="Show “Solution /” before the sub-brand name">
+                <input type="checkbox" checked={sl} disabled={sv === 'mark-only'} onChange={(e) => setSl(e.target.checked)} />
+                <span>Solution</span>
+              </label>
             </div>
-            <div className="sbn-row">
-              <span>Button variations</span>
-              <div className="sbn-seg" role="group" aria-label="Button variations">
-                {BUTTON_VARIATIONS.map((b) => (
-                  <button key={b.id} type="button" className={bt === b.id ? 'on' : ''} onClick={() => setBt(b.id)} title={b.name}>
-                    {b.id}
-                  </button>
-                ))}
-              </div>
-              <p className="sbn-note"><strong>{BUTTON_VARIATIONS[bt - 1].name}.</strong> {BUTTON_VARIATIONS[bt - 1].summary}</p>
+            <div className="sbn-seg" role="group" aria-label="Sub-brand visibility">
+              {VISIBILITY.map((v) => (
+                <button key={v.value} type="button" className={sv === v.value ? 'on' : ''} onClick={() => setSv(v.value)} title={v.summary}>
+                  {v.label}
+                </button>
+              ))}
             </div>
-            <p className="sbn-build">Build {__BUILD__}</p>
-          </>
-        )}
-      </aside>
+            <p className="sbn-note">{VISIBILITY.find((v) => v.value === sv)?.summary}</p>
+          </div>
+          <div className="sbn-row">
+            <span>Button variations</span>
+            <div className="sbn-seg" role="group" aria-label="Button variations">
+              {BUTTON_VARIATIONS.map((b) => (
+                <button key={b.id} type="button" className={bt === b.id ? 'on' : ''} onClick={() => setBt(b.id)} title={b.name}>
+                  {b.id}
+                </button>
+              ))}
+            </div>
+            <p className="sbn-note"><strong>{BUTTON_VARIATIONS[bt - 1].name}.</strong> {BUTTON_VARIATIONS[bt - 1].summary}</p>
+          </div>
+          <p className="sbn-build">Build {__BUILD__}</p>
+        </aside>
+      </div>
     </div>
   )
 }
