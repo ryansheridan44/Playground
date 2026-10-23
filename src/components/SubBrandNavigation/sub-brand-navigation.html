@@ -598,6 +598,8 @@ body.no-anim *,body.no-anim *::before,body.no-anim *::after{transition:none!impo
 }
 @media(max-width:420px){ .stack .bar-cta{display:none} .m-toggle--global{margin-left:auto} }
 /* button variation 4: one type size across the main and sub bars */
+/* the Commerce nav items match the sub-brand nav items at 14px in every button variation */
+.stack .commerce-bar .nav-item{font-size:var(--type-s);line-height:var(--lh-s)}
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
 /* every visibility: no connectors or sub-lines, items left aligned with the mark, generous space (no divider) under each header, four equal columns sized to their content (180px to 260px) */
 body[data-sv] .menu .tile--bare{width:20px;height:24px}
@@ -967,12 +969,12 @@ function hbModules(brand){
   }).join('');
   return '<section class="hb-mod"><div class="wrap"><h2 class="hb-mh">Browse by type</h2><div class="hb-tiles">'+tiles+'</div></div></section>';
 }
-function hubHTML(brand,key){
+function hubHTML(brand,key,top){
   var cfg=HB_TYPES[key];
   var grps = HB_GROUPS.map(function(G){ return '<details class="hb-grp" data-g="'+G.g+'"'+(G.open?' open':'')+'><summary><span>'+G.label+'</span><span class="hb-bd" data-bd="'+G.g+'" hidden></span>'+SVG.chev+'</summary><div class="hb-opts">'+G.vals.map(function(v){ return hbOpt(G.g,v); }).join('')+'<button type="button" class="hb-more" data-more="'+G.g+'" aria-expanded="false" hidden></button></div></details>'; }).join('');
   var per = [12,24,48].map(function(n){ return '<option value="'+n+'"'+(n===12?' selected':'')+'>'+n+'</option>'; }).join('');
   var ct = cfg.types ? '' : '<label class="hb-per"><span>Filter by content type</span><select id="hb-ct" class="hb-sel hb-sel-w"><option value="all" selected>All types</option><option value="blog">Blogs</option><option value="guides">Guides and reports</option><option value="webinars">Webinars</option></select></label>';
-  var hero='<section class="hb-top"><div class="wrap"><span class="eyebrow">'+BRAND[brand].name+'</span><h1>'+cfg.title+'</h1><p class="desc" style="max-width:592px">'+cfg.desc+'</p></div></section>';
+  var hero='<section class="hb-top"><div class="wrap">'+(top?'<span class="eyebrow">'+BRAND[brand].name+'</span>':'')+'<h1>'+cfg.title+'</h1><p class="desc" style="max-width:592px">'+cfg.desc+'</p></div></section>';
   var body=(key==='all'?hbModules(brand):'')
    +'<section class="hb-sec"><div class="wrap"><div class="hb-box" id="hb">'
    +'<div class="hb-head"><h2>'+cfg.h2+'</h2><div class="hb-ctl">'+ct+'<label class="hb-per"><span>Items per page</span><select id="hb-per" class="hb-sel">'+per+'</select></label></div></div>'
@@ -1283,8 +1285,9 @@ function crumbsHTML(brand,page){
   var start = brand==='cm' ? '<a href="#/">Home</a>' : '<a href="#/">Commerce</a>'+SVG.chevR+'<a href="'+href(BRAND[brand].home)+'">'+BRAND[brand].name+'</a>';
   return '<nav class="crumbs" aria-label="Breadcrumb"><div class="crumbs-in">'+start+SVG.chevR+mid+'<span class="cur">'+esc(page.label)+'</span></div></nav>';
 }
-function heroHTML(brand,label,type,crumbs){
-  var eb = '<div class="eb-group">'+(crumbs||'')+'<span class="eyebrow">'+BRAND[brand].name+'</span></div>', h = '<h1>'+esc(label)+'</h1>', d = '<p class="desc">'+LOREM+'</p>', C = ctasHTML(brand);
+/* the eyebrow only appears on top-level pages; deeper pages let the breadcrumbs give context */
+function heroHTML(brand,label,type,crumbs,top){
+  var eb = '<div class="eb-group">'+(crumbs||'')+(top?'<span class="eyebrow">'+BRAND[brand].name+'</span>':'')+'</div>', h = '<h1>'+esc(label)+'</h1>', d = '<p class="desc">'+LOREM+'</p>', C = ctasHTML(brand);
   if(type==='overview') return '<section class="hero"><div class="wrap" style="display:flex;flex-direction:column;align-items:center;gap:64px"><div class="ov-left">'+eb+h+'</div><div class="visual" style="height:555px;width:100%" role="img" aria-label="Hero visual placeholder"></div></div></section>';
   if(type==='split') return '<section class="hero h-split"><div class="wrap"><div class="h-text">'+eb+h+d+C+'</div>'+VIS+'</div></section>';
   if(type==='left-below') return '<section class="hero h-below"><div class="wrap" style="display:flex;flex-direction:column;gap:64px"><div class="top-row"><div class="left">'+eb+h+'</div><div class="cta-col">'+d+C+'</div></div>'+VIS+'</div></section>';
@@ -1292,11 +1295,11 @@ function heroHTML(brand,label,type,crumbs){
   return '<section class="hero h-center"><div class="wrap">'+eb+h+d+C+VIS+'</div></section>';
 }
 function pageHTML(brand,page,isHome){
-  var crumbs = isHome ? '' : crumbsHTML(brand,page);
-  if(page.hub){ var h=hubHTML(brand,page.hub); return '<div class="dark">'+h.hero.replace('<div class="wrap">','<div class="wrap">'+crumbs)+'</div><div class="light hb-body">'+h.body+'</div>'; }
+  var crumbs = isHome ? '' : crumbsHTML(brand,page), top = isHome || !page.parent;
+  if(page.hub){ var h=hubHTML(brand,page.hub,top); return '<div class="dark">'+h.hero.replace('<div class="wrap">','<div class="wrap">'+crumbs)+'</div><div class="light hb-body">'+h.body+'</div>'; }
   if(page.gs) return '<div class="light">'+gsHTML().replace('<div class="wrap">','<div class="wrap">'+crumbs)+'</div>';
   /* a sub-brand's landing page is white; every deeper page uses the brand's dark theme */
-  return '<div class="'+(isHome?'light':BRAND[brand].cls)+'">'+heroHTML(brand,page.label,page.type||'center',crumbs)+'</div>';
+  return '<div class="'+(isHome?'light':BRAND[brand].cls)+'">'+heroHTML(brand,page.label,page.type||'center',crumbs,top)+'</div>';
 }
 
 /* ---------- collapsed navigation (under 1140px): hamburger and accordion panels ---------- */
