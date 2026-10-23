@@ -2,7 +2,7 @@ import raw from './sub-brand-navigation.html?raw'
 
 export type SubBrandVisibility = 'mark' | 'black' | 'shape' | 'text' | 'mark-only'
 
-export type NavLayout = 'full' | 'floating' | 'panel'
+export type NavLayout = 'full' | 'floating' | 'panel' | 'none'
 
 export interface Config {
   sv?: SubBrandVisibility
@@ -29,6 +29,7 @@ export const NAV_LAYOUTS: { value: NavLayout; label: string; summary: string }[]
   { value: 'full', label: 'Full width', summary: 'Bars run edge to edge. Dropdowns float below as rounded cards.' },
   { value: 'floating', label: 'Floating', summary: 'Both bars float in rounded cards 16px from the page edges. Dropdowns float below as cards.' },
   { value: 'panel', label: 'Centered', summary: 'A narrower, centered floating nav (3/4 of the screen) with 120px between the links and the actions. Dropdowns are full width panels attached under a divider.' },
+  { value: 'none', label: 'No container', summary: 'No bar background or border. The nav sits on the page and scrolls away with it, the Commerce row first, then the sub-brand row, with a hairline between them. Links, logo and buttons invert on dark pages.' },
 ]
 
 export const BUTTON_VARIATIONS = [

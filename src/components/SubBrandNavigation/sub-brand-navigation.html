@@ -596,12 +596,12 @@ body.no-anim *,body.no-anim *::before,body.no-anim *::after{transition:none!impo
 @media(max-width:420px){ .stack .bar-cta{display:none} .m-toggle--global{margin-left:auto} }
 /* button variation 4: one type size across the main and sub bars */
 body[data-bt="4"] .stack .bar{font-size:var(--type-s);line-height:var(--lh-s)}
-/* every visibility: no connectors or sub-lines, items left aligned with the mark, a divider under each header, four equal columns sized to their content (180px to 260px) */
+/* every visibility: no connectors or sub-lines, items left aligned with the mark, generous space (no divider) under each header, four equal columns sized to their content (180px to 260px) */
 body[data-sv] .menu .tile--bare{width:20px;height:24px}
 /* Mark: the same 24px tile as the sub-brand bar, so headers keep the shared 24px height and the dividers line up */
 body[data-sv="mark"] .menu .tile--mark{width:24px;height:24px}
 body[data-sv="mark"] .menu .tile--mark svg{width:14px;height:14px}
-body[data-sv] .product__head,body[data-sv] .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid #eaecf0}
+body[data-sv] .product__head,body[data-sv] .menu .group__title{display:flex;align-items:center;min-height:24px;padding-bottom:10px;margin-bottom:0;border-bottom:1px solid transparent}
 body[data-sv] :is(.product__head,.menu .group__title){box-sizing:content-box}
 body[data-sv] .menu .group .list{margin-top:12px}
 body[data-sv] .menu--lg .menu__cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:48px}
@@ -619,6 +619,26 @@ body[data-sv] .menu--lg .group-row{display:grid;grid-template-columns:repeat(2,m
 .more-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:32px}
 .more-card{height:280px;border-radius:4px;background:conic-gradient(#ebebeb 25%,#fafafa 0 50%,#ebebeb 0 75%,#fafafa 0) 0 0/96px 96px}
 @media(max-width:820px){.more{padding:64px 0}.more-grid{grid-template-columns:1fr}}
+/* No container: no bar fill or border. The nav sits on the page and scrolls away with it, the Commerce row first, then the sub-brand row.
+   A hairline separates the two rows. On dark pages the links, logo, marks and buttons invert; dropdowns stay white cards. */
+body[data-nl="none"]{--bar-line:rgba(0,0,0,.12)}
+body[data-nl="none"].dark{--bar-line:rgba(255,255,255,.2)}
+body[data-nl="none"] .stack,body[data-nl="none"] .stack.has-sub{position:relative;top:auto;background:transparent;transform:none!important;transition:none}
+body[data-nl="none"] .stack :is(.commerce-bar,.sub-bar),body[data-nl="none"] .stack .bar{background:transparent;border-bottom:0}
+body[data-nl="none"] .stack.has-sub .commerce-bar .bar::after{content:"";position:absolute;left:var(--bar-x);right:var(--bar-x);bottom:0;height:1px;background:var(--bar-line)}
+body[data-nl="none"] .menu{color:var(--text)}
+body[data-nl="none"].dark .stack{color:#fff}
+body[data-nl="none"].dark .stack .logo img{filter:invert(1)}
+body[data-nl="none"].dark .stack .sub-bar__label :is(.pk-ic,.bi){filter:invert(1)}
+body[data-nl="none"].dark .stack .nav-item::before{background:rgba(255,255,255,.16)}
+body[data-nl="none"].dark :is(.bar-cta,.sub-bar__right) .btn--primary{background:#fff;color:#000}
+body[data-nl="none"].dark :is(.bar-cta,.sub-bar__right) .btn--primary:hover{background:#e4e7ec}
+body[data-nl="none"].dark :is(.bar-cta,.sub-bar__right) .btn--secondary{border-color:#fff;color:#fff}
+body[data-nl="none"].dark :is(.bar-cta,.sub-bar__right) .btn--secondary:hover{background:rgba(255,255,255,.16)}
+body[data-nl="none"].dark .m-toggle{color:#fff}
+body[data-nl="none"].dark .m-toggle--global:hover{background:rgba(255,255,255,.16)}
+body[data-nl="none"].dark .m-toggle--sub{border-color:#fff}
+body[data-nl="none"].dark :is(.nav-item,.logo,.sub-bar__label,.m-toggle,.bar-cta .btn,.sub-bar__right .btn):focus-visible{outline-color:#fff}
 </style>
 </head>
 <body>
