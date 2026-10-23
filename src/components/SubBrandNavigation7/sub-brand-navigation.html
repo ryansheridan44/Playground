@@ -714,6 +714,13 @@ body[data-nl="none"] .stack.has-sub.up{transform:none}
 .menu__cols>.feats{grid-auto-rows:1fr;gap:8px}
 .menu__cols>.feats .feat{padding:24px}
 .menu .promo{padding:24px}
+/* no outer border on the bars (the soft shadow carries the edge); the hover and active pill is a faint dark tint so it reads on the translucent bar over any page */
+body[data-nl] .commerce-bar,body[data-nl] .sub-bar{border-color:transparent}
+.stack .nav-item::before{background:rgba(16,24,40,.06)}
+/* the divider between the Commerce bar and the sub-brand bar is a 1px hairline, translucent so it reads on light and dark pages */
+.stack.has-sub:not(.sub-only) .sub-bar{border-top-color:rgba(16,24,40,.18)}
+/* the bars are always a little translucent with a soft blur, so the page shows through faintly */
+.commerce-bar,.sub-bar{background-color:rgba(255,255,255,.93)!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 </style>
 </head>
 <body>
@@ -1429,11 +1436,12 @@ function fitMenu(panel){
   if(stack && parent0) panel.style.top = Math.round(stack.getBoundingClientRect().bottom - parent0.getBoundingClientRect().top + (isNaN(gap) ? 16 : gap)) + 'px';
   /* measure from layout, not getBoundingClientRect: the menu's own open/close transform would skew the numbers */
   var sr = stack ? stack.getBoundingClientRect() : {left:32,right:document.documentElement.clientWidth-32}, shift = 0;
-  panel.style.maxWidth = Math.floor(sr.right-sr.left)+'px';
-  var left0 = (parent0 ? parent0.getBoundingClientRect().left : 0) + panel.offsetLeft, right0 = left0 + panel.offsetWidth;
+  panel.style.maxWidth = Math.floor(stack ? stack.offsetWidth : sr.right-sr.left)+'px';
+  var k = stack && stack.offsetWidth ? sr.right-sr.left > 0 ? (stack.getBoundingClientRect().width/stack.offsetWidth) : 1 : 1;
+  var left0 = (parent0 ? parent0.getBoundingClientRect().left : 0) + panel.offsetLeft*k, right0 = left0 + panel.offsetWidth*k;
   if(right0 > sr.right) shift = sr.right-right0;
   if(left0+shift < sr.left) shift = sr.left-left0;
-  panel.style.setProperty('--shift',Math.round(shift)+'px');
+  panel.style.setProperty('--shift',Math.round(shift/(k||1))+'px');
   var parent = panel.offsetParent, top = (parent ? parent.getBoundingClientRect().top : 0) + panel.offsetTop;
   panel.style.setProperty('--max-h',Math.max(160,Math.floor(window.innerHeight-top-24))+'px');
 }
