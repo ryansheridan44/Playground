@@ -675,7 +675,7 @@ body[data-nl="none"] .stack.has-sub.up{transform:none}
 .gm-go{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .gm-go svg{width:11px;height:11px;transition:transform .5s var(--ease-out)}
 .gm-strip:hover .gm-go svg{transform:translateX(4px)}
-@media(max-width:700px){.gm-cards,.gm-pcards{grid-template-columns:1fr}.mod{padding:24px}}
+@media(max-width:700px){.gm-cards,.gm-grid{grid-template-columns:1fr}.mod{padding:24px}}
 /* dropdowns with feature cards: the columns keep their natural width and the cards sit beside them */
 .menu:not(.menu--lg) .menu__cols:has(>.feats){display:flex}
 .menu__cols>.feats{flex:0 1 480px;min-width:0;grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -686,24 +686,19 @@ body[data-nl="none"] .stack.has-sub.up{transform:none}
 .menu__main{padding:32px 28px;background:var(--surface);border-radius:var(--r-xl)}
 .menu:has(>.menu__main)>:is(.strip,.gm-strip){margin:0;padding:16px 28px 18px;background:transparent;border-radius:0}
 .menu:has(>.menu__main)>:is(.strip,.gm-strip):hover{background:#e8ecf2}
-/* Get started: a card per product, 8px from the edges and 8px apart like the Log in cards; actions are links inside the card */
-.gm-pcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.gm-pcard{display:flex;flex-direction:column;gap:32px}
-.gm-head{display:flex;flex-direction:column;gap:4px}
+/* Get started: brand header above each column, cards 8px apart and 8px from the container edges */
+.gm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.gm-col{display:flex;flex-direction:column;gap:16px}
+.gm-head{display:flex;flex-direction:column;gap:4px;padding:0 24px}
 .gm-brand{display:flex;align-items:center;gap:8px;height:24px;font-size:14px;line-height:19.6px;font-weight:var(--w-medium)}
 .gm-brand .bi,.gm-brand .bi svg{width:18px;height:18px}
 .gm-tag{margin:0;font-size:13px;line-height:18.2px;color:var(--text-tertiary);white-space:normal!important}
-.gm-acts{display:flex;flex-direction:column;gap:16px;margin-top:auto}
-.gm-act{display:flex;flex-direction:column;gap:2px;transition:opacity var(--focus-return-time) var(--ease-soft) var(--focus-return-delay)}
-.gm-at{font-size:14px;line-height:19.6px;font-weight:var(--w-regular);transition:transform .55s var(--ease-out),font-weight .4s var(--ease)}
-.gm-at::after{content:"→";display:inline-block;margin-left:.45em;opacity:0;filter:blur(2px);transform:translateX(-30%);transition:opacity .4s var(--ease-soft),filter .4s var(--ease-soft),transform .6s var(--ease-out)}
-.gm-act:is(:hover,:focus-visible) .gm-at{font-weight:var(--w-medium);transform:translateX(4px)}
-.gm-act:is(:hover,:focus-visible) .gm-at::after{opacity:.45;filter:blur(0);transform:none}
-.gm-ad{font-size:13px;line-height:18.2px;color:var(--text-tertiary);white-space:normal!important}
-.gm-pcard:has(.gm-act:is(:hover,:focus-visible)) .gm-act:not(:is(:hover,:focus-visible)){opacity:var(--focus-dim);transition:opacity .15s var(--ease) 0s}
-.gm-act:is(:hover,:focus-visible){transition:opacity var(--focus-active-time) var(--ease) 0s}
-.menu--cta .gm-pcards{grid-template-columns:repeat(2,264px);gap:64px}
-.mod .gm-pcards{gap:32px}
+.gm-stack{display:flex;flex-direction:column;gap:8px;flex:1}
+.gm-stack .feat{position:relative;flex:1;min-height:92px;justify-content:flex-end;gap:0;padding:20px 24px}
+.gm-stack .feat__go{position:absolute;top:20px;right:24px}
+.menu--cta .menu__main{padding:24px 8px 8px}
+.menu--cta .gm-grid{grid-template-columns:repeat(2,288px)}
+.mod .gm-grid{margin:0 -24px}
 /* Log in dropdown: just the two cards, 8px from the edges */
 .menu--login{padding:8px}
 .menu--login .gm-cards{margin:0;grid-template-columns:repeat(2,248px)}
@@ -714,13 +709,11 @@ body[data-nl="none"] .stack.has-sub.up{transform:none}
 .menu__cols>.feats{grid-auto-rows:1fr;gap:8px}
 .menu__cols>.feats .feat{padding:24px}
 .menu .promo{padding:24px}
-/* no outer border on the bars (the soft shadow carries the edge); the hover and active pill is a faint dark tint so it reads on the translucent bar over any page */
-body[data-nl] .commerce-bar,body[data-nl] .sub-bar{border-color:transparent}
+/* a light outer border on the bars; the hover and active pill is a faint dark tint so it reads on the translucent bar over any page */
+body[data-nl] .commerce-bar,body[data-nl] .sub-bar{border-color:#e4e7ec}
 .stack .nav-item::before{background:rgba(16,24,40,.06)}
 /* the divider between the Commerce bar and the sub-brand bar is a 1px hairline, translucent so it reads on light and dark pages */
 .stack.has-sub:not(.sub-only) .sub-bar{border-top-color:rgba(16,24,40,.18)}
-/* the bars are always a little translucent with a soft blur, so the page shows through faintly */
-.commerce-bar,.sub-bar{background-color:rgba(255,255,255,.93)!important;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 </style>
 </head>
 <body>
@@ -1302,14 +1295,14 @@ function loginCards(){
 function loginModalHTML(){ return modalHTML('login','Log in to','<div class="gm-cards">'+loginCards()+'</div>'); }
 function loginMenuHTML(){ return '<div class="menu menu--end menu--login" id="menu-login" role="region" aria-label="Log in"><div class="gm-cards">'+loginCards()+'</div></div>'; }
 /* get started: a gray card per product with its actions as plain links, then a strip for sales, like the Solutions dropdown */
-/* get started: pick a product first, as in Log in. Each product is one card holding its brand, what it is, and its actions as links */
-function gmAct(a){ return '<a class="gm-act" href="'+href(a.p)+'"><span class="gm-at">'+esc(a.t)+'</span><span class="gm-ad">'+esc(a.d)+'</span></a>'; }
+/* get started: each product's brand and description above its cards; BigCommerce has two stacked cards, Feedonomics one that fills their height */
+function gmCard(a,k){ return '<a class="feat reveal" style="--d:'+k+'" href="'+href(a.p)+'"><span class="feat__go" aria-hidden="true">'+ARR+'</span><span class="feat__b"><span class="feat__t">'+esc(a.t)+'</span><span class="feat__d">'+esc(a.d)+'</span></span></a>'; }
 function startedBody(){
-  var cards = GS.map(function(c,k){
-    return '<section class="gm-pcard reveal" style="--d:'+k+'"><div class="gm-head"><div class="gm-brand">'+brandIcon(c.k)+'<span>'+esc(c.name)+'</span></div><p class="gm-tag">'+esc(BRAND[c.k].tag)+'</p></div><div class="gm-acts">'+c.acts.map(gmAct).join('')+'</div></section>';
+  var d = 0, cols = GS.map(function(c){
+    return '<div class="gm-col"><div class="gm-head reveal"><div class="gm-brand">'+brandIcon(c.k)+'<span>'+esc(c.name)+'</span></div><p class="gm-tag">'+esc(BRAND[c.k].tag)+'</p></div><div class="gm-stack">'+c.acts.map(function(a){ return gmCard(a,d++); }).join('')+'</div></div>';
   }).join('');
   var note = '<a class="gm-strip" href="'+href('/contact-sales')+'"><span>Not sure where to start? Talk to us about which solution fits.</span><span class="gm-go"><span>Contact sales</span>'+ARR+'</span></a>';
-  return '<div class="menu__main"><div class="gm-pcards">'+cards+'</div></div>'+note;
+  return '<div class="menu__main"><div class="gm-grid">'+cols+'</div></div>'+note;
 }
 /* on desktop the header's Get started button opens this dropdown; the modal below is for everywhere else (mobile, hero buttons) */
 function startedModalHTML(){ return modalHTML('started','How would you like to get started?',startedBody(),true); }
