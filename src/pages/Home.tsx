@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const PROJECTS = [
+  { name: 'Consolidated Navigation 7', to: '/prototypes/consolidated-navigation-7' },
   { name: 'Consolidated Navigation 6', to: '/prototypes/sub-brand-navigation' },
   { name: 'Consolidated Navigation 5', to: '/prototypes/consolidated-navigation-5' },
   { name: 'Consolidated Navigation 4', to: '/prototypes/consolidated-navigation-4' },
