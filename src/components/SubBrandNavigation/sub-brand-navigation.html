@@ -1274,7 +1274,8 @@ function pageHTML(brand,page,isHome){
   var crumbs = isHome ? '' : crumbsHTML(brand,page);
   if(page.hub){ var h=hubHTML(brand,page.hub); return '<div class="dark">'+h.hero.replace('<div class="wrap">','<div class="wrap">'+crumbs)+'</div><div class="light hb-body">'+h.body+'</div>'; }
   if(page.gs) return '<div class="light">'+gsHTML().replace('<div class="wrap">','<div class="wrap">'+crumbs)+'</div>';
-  return '<div class="'+BRAND[brand].cls+'">'+heroHTML(brand,page.label,page.type||'center',crumbs)+'</div>';
+  /* a sub-brand's landing page is white; every deeper page uses the brand's dark theme */
+  return '<div class="'+(isHome?'light':BRAND[brand].cls)+'">'+heroHTML(brand,page.label,page.type||'center',crumbs)+'</div>';
 }
 
 /* ---------- collapsed navigation (under 1140px): hamburger and accordion panels ---------- */
