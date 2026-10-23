@@ -623,7 +623,7 @@ body[data-sv] .menu--lg .group-row{display:grid;grid-template-columns:repeat(2,m
    A hairline separates the two rows. On dark pages the links, logo, marks and buttons invert; dropdowns stay white cards. */
 body[data-nl="none"]{--bar-line:rgba(0,0,0,.12)}
 body[data-nl="none"].dark{--bar-line:rgba(255,255,255,.2)}
-body[data-nl="none"] .stack,body[data-nl="none"] .stack.has-sub{position:relative;top:auto;background:transparent;transform:none!important;transition:none}
+body[data-nl="none"] .stack,body[data-nl="none"] .stack.has-sub{position:relative;top:auto;background:transparent;transform:none;transition:none}
 body[data-nl="none"] .stack :is(.commerce-bar,.sub-bar),body[data-nl="none"] .stack .bar{background:transparent;border-bottom:0}
 body[data-nl="none"] .stack.has-sub .commerce-bar .bar::after{content:"";position:absolute;left:var(--bar-x);right:var(--bar-x);bottom:0;height:1px;background:var(--bar-line)}
 body[data-nl="none"] .menu{color:var(--text)}
@@ -639,6 +639,29 @@ body[data-nl="none"].dark .m-toggle{color:#fff}
 body[data-nl="none"].dark .m-toggle--global:hover{background:rgba(255,255,255,.16)}
 body[data-nl="none"].dark .m-toggle--sub{border-color:#fff}
 body[data-nl="none"].dark :is(.nav-item,.logo,.sub-bar__label,.m-toggle,.bar-cta .btn,.sub-bar__right .btn):focus-visible{outline-color:#fff}
+/* No container, spacing: the sub row sits as far below the hairline as the Commerce row sits above it */
+@media(min-width:1140px){
+ body[data-nl="none"] .stack.has-sub .sub-bar .bar{height:calc(var(--sub-h) + 10px);padding-top:18px}
+}
+/* No container, scroll. The nav is not sticky; scroll position drives it directly (compositor only, so it stays smooth).
+   Two rows: the Commerce row fades out while the sub-brand row slides up over it, the pair pinned for those 72px; then the
+   sub-brand row dissolves and scrolls away. Commerce alone: the row dissolves at half speed, then is gone.
+   Browsers without scroll-driven animations just scroll the nav away with the page. */
+body[data-nl="none"] .stack.has-sub.up{transform:none}
+@media(min-width:1140px) and (prefers-reduced-motion:no-preference){
+ @supports (animation-timeline:scroll()){
+  @keyframes nav-pin{to{transform:translateY(72px)}}
+  @keyframes nav-fold{to{transform:translateY(-72px)}}
+  @keyframes nav-fade{to{opacity:0}}
+  @keyframes nav-dissolve{to{opacity:0;transform:translateY(28px)}}
+  body[data-nl="none"] .stack.has-sub{animation-name:nav-pin;animation-duration:auto;animation-timing-function:linear;animation-fill-mode:both;animation-timeline:scroll(root);animation-range:0px 72px}
+  body[data-nl="none"] .stack.has-sub .commerce-bar{animation-name:nav-fade;animation-duration:auto;animation-timing-function:linear;animation-fill-mode:both;animation-timeline:scroll(root);animation-range:0px 36px}
+  body[data-nl="none"] .stack.has-sub .sub-bar{animation-name:nav-fold;animation-duration:auto;animation-timing-function:linear;animation-fill-mode:both;animation-timeline:scroll(root);animation-range:0px 72px}
+  body[data-nl="none"] .stack.has-sub .sub-bar .bar{animation-name:nav-dissolve;animation-duration:auto;animation-timing-function:linear;animation-fill-mode:both;animation-timeline:scroll(root);animation-range:72px 136px}
+  body[data-nl="none"] .stack:not(.has-sub) .commerce-bar .bar{animation-name:nav-dissolve;animation-duration:auto;animation-timing-function:linear;animation-fill-mode:both;animation-timeline:scroll(root);animation-range:0px 64px}
+  body[data-nl="none"] .stack.has-sub .sub-bar{will-change:transform}
+ }
+}
 </style>
 </head>
 <body>
