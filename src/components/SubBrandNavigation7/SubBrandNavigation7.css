@@ -11,22 +11,3 @@
   border: 0;
   display: block;
 }
-
-.sbn7-back {
-  position: fixed;
-  left: 16px;
-  bottom: 16px;
-  z-index: 100;
-  padding: 8px 12px;
-  font: 13px/1.4 'Geist Mono', ui-monospace, monospace;
-  color: #d0d5dd;
-  background: rgba(0, 0, 0, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 10px;
-  backdrop-filter: blur(8px);
-  text-decoration: none;
-}
-
-.sbn7-back:hover {
-  color: #fff;
-}
