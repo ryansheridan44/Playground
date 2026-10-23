@@ -5,7 +5,7 @@ import './SubBrandNavigation7.css'
 
 function SubBrandNavigation7() {
   // one design: Centered nav, Black mark, no "Solution /" prefix, button layout 1 (see DEFAULT_CFG in variants.ts)
-  const doc = useMemo(() => buildDoc({ start: '/bigcommerce' }), [])
+  const doc = useMemo(() => buildDoc({ start: '' }), [])
 
   return (
     <div className="sbn7">
