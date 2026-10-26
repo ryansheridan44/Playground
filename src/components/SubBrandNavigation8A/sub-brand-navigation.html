@@ -910,11 +910,11 @@ Object.keys(SECTIONS).forEach(function(id){
 /* sub-brand CTAs and log in */
 var CTA = {
  cm:{primary:{l:'Get started',p:'/get-started'},secondary:{l:'Contact sales',p:'/contact-sales'}},
- bc:{login:'/bigcommerce/log-in',primary:{l:'Free trial',p:'/bigcommerce/free-trial'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
- fdx:{login:'/feedonomics/log-in',primary:{l:'Get a demo',p:'/feedonomics/get-a-demo'},secondary:{l:'See how it works',p:'/feedonomics/how-it-works'},noHeaderSecondary:true},
+ bc:{login:'https://login.bigcommerce.com/login/',primary:{l:'Free trial',p:'/bigcommerce/free-trial'},secondary:{l:'Get a demo',p:'/bigcommerce/get-a-demo'}},
+ fdx:{login:'https://auth.feedonomics.com/login',primary:{l:'Get a demo',p:'/feedonomics/get-a-demo'},secondary:{l:'See how it works',p:'/feedonomics/how-it-works'},noHeaderSecondary:true},
 };
 reg('/contact-sales','Contact Sales','cm');
-Object.keys(CTA).forEach(function(b){ if(b==='cm') return; reg(CTA[b].login,'Log In',b); reg(CTA[b].primary.p,CTA[b].primary.l,b); reg(CTA[b].secondary.p,CTA[b].secondary.l,b); });
+Object.keys(CTA).forEach(function(b){ if(b==='cm') return; reg(CTA[b].primary.p,CTA[b].primary.l,b); reg(CTA[b].secondary.p,CTA[b].secondary.l,b); });
 
 /* ---------- blog hub (dummy content) ---------- */
 var HB_TOPICS=['Agentic commerce','B2B ecommerce','Channels and marketplaces','Ecommerce insights','Product data and feeds','Headless and composable','Payments and checkout'];
@@ -1138,7 +1138,7 @@ function initHub(brand,key){
 }
 
 /* ---------- markup builders ---------- */
-var href = function(p){ return '#'+(p||'/'); };
+var href = function(p){ return /^https?:/.test(p||'') ? p : '#'+(p||'/'); };
 var SOLBG = {bc:'#e4e7ec',fdx:'#cfdcff'};
 var SHAPE = {
  bc:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M20 0V20H0Z"/></svg>',
@@ -1581,6 +1581,8 @@ function route(path,keep){
   if(!(page && page.hub)) html = html.replace(/<\/main>$/, MORE+'</main>');
   document.body.dataset.sv = CFG.sv; document.body.dataset.nl = CFG.nl||'full'; document.body.dataset.bt = CFG.bt;
   app.innerHTML = headerHTML(brand)+html;
+  /* external links (the product log in pages) open in a new tab */
+  [].forEach.call(app.querySelectorAll('a[href^="http"]'),function(a){ a.target = '_blank'; a.rel = 'noopener noreferrer'; });
   /* the page behind the navigation matches the first section: black when it is dark, white when it is light */
   var first = app.querySelector('main > *'); document.body.classList.toggle('dark', !!(first && first.classList.contains('dark')));
   bindMenus();
