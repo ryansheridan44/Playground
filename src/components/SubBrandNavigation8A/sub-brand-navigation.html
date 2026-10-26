@@ -735,6 +735,17 @@ body[data-nl="panel"] .bar__right>.nav,body[data-nl="panel"] .nav--sub{margin-ri
 /* Get started is the Commerce bar's one filled button; with a sub bar showing, the brand's black button leads and it steps back to an outline */
 .stack.has-sub .commerce-bar .bar-cta .btn--primary{background:transparent;color:var(--text);border-color:var(--border-strong)}
 .stack.has-sub .commerce-bar .bar-cta .btn--primary:hover{background:var(--surface-2)}
+/* collapsed navigation: a plain "Menu" label, no dividers, tighter items, dropdown items hug their caret, buttons full width only on small screens */
+.m-toggle--sub{height:auto;padding:8px 0;border:0;border-radius:0}
+.macc,.macc__h--link{border-bottom:0}
+.mpanel nav{display:flex;flex-direction:column;align-items:flex-start}
+.mpanel .macc{width:100%}
+.macc__h{display:inline-flex;justify-content:flex-start;width:auto;min-height:40px;gap:8px}
+.m-cta{flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px}
+.m-cta .btn{width:auto}
+@media(max-width:640px){.m-cta{flex-direction:column;align-items:stretch}.m-cta .btn{width:100%}}
+/* collapsed menu panels hug their content (scrolling only when taller than the screen) and start a little below their top edge */
+body .mpanel,body[data-nl] .mpanel{bottom:auto;max-height:calc(100vh - var(--mp-top,72px) - 16px);padding-top:16px;padding-bottom:24px}
 </style>
 </head>
 <body>
@@ -1285,7 +1296,7 @@ function subRightHTML(brand){
   var demo = brand==='bc' ? c.secondary : c.primary, trial = brand==='bc' ? c.primary : null;
   if(bt===2) return brand==='bc' ? A('btn btn--secondary btn--sm',demo)+A('btn btn--primary btn--sm',trial) : A('btn btn--primary btn--sm',demo);
   if(bt===3||bt===4) return L(demo)+(trial?L(trial):'');
-  return brand==='bc' ? L(demo)+A('btn btn--primary btn--sm',trial) : A('btn btn--primary btn--sm',demo);
+  return L({p:c.login,l:'Log in'})+(brand==='bc' ? L(demo)+A('btn btn--primary btn--sm',trial) : A('btn btn--primary btn--sm',demo));
 }
 function hdrRightHTML(ctx){
   var bt = CFG.bt;
@@ -1295,7 +1306,7 @@ function hdrRightHTML(ctx){
   var started = '<button class="btn btn--primary'+(bt===4?' btn--sm':'')+'" type="button" data-menu="started" aria-expanded="false" aria-controls="menu-started" data-cta><span>Get started</span></button>';
   var inner;
   if(bt===2) inner = contact+login+L('Get started','data-modal="started" aria-haspopup="dialog" data-cta');
-  else inner = contact+login+started;
+  else inner = contact+started;
   return '<div class="bar-cta">'+inner+'</div>';
 }
 function subBarHTML(brand){
@@ -1332,7 +1343,7 @@ function headerHTML(brand){
   /* Commerce owns the global header on every page; sub-brands only add the secondary bar */
   var logo = '<a class="logo" href="#/" aria-label="Commerce home"><img src="'+WORDMARK+'" alt="Commerce" width="163" height="24"></a>';
   var nav = '<ul class="nav">'+NAV.cm.map(function(n){ return navItemHTML(n,false); }).join('')+moreSlot('cm')+'</ul>';
-  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="commerce-bar"><nav class="bar" aria-label="Commerce">'+logo+'<div class="bar__right">'+nav+hdrRightHTML(brand)+'</div>'+mToggle('global')+menuHTML('solutions')+menuHTML('learning')+moreMenuShell('cm')+startedMenuHTML()+loginMenuHTML()+'</nav></header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+mobilePanelsHTML(brand)+loginModalHTML()+startedModalHTML();
+  return '<div class="stack'+(brand==='cm'?'':' has-sub')+'"><header class="commerce-bar"><nav class="bar" aria-label="Commerce">'+logo+'<div class="bar__right">'+nav+hdrRightHTML(brand)+'</div>'+mToggle('global')+menuHTML('solutions')+menuHTML('learning')+moreMenuShell('cm')+startedMenuHTML()+'</nav></header>'+(brand==='cm'?'':subBarHTML(brand))+'</div>'+mobilePanelsHTML(brand)+startedModalHTML();
 }
 /* ---------- get started page ---------- */
 var GS=[
@@ -1408,7 +1419,7 @@ function mNavHTML(list,label){
 function mobilePanelsHTML(brand){
   var A = function(cls,x){ return '<a class="btn '+cls+'" href="'+href(x.p)+'"><span>'+esc(x.l)+'</span></a>'; };
   var global = '<div class="mpanel" id="mp-global" data-for="global" hidden>'+mNavHTML(NAV.cm,'Commerce')
-    +'<div class="m-cta"><button class="btn btn--primary" type="button" data-modal="started" aria-haspopup="dialog"><span>Get started</span></button><a class="btn btn--secondary" href="#/contact-sales"><span>Contact sales</span></a><button class="btn btn--secondary" type="button" data-modal="login" aria-haspopup="dialog"><span>Log in</span></button></div></div>';
+    +'<div class="m-cta"><button class="btn btn--primary" type="button" data-modal="started" aria-haspopup="dialog"><span>Get started</span></button><a class="btn btn--secondary" href="#/contact-sales"><span>Contact sales</span></a></div></div>';
   if(brand==='cm') return global;
   var c = CTA[brand];
   var sub = '<div class="mpanel" id="mp-sub" data-for="sub" hidden>'+mNavHTML(NAV[brand],BRAND[brand].name)

@@ -758,6 +758,17 @@ body[data-nl="panel"] .bar__right>.nav,body[data-nl="panel"] .nav--sub{margin-ri
 /* with a sub bar showing, the brand's black button leads and Contact sales steps back to an outline */
 .stack.has-sub .commerce-bar .bar-cta .btn--primary{background:transparent;color:var(--text);border-color:var(--border-strong)}
 .stack.has-sub .commerce-bar .bar-cta .btn--primary:hover{background:var(--surface-2)}
+/* collapsed navigation: a plain "Menu" label, no dividers, tighter items, dropdown items hug their caret, buttons full width only on small screens */
+.m-toggle--sub{height:auto;padding:8px 0;border:0;border-radius:0}
+.macc,.macc__h--link{border-bottom:0}
+.mpanel nav{display:flex;flex-direction:column;align-items:flex-start}
+.mpanel .macc{width:100%}
+.macc__h{display:inline-flex;justify-content:flex-start;width:auto;min-height:40px;gap:8px}
+.m-cta{flex-direction:row;flex-wrap:wrap;align-items:center;gap:12px;margin-top:16px}
+.m-cta .btn{width:auto}
+@media(max-width:640px){.m-cta{flex-direction:column;align-items:stretch}.m-cta .btn{width:100%}}
+/* collapsed menu panels hug their content (scrolling only when taller than the screen) and start a little below their top edge */
+body .mpanel,body[data-nl] .mpanel{bottom:auto;max-height:calc(100vh - var(--mp-top,72px) - 16px);padding-top:16px;padding-bottom:24px}
 </style>
 </head>
 <body>
