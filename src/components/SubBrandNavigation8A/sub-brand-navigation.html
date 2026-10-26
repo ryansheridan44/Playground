@@ -727,6 +727,9 @@ body[data-sv] .product__head{align-items:flex-start}
 body[data-sv] .menu .more__plain:not(.more__plain--pad) .list{margin-top:0}
 /* the gap between the nav and the actions is whatever space is left; More keeps it at 48px or more */
 body[data-nl="panel"] .bar__right>.nav,body[data-nl="panel"] .nav--sub{margin-right:0}
+/* Get started is the Commerce bar's one filled button; with a sub bar showing, the brand's black button leads and it steps back to an outline */
+.stack.has-sub .commerce-bar .bar-cta .btn--primary{background:transparent;color:var(--text);border-color:var(--border-strong)}
+.stack.has-sub .commerce-bar .bar-cta .btn--primary:hover{background:var(--surface-2)}
 </style>
 </head>
 <body>
@@ -1284,7 +1287,7 @@ function hdrRightHTML(ctx){
   var L = function(label,attrs){ return '<'+(attrs.indexOf('href')>-1?'a':'button type="button"')+' class="nav-item" '+attrs+'><span class="nav-item__label">'+label+'</span></'+(attrs.indexOf('href')>-1?'a':'button')+'>'; };
   var contact = L('Contact sales','href="#/contact-sales"');
   var login = L('Log in','data-menu="login" aria-controls="menu-login"');
-  var started = '<button class="btn btn--secondary'+(bt===4?' btn--sm':'')+'" type="button" data-menu="started" aria-expanded="false" aria-controls="menu-started" data-cta><span>Get started</span></button>';
+  var started = '<button class="btn btn--primary'+(bt===4?' btn--sm':'')+'" type="button" data-menu="started" aria-expanded="false" aria-controls="menu-started" data-cta><span>Get started</span></button>';
   var inner;
   if(bt===2) inner = contact+login+L('Get started','data-modal="started" aria-haspopup="dialog" data-cta');
   else inner = contact+login+started;
