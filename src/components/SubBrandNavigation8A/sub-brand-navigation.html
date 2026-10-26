@@ -720,7 +720,12 @@ body[data-sv] .menu .tile--glyph{width:20px;height:20px}
 .menu .tile--bare.tile--glyph svg{width:18px;height:18px}
 .menu .tile--bare.tile--glyph svg path{fill:none}
 .bi.bi--glyph svg path{fill:none}
-body[data-sv] .product__head{align-items:flex-start}
+/* icon and name share a line; the description sits beneath, flush with the icon */
+body[data-sv] .product__head{display:grid;grid-template-columns:20px 1fr;column-gap:12px;row-gap:2px;align-items:center}
+.product__text{display:contents}
+.product__head .tile{grid-column:1;grid-row:1}
+.product__name{grid-column:2;grid-row:1}
+.product__tag{grid-column:1 / -1;grid-row:2}
 .product__tag{display:block;white-space:nowrap;font-size:13px;line-height:18px}
 /* More dropdown: plain links line up with the group links beside them */
 .more__plain--pad{padding-top:74px}
